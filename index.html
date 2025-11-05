@@ -326,6 +326,41 @@
             <div class="output-box" id="animationOutput"></div>
         </div>
 
+        <!-- Section 5: Compilers vs Interpreters -->
+        <div class="section">
+            <h2>⚙️ What's a Compiler?</h2>
+            <p style="font-size: 18px; line-height: 1.8;">
+                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
+            </p>
+            
+            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
+            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
+                <li>Translates the whole program before running it</li>
+                <li>Shows all errors at the end, together</li>
+                <li>Runs faster once compiled</li>
+                <li>Creates a separate file you can run anytime</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔍 What's an Interpreter?</h2>
+            <p style="font-size: 18px; line-height: 1.8;">
+                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
+            </p>
+            
+            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
+            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
+                <li>Translates code one line at a time as it runs</li>
+                <li>Shows errors immediately when it hits that line</li>
+                <li>Slower execution than compiled programs</li>
+                <li>Always needs the original code to run</li>
+            </ul>
+            
+            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
+                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
+            </p>
+        </div>
+
         <!-- Final Quiz -->
         <div class="quiz-box">
             <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
@@ -369,6 +404,14 @@
                 <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
                 <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
                 <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            </div>
+
+            <div class="question" id="q6">
+                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
+                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
+                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
+                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
+                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
             </div>
 
             <div id="finalMessage" class="celebration"></div>
@@ -492,7 +535,7 @@
             
             updateScore();
             
-            if (answeredQuestions.size === 5) {
+            if (answeredQuestions.size === 6) {
                 showFinalMessage();
             }
         }
@@ -504,9 +547,9 @@
         
         function showFinalMessage() {
             const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 5) {
+            if (correctAnswers === 6) {
                 finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 3) {
+            } else if (correctAnswers >= 4) {
                 finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
             } else {
                 finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
