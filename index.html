@@ -3,561 +3,1214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 1: Welcome to Programming</title>
+    <title>Lecture 5: Strings - Playing with Text</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
-        h1 {
-            color: #667eea;
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
+        }
+
+        header h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        
-        h2 {
-            color: #764ba2;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
-        
+
+        .content {
+            padding: 40px;
+        }
+
         .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9ff;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #f093fb;
         }
-        
-        .game-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+        .section h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "Python";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #f093fb;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .interactive-demo {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
-            color: white;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .robot {
-            font-size: 60px;
-            text-align: center;
+
+        .game-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 5px;
-            margin: 20px auto;
-            width: fit-content;
-        }
-        
-        .cell {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border: 2px solid #764ba2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            border-radius: 8px;
-        }
-        
-        .cell.target {
-            background: #ffeb3b;
-        }
-        
-        button {
-            background: #667eea;
+
+        .game-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 5px;
+            margin: 10px;
             transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        button:hover {
-            background: #764ba2;
-            transform: scale(1.05);
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
-        
-        .code-box {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            font-size: 16px;
+
+        .game-button:active {
+            transform: translateY(0);
         }
-        
-        .output-box {
-            background: #000;
-            color: #0f0;
+
+        input[type="text"], textarea {
             padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #f093fb;
             border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            min-height: 50px;
+            width: 100%;
+            margin: 10px 0;
         }
-        
-        .quiz-box {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
+
+        textarea {
+            min-height: 100px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        .question {
+
+        .method-card {
             background: white;
             padding: 20px;
             border-radius: 10px;
             margin: 15px 0;
+            border-left: 4px solid #f093fb;
+            transition: transform 0.3s;
         }
-        
-        .option {
-            display: block;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f0f0f0;
+
+        .method-card:hover {
+            transform: translateX(10px);
+        }
+
+        .method-name {
+            color: #f5576c;
+            font-size: 1.3em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 2px solid transparent;
         }
-        
-        .option:hover {
-            background: #e0e0e0;
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #f093fb;
         }
-        
-        .option.correct {
-            background: #4caf50;
-            color: white;
+
+        .quiz-option.selected {
+            background: #fce4ec;
+            border-color: #f093fb;
         }
-        
-        .option.wrong {
-            background: #f44336;
-            color: white;
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
         }
-        
-        .controls {
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .score-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            margin: 20px 0;
-        }
-        
-        .line-highlight {
-            background: #ffeb3b;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        
-        #score {
-            text-align: center;
-            font-size: 24px;
+            font-size: 1.5em;
             font-weight: bold;
-            color: #667eea;
+            color: #f5576c;
+            margin-top: 20px;
+        }
+
+        .detective-option {
+            background: white;
+            border: 3px solid #f093fb;
+            padding: 20px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .detective-option:hover {
+            background: #fce4ec;
+            transform: translateX(5px);
+        }
+
+        .detective-option.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .detective-option.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .madlib-result {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            line-height: 2em;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        .string-builder {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
             margin: 20px 0;
         }
-        
-        .celebration {
-            text-align: center;
-            font-size: 50px;
-            margin: 20px 0;
+
+        .string-part {
+            background: #fce4ec;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid #f093fb;
+            font-family: 'Courier New', monospace;
+        }
+
+        .operator {
+            font-size: 1.5em;
+            color: #f5576c;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .string-builder {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Lecture 1: Welcome to Programming!</h1>
-        
-        <!-- Section 1: What is Programming -->
-        <div class="section">
-            <h2>🤖 What is Programming?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Programming is like giving instructions to a robot! Imagine you have a robot friend who is very smart but only understands specific commands. You need to tell them exactly what to do, step by step.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                For example, if you want the robot to make a sandwich, you can't just say "make a sandwich." You need to say:
-            </p>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px; margin-top: 10px;">
-                <li>Pick up the bread</li>
-                <li>Open the jar of peanut butter</li>
-                <li>Spread peanut butter on the bread</li>
-                <li>Put two slices together</li>
-            </ul>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                That's exactly what programming is! We write instructions (called <strong>code</strong>) that tell the computer exactly what to do!
-            </p>
-        </div>
+        <header>
+            <h1 class="floating">🎓 Lecture 5: Strings - Playing with Text 📝</h1>
+            <p>Master the art of working with text in Python!</p>
+        </header>
 
-        <!-- Game 1: Robot Navigation -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 1: Help the Robot Find the Star!</h2>
-            <p style="font-size: 18px;">Give the robot instructions to reach the ⭐ star!</p>
-            <div class="robot" id="robotDisplay">🤖</div>
-            <div class="grid" id="gameGrid"></div>
-            <div class="controls">
-                <button onclick="moveRobot('up')">⬆️ Up</button>
-                <button onclick="moveRobot('down')">⬇️ Down</button>
-                <button onclick="moveRobot('left')">⬅️ Left</button>
-                <button onclick="moveRobot('right')">➡️ Right</button>
-                <button onclick="resetGame()" style="background: #f5576c;">🔄 Reset</button>
-            </div>
-            <div id="gameMessage" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
-        </div>
+        <div class="content">
+            <!-- Section 1: String Concatenation -->
+            <div class="section">
+                <h2><span class="emoji">🔗</span>String Concatenation - Joining Text</h2>
+                <p><strong>Concatenation</strong> means joining strings together using the <code>+</code> operator!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>Key Idea</h3>
+                    <p>You can add strings together just like building with LEGO blocks! Each piece connects to make something bigger.</p>
+                </div>
 
-        <!-- Section 2: Installing Python -->
-        <div class="section">
-            <h2>💻 Installing Python and VS Code</h2>
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 1: Install Python</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Go to <strong>python.org</strong></li>
-                <li>Click on "Downloads"</li>
-                <li>Download Python (make sure to check "Add Python to PATH")</li>
-                <li>Run the installer and follow the instructions</li>
-            </ol>
-            
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 2: Install VS Code (or IDLE)</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li><strong>VS Code:</strong> Go to <strong>code.visualstudio.com</strong> and download</li>
-                <li><strong>IDLE:</strong> This comes with Python automatically!</li>
-            </ol>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Tip:</strong> VS Code is like a super-powered notebook for writing code. IDLE is simpler and great for beginners!
-            </p>
-        </div>
+                <div class="code-box">
+<span class="comment"># Simple concatenation</span>
+<span class="keyword">first</span> = <span class="string">"Hello"</span>
+<span class="keyword">second</span> = <span class="string">"World"</span>
+<span class="keyword">result</span> = first + <span class="string">" "</span> + second
+<span class="keyword">print</span>(result)  <span class="comment"># Hello World</span>
 
-        <!-- Section 3: First Program -->
-        <div class="section">
-            <h2>🎉 Your First Program: Hello, World!</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                The first program every programmer writes is "Hello, World!" It's a tradition! This program tells the computer to display a message on the screen.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                In Python, we use the <strong>print()</strong> command to display text. Here's how it looks:
-            </p>
-            <div class="code-box">
-                print("Hello, World!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8;">
-                When you run this code, the computer will show: <strong>Hello, World!</strong>
-            </p>
-        </div>
+<span class="comment"># Building sentences</span>
+<span class="keyword">name</span> = <span class="string">"Alex"</span>
+<span class="keyword">age</span> = <span class="string">"12"</span>
+<span class="keyword">message</span> = <span class="string">"My name is "</span> + name + <span class="string">" and I am "</span> + age
+<span class="keyword">print</span>(message)  <span class="comment"># My name is Alex and I am 12</span>
+                </div>
 
-        <!-- Game 2: Interactive Code Simulator -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 2: Try Writing Your Own Code!</h2>
-            <p style="font-size: 18px;">Type your own message in the box below and click "Run Code"!</p>
-            <div style="margin: 20px 0;">
-                <input type="text" id="userCode" placeholder='Type your message here...' 
-                       style="width: 100%; padding: 15px; font-size: 18px; border-radius: 8px; border: none;">
-            </div>
-            <div class="controls">
-                <button onclick="runUserCode()">▶️ Run Code</button>
-                <button onclick="clearOutput()" style="background: #f5576c;">🗑️ Clear</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="output"></div>
-        </div>
-
-        <!-- Section 4: How Computers Read Code -->
-        <div class="section">
-            <h2>📖 How Computers Read Code Line by Line</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Computers are very obedient but not very smart. They read your code <strong>one line at a time</strong>, from top to bottom, just like you read a book!
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                Let's look at an example:
-            </p>
-            <div class="code-box">
-                print("First, I say hello!")<br>
-                print("Then, I say goodbye!")<br>
-                print("And finally, I'm done!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                The computer will:
-            </p>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Read line 1 and print "First, I say hello!"</li>
-                <li>Then read line 2 and print "Then, I say goodbye!"</li>
-                <li>Finally read line 3 and print "And finally, I'm done!"</li>
-            </ol>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Remember:</strong> The order matters! The computer does exactly what you tell it, in the order you tell it.
-            </p>
-        </div>
-
-        <!-- Game 3: Code Order Challenge -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 3: Line by Line Execution</h2>
-            <p style="font-size: 18px;">Watch how the computer reads code one line at a time!</p>
-            <div class="code-box" id="animatedCode">
-                <div id="line1">print("I am line 1")</div>
-                <div id="line2">print("I am line 2")</div>
-                <div id="line3">print("I am line 3")</div>
-            </div>
-            <div class="controls">
-                <button onclick="animateCode()">▶️ Watch Execution</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="animationOutput"></div>
-        </div>
-
-        <!-- Section 5: Compilers vs Interpreters -->
-        <div class="section">
-            <h2>⚙️ What's a Compiler?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates the whole program before running it</li>
-                <li>Shows all errors at the end, together</li>
-                <li>Runs faster once compiled</li>
-                <li>Creates a separate file you can run anytime</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>🔍 What's an Interpreter?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates code one line at a time as it runs</li>
-                <li>Shows errors immediately when it hits that line</li>
-                <li>Slower execution than compiled programs</li>
-                <li>Always needs the original code to run</li>
-            </ul>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
-            </p>
-        </div>
-
-        <!-- Final Quiz -->
-        <div class="quiz-box">
-            <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
-            <div id="score"></div>
-            
-            <div class="question" id="q1">
-                <h3>Question 1: What is programming?</h3>
-                <div class="option" onclick="checkAnswer(1, 'A', false)">A) Playing video games</div>
-                <div class="option" onclick="checkAnswer(1, 'B', true)">B) Giving instructions to a computer</div>
-                <div class="option" onclick="checkAnswer(1, 'C', false)">C) Drawing pictures</div>
-                <div class="option" onclick="checkAnswer(1, 'D', false)">D) Writing stories</div>
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>String Builder!</h3>
+                    <p>Create your own concatenated string:</p>
+                    
+                    <input type="text" id="concat1" placeholder="First word (e.g., Hello)">
+                    <input type="text" id="concat2" placeholder="Second word (e.g., World)">
+                    <input type="text" id="concat3" placeholder="Third word (e.g., !)">
+                    
+                    <button class="game-button" onclick="buildString()">Build String!</button>
+                    
+                    <div id="concatResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q2">
-                <h3>Question 2: What command do we use to display text in Python?</h3>
-                <div class="option" onclick="checkAnswer(2, 'A', false)">A) show()</div>
-                <div class="option" onclick="checkAnswer(2, 'B', false)">B) display()</div>
-                <div class="option" onclick="checkAnswer(2, 'C', true)">C) print()</div>
-                <div class="option" onclick="checkAnswer(2, 'D', false)">D) write()</div>
+            <!-- Section 2: String Methods -->
+            <div class="section">
+                <h2><span class="emoji">🛠️</span>String Methods - Built-in Superpowers!</h2>
+                <p>Strings come with built-in functions called <strong>methods</strong> that can transform text!</p>
+
+                <div class="method-card">
+                    <div class="method-name">.upper()</div>
+                    <p>Converts all letters to UPPERCASE</p>
+                    <div class="code-box">
+<span class="keyword">text</span> = <span class="string">"hello"</span>
+<span class="keyword">print</span>(text.<span class="function">upper</span>())  <span class="comment"># HELLO</span>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-name">.lower()</div>
+                    <p>Converts all letters to lowercase</p>
+                    <div class="code-box">
+<span class="keyword">text</span> = <span class="string">"HELLO"</span>
+<span class="keyword">print</span>(text.<span class="function">lower</span>())  <span class="comment"># hello</span>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-name">.replace(old, new)</div>
+                    <p>Replaces parts of a string with something else</p>
+                    <div class="code-box">
+<span class="keyword">text</span> = <span class="string">"I love cats"</span>
+<span class="keyword">print</span>(text.<span class="function">replace</span>(<span class="string">"cats"</span>, <span class="string">"dogs"</span>))  <span class="comment"># I love dogs</span>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-name">.strip()</div>
+                    <p>Removes extra spaces from beginning and end</p>
+                    <div class="code-box">
+<span class="keyword">text</span> = <span class="string">"   hello   "</span>
+<span class="keyword">print</span>(text.<span class="function">strip</span>())  <span class="comment"># hello</span>
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🧪</span>Method Playground!</h3>
+                    <p>Try different string methods:</p>
+                    
+                    <input type="text" id="methodInput" placeholder="Enter some text" value="Hello Python World">
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px;">
+                        <button class="game-button" onclick="applyMethod('upper')">UPPERCASE</button>
+                        <button class="game-button" onclick="applyMethod('lower')">lowercase</button>
+                        <button class="game-button" onclick="applyMethod('replace')">Replace "Python" with "Coding"</button>
+                        <button class="game-button" onclick="applyMethod('title')">Title Case</button>
+                    </div>
+                    
+                    <div id="methodResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q3">
-                <h3>Question 3: How does a computer read code?</h3>
-                <div class="option" onclick="checkAnswer(3, 'A', false)">A) All at once</div>
-                <div class="option" onclick="checkAnswer(3, 'B', true)">B) One line at a time, from top to bottom</div>
-                <div class="option" onclick="checkAnswer(3, 'C', false)">C) From bottom to top</div>
-                <div class="option" onclick="checkAnswer(3, 'D', false)">D) In random order</div>
+            <!-- Section 3: F-Strings -->
+            <div class="section">
+                <h2><span class="emoji">✨</span>F-Strings - The Modern Way!</h2>
+                <p><strong>F-strings</strong> (formatted strings) are the easiest way to put variables inside strings!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>Key Idea</h3>
+                    <p>Put an <code>f</code> before the quote and use <code>{}</code> to insert variables directly!</p>
+                </div>
+
+                <div class="code-box">
+<span class="comment"># Old way (concatenation)</span>
+<span class="keyword">name</span> = <span class="string">"Alex"</span>
+<span class="keyword">age</span> = <span class="number">12</span>
+<span class="keyword">message</span> = <span class="string">"My name is "</span> + name + <span class="string">" and I am "</span> + <span class="function">str</span>(age)
+
+<span class="comment"># New way (f-string) - Much easier!</span>
+<span class="keyword">message</span> = <span class="string">f"My name is {name} and I am {age}"</span>
+<span class="keyword">print</span>(message)  <span class="comment"># My name is Alex and I am 12</span>
+
+<span class="comment"># You can even do math inside f-strings!</span>
+<span class="keyword">score</span> = <span class="number">95</span>
+<span class="keyword">print</span>(<span class="string">f"Next level needs {score + 5} points!"</span>)
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>F-String Builder!</h3>
+                    <p>Fill in your information:</p>
+                    
+                    <input type="text" id="fName" placeholder="Your name">
+                    <input type="number" id="fAge" placeholder="Your age">
+                    <input type="text" id="fGame" placeholder="Favorite game">
+                    
+                    <button class="game-button" onclick="buildFString()">Create F-String!</button>
+                    
+                    <div id="fStringResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q4">
-                <h3>Question 4: What is the first program every programmer writes?</h3>
-                <div class="option" onclick="checkAnswer(4, 'A', false)">A) Goodbye, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'B', true)">B) Hello, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'C', false)">C) Welcome, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'D', false)">D) Hi, Computer!</div>
+            <!-- Game 1: String Method Detective -->
+            <div class="section">
+                <h2>Game 1: String Method Detective 🔍</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>What will the output be?</h3>
+                    <p>Look at the code and predict the result!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #f5576c; margin-bottom: 15px;">Challenge <span id="methodDetectiveNum">1</span>/8</h4>
+                        
+                        <div class="code-box" id="methodDetectiveCode"></div>
+                        
+                        <h4 style="margin: 20px 0;">What will be printed?</h4>
+                        <div id="methodDetectiveOptions"></div>
+                        
+                        <div id="methodDetectiveResult" style="margin-top: 20px;"></div>
+                        <div style="margin-top: 20px; font-size: 1.3em; font-weight: bold; text-align: center; color: #f5576c;">
+                            Score: <span id="methodDetectiveScore">0</span>/8
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="question" id="q5">
-                <h3>Question 5: Which of these is a code editor we can use?</h3>
-                <div class="option" onclick="checkAnswer(5, 'A', false)">A) Microsoft Word</div>
-                <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
-                <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
-                <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            <!-- Game 2: String Builder Challenge -->
+            <div class="section">
+                <h2>Game 2: String Builder Challenge 🏗️</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Complete the code!</h3>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #f5576c;">Challenge <span id="builderNum">1</span>/6</h4>
+                        
+                        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                            <h4 style="margin-bottom: 10px;">Task:</h4>
+                            <p id="builderTask" style="font-size: 1.2em;"></p>
+                            <p style="margin-top: 10px; color: #666;">Expected Output: <code id="builderExpected"></code></p>
+                        </div>
+                        
+                        <input type="text" id="builderAnswer" placeholder="Type your Python code here...">
+                        
+                        <button class="game-button" onclick="checkBuilder()">Submit Code</button>
+                        
+                        <div id="builderResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #f5576c;">
+                            Score: <span id="builderScore">0</span>/6
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="question" id="q6">
-                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
-                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
-                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
-                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
-                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
+            <!-- Project: Mad Libs Game -->
+            <div class="section">
+                <h2><span class="emoji">🎭</span>Project: Mad Libs Game</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Create your own hilarious story!</h3>
+                    <p>Fill in the blanks to create a funny story using f-strings!</p>
+                    
+                    <div style="background: white; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                        <h3 style="color: #f5576c; margin-bottom: 20px;">Fill in the Story Pieces:</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                            <div>
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px;">A Name:</label>
+                                <input type="text" id="madlib_name" placeholder="e.g., Bob">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px;">An Adjective:</label>
+                                <input type="text" id="madlib_adj1" placeholder="e.g., silly">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px;">A Noun:</label>
+                                <input type="text" id="madlib_noun1" placeholder="e.g., banana">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px;">A Verb:</label>
+                                <input type="text" id="madlib_verb" placeholder="e.g., dancing">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px;">Another Adjective:</label>
+                                <input type="text" id="madlib_adj2" placeholder="e.g., purple">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px;">A Place:</label>
+                                <input type="text" id="madlib_place" placeholder="e.g., the moon">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px;">Another Noun:</label>
+                                <input type="text" id="madlib_noun2" placeholder="e.g., robot">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: bold; margin-bottom: 5px;">A Number:</label>
+                                <input type="number" id="madlib_number" placeholder="e.g., 42">
+                            </div>
+                        </div>
+                        
+                        <button class="game-button" onclick="generateMadLib()" style="width: 100%; margin-top: 20px;">Generate Story!</button>
+                        
+                        <div id="madlibResult"></div>
+                        
+                        <div id="madlibCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #f5576c; margin-bottom: 10px;">Python Code:</h4>
+                            <div class="code-box" id="madlibCodeDisplay"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="finalMessage" class="celebration"></div>
+            <!-- Game 3: F-String vs Concatenation -->
+            <div class="section">
+                <h2>Game 3: F-String vs Concatenation Race ⚡</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Convert concatenation to f-strings!</h3>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #f5576c;">Challenge <span id="raceNum">1</span>/5</h4>
+                        
+                        <div style="padding: 20px; background: #282c34; border-radius: 10px; margin: 20px 0; color: #abb2bf; font-family: 'Courier New', monospace;">
+                            <div style="color: #e06c75; margin-bottom: 10px;">Old Way (Concatenation):</div>
+                            <div id="raceOldCode"></div>
+                            <div style="color: #98c379; margin-top: 15px;">Convert to F-String:</div>
+                        </div>
+                        
+                        <input type="text" id="raceAnswer" placeholder='Type the f-string version (e.g., f"Hello {name}")'>
+                        
+                        <button class="game-button" onclick="checkRace()">Check Answer</button>
+                        
+                        <div id="raceResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #f5576c;">
+                            Score: <span id="raceScore">0</span>/5
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <h2 style="text-align: center; color: #f5576c;"><span class="emoji">📝</span>Final Quiz!</h2>
+                <p style="text-align: center; font-size: 1.2em;">Test your knowledge about strings!</p>
+
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: What does "Hello" + " " + "World" produce?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 0, true)">A) "Hello World"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 1, false)">B) "Hello+World"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 2, false)">C) HelloWorld</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 3, false)">D) Error</div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: What does "python".upper() return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 0, false)">A) "python"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 1, true)">B) "PYTHON"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 2, false)">C) "Python"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 3, false)">D) "pYTHON"</div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: How do you create an f-string?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 0, false)">A) "Hello {name}"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 1, true)">B) f"Hello {name}"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 2, false)">C) s"Hello {name}"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 3, false)">D) "Hello" + {name}</div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: What does "I love cats".replace("cats", "dogs") return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 0, false)">A) "I love cats and dogs"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 1, true)">B) "I love dogs"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 2, false)">C) "I love cats dogs"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 3, false)">D) "dogs"</div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: If name = "Alex" and age = 12, what does f"I am {age}" produce?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 0, false)">A) "I am {age}"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 1, true)">B) "I am 12"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 2, false)">C) "I am Alex"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 3, false)">D) Error</div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <h3>Question 6: What's the benefit of f-strings over concatenation?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 0, true)">A) Easier to read and write</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 1, false)">B) Faster execution</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 2, false)">C) Uses less memory</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 3, false)">D) No difference</div>
+                </div>
+
+                <button class="game-button" onclick="calculateScore()" style="display: block; margin: 20px auto;">Submit Quiz</button>
+                <div class="score-display" id="quizScore" style="display: none;"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game 1: Robot Navigation
-        let robotPos = 0;
-        const targetPos = 24;
-        
-        function createGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                if (i === targetPos) {
-                    cell.className += ' target';
-                    cell.textContent = '⭐';
-                }
-                if (i === robotPos) {
-                    cell.textContent = '🤖';
-                }
-                grid.appendChild(cell);
-            }
-        }
-        
-        function moveRobot(direction) {
-            let newPos = robotPos;
-            switch(direction) {
-                case 'up':
-                    if (robotPos >= 5) newPos -= 5;
-                    break;
-                case 'down':
-                    if (robotPos < 20) newPos += 5;
-                    break;
-                case 'left':
-                    if (robotPos % 5 !== 0) newPos -= 1;
-                    break;
-                case 'right':
-                    if (robotPos % 5 !== 4) newPos += 1;
-                    break;
+        let quizAnswers = {};
+
+        // String Builder
+        function buildString() {
+            const str1 = document.getElementById('concat1').value;
+            const str2 = document.getElementById('concat2').value;
+            const str3 = document.getElementById('concat3').value;
+            const result = document.getElementById('concatResult');
+            
+            if (!str1 || !str2 || !str3) {
+                result.innerHTML = '<div class="error-message">Please fill all three fields!</div>';
+                return;
             }
             
-            robotPos = newPos;
-            createGrid();
+            const combined = str1 + str2 + str3;
             
-            if (robotPos === targetPos) {
-                document.getElementById('gameMessage').innerHTML = '🎉 Congratulations! You did it!';
+            result.innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 25px; border-radius: 10px; border: 3px solid #f093fb;">
+                    <h4 style="color: #f5576c; margin-bottom: 15px;">Your String:</h4>
+                    
+                    <div class="string-builder">
+                        <div class="string-part">"${str1}"</div>
+                        <div class="operator">+</div>
+                        <div class="string-part">"${str2}"</div>
+                        <div class="operator">+</div>
+                        <div class="string-part">"${str3}"</div>
+                        <div class="operator">=</div>
+                        <div class="string-part" style="background: #c8e6c9; border-color: #28a745;">"${combined}"</div>
+                    </div>
+                    
+                    <div class="code-box" style="margin-top: 20px;">
+<span class="keyword">result</span> = <span class="string">"${str1}"</span> + <span class="string">"${str2}"</span> + <span class="string">"${str3}"</span>
+<span class="keyword">print</span>(result)  <span class="comment"># ${combined}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Method Playground
+        function applyMethod(method) {
+            const text = document.getElementById('methodInput').value;
+            const result = document.getElementById('methodResult');
+            
+            if (!text) {
+                result.innerHTML = '<div class="error-message">Please enter some text!</div>';
+                return;
             }
-        }
-        
-        function resetGame() {
-            robotPos = 0;
-            createGrid();
-            document.getElementById('gameMessage').innerHTML = '';
-        }
-        
-        // Game 2: Code Simulator
-        function runUserCode() {
-            const code = document.getElementById('userCode').value;
-            const output = document.getElementById('output');
-            if (code) {
-                output.innerHTML += code + '<br>';
+            
+            let output, code;
+            
+            switch(method) {
+                case 'upper':
+                    output = text.toUpperCase();
+                    code = `text.upper()`;
+                    break;
+                case 'lower':
+                    output = text.toLowerCase();
+                    code = `text.lower()`;
+                    break;
+                case 'replace':
+                    output = text.replace(/Python/gi, 'Coding');
+                    code = `text.replace("Python", "Coding")`;
+                    break;
+                case 'title':
+                    output = text.split(' ').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                    ).join(' ');
+                    code = `text.title()`;
+                    break;
             }
+            
+            result.innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 25px; border-radius: 10px; border: 3px solid #f093fb;">
+                    <h4 style="color: #f5576c;">Result:</h4>
+                    <div class="code-box">
+<span class="keyword">text</span> = <span class="string">"${text}"</span>
+<span class="keyword">print</span>(text.<span class="function">${code}</span>)
+
+<span class="comment"># Output:</span>
+<span class="string">"${output}"</span>
+                    </div>
+                </div>
+            `;
         }
-        
-        function clearOutput() {
-            document.getElementById('output').innerHTML = '';
+
+        // F-String Builder
+        function buildFString() {
+            const name = document.getElementById('fName').value;
+            const age = document.getElementById('fAge').value;
+            const game = document.getElementById('fGame').value;
+            const result = document.getElementById('fStringResult');
+            
+            if (!name || !age || !game) {
+                result.innerHTML = '<div class="error-message">Please fill all fields!</div>';
+                return;
+            }
+            
+            result.innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 25px; border-radius: 10px; border: 3px solid #f093fb;">
+                    <h4 style="color: #f5576c; margin-bottom: 15px;">Your F-String:</h4>
+                    
+                    <div class="code-box">
+<span class="keyword">name</span> = <span class="string">"${name}"</span>
+<span class="keyword">age</span> = <span class="number">${age}</span>
+<span class="keyword">game</span> = <span class="string">"${game}"</span>
+
+<span class="comment"># Using f-string:</span>
+<span class="keyword">message</span> = <span class="string">f"Hi! I'm {name}, I'm {age} years old, and I love {game}!"</span>
+<span class="keyword">print</span>(message)
+
+<span class="comment"># Output:</span>
+<span class="string">Hi! I'm ${name}, I'm ${age} years old, and I love ${game}!</span>
+                    </div>
+                </div>
+            `;
         }
-        
-        // Game 3: Animation
-        function animateCode() {
-            const output = document.getElementById('animationOutput');
-            output.innerHTML = '';
+
+        // Method Detective Game
+        let methodDetectiveLevel = 0;
+        let methodDetectiveScore = 0;
+        const methodDetectiveChallenges = [
+            { 
+                code: 'text = "hello"\nprint(text.upper())', 
+                options: ['"HELLO"', '"hello"', '"Hello"', 'Error'],
+                answer: 0
+            },
+            { 
+                code: 'text = "PYTHON"\nprint(text.lower())', 
+                options: ['"PYTHON"', '"python"', '"Python"', '"pYTHON"'],
+                answer: 1
+            },
+            { 
+                code: 'text = "I love pizza"\nprint(text.replace("pizza", "pasta"))', 
+                options: ['"I love pizza"', '"I love pasta"', '"pasta"', '"I pizza pasta"'],
+                answer: 1
+            },
+            { 
+                code: 'name = "alex"\nprint(name.upper())', 
+                options: ['"alex"', '"ALEX"', '"Alex"', 'Error'],
+                answer: 1
+            },
+            { 
+                code: 'text = "Hello" + " " + "World"\nprint(text)', 
+                options: ['"HelloWorld"', '"Hello World"', '"Hello+World"', 'Error'],
+                answer: 1
+            },
+            { 
+                code: 'x = "Python"\ny = x.lower()\nprint(y)', 
+                options: ['"PYTHON"', '"python"', '"Python"', 'Error'],
+                answer: 1
+            },
+            { 
+                code: 'text = "  hello  "\nprint(text.strip())', 
+                options: ['"  hello  "', '"hello"', '"  hello"', '"hello  "'],
+                answer: 1
+            },
+            { 
+                code: 'name = "Bob"\nage = 10\nprint(f"I am {age}")', 
+                options: ['"I am {age}"', '"I am 10"', '"I am Bob"', 'Error'],
+                answer: 1
+            }
+        ];
+
+        function loadMethodDetective() {
+            if (methodDetectiveLevel >= methodDetectiveChallenges.length) {
+                showMethodDetectiveEnd();
+                return;
+            }
             
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 1<br>';
-            }, 500);
+            const challenge = methodDetectiveChallenges[methodDetectiveLevel];
+            document.getElementById('methodDetectiveNum').textContent = methodDetectiveLevel + 1;
+            document.getElementById('methodDetectiveCode').textContent = challenge.code;
             
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '';
-                document.getElementById('line2').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 2<br>';
-            }, 1500);
+            const optionsDiv = document.getElementById('methodDetectiveOptions');
+            optionsDiv.innerHTML = '';
             
-            setTimeout(() => {
-                document.getElementById('line2').style.background = '';
-                document.getElementById('line3').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 3<br>';
-            }, 2500);
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkMethodDetective(i);
+                optionsDiv.appendChild(btn);
+            });
             
-            setTimeout(() => {
-                document.getElementById('line3').style.background = '';
-            }, 3500);
+            document.getElementById('methodDetectiveResult').innerHTML = '';
         }
-        
-        // Quiz
-        let correctAnswers = 0;
-        let answeredQuestions = new Set();
-        
-        function checkAnswer(questionNum, option, isCorrect) {
-            if (answeredQuestions.has(questionNum)) return;
+
+        function checkMethodDetective(choice) {
+            const challenge = methodDetectiveChallenges[methodDetectiveLevel];
+            const buttons = document.querySelectorAll('#methodDetectiveOptions .detective-option');
+            const result = document.getElementById('methodDetectiveResult');
             
-            answeredQuestions.add(questionNum);
-            const question = document.getElementById('q' + questionNum);
-            const options = question.querySelectorAll('.option');
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
             
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.startsWith(option)) {
-                    opt.className = isCorrect ? 'option correct' : 'option wrong';
-                }
+            if (choice === challenge.answer) {
+                methodDetectiveScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                buttons[choice].classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ Not quite! The correct answer is: ' + challenge.options[challenge.answer] + '</div>';
+                buttons[choice].classList.add('incorrect');
+                buttons[challenge.answer].classList.add('correct');
+            }
+            
+            document.getElementById('methodDetectiveScore').textContent = methodDetectiveScore;
+            methodDetectiveLevel++;
+            
+            setTimeout(loadMethodDetective, 2500);
+        }
+
+        function showMethodDetectiveEnd() {
+            const container = document.querySelector('#methodDetectiveNum').closest('.game-container');
+            const percentage = (methodDetectiveScore / methodDetectiveChallenges.length * 100).toFixed(0);
+            
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎉 Game Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${methodDetectiveScore}/${methodDetectiveChallenges.length} (${percentage}%)</p>
+                    <button class="game-button" onclick="resetMethodDetective()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetMethodDetective() {
+            methodDetectiveLevel = 0;
+            methodDetectiveScore = 0;
+            document.getElementById('methodDetectiveScore').textContent = '0';
+            loadMethodDetective();
+        }
+
+        // String Builder Challenge
+        let builderLevel = 0;
+        let builderScore = 0;
+        const builderChallenges = [
+            {
+                task: 'Combine "Hello" and "World" with a space in between',
+                expected: 'Hello World',
+                answers: ['"Hello" + " " + "World"', '"Hello " + "World"', 'f"Hello World"']
+            },
+            {
+                task: 'Make "python" uppercase using a method',
+                expected: 'PYTHON',
+                answers: ['"python".upper()', 'text = "python"\ntext.upper()']
+            },
+            {
+                task: 'Replace "cat" with "dog" in "I have a cat"',
+                expected: 'I have a dog',
+                answers: ['"I have a cat".replace("cat", "dog")']
+            },
+            {
+                task: 'Create message using f-string with name="Sam" and age=10',
+                expected: 'My name is Sam and I am 10',
+                answers: ['f"My name is {name} and I am {age}"', 'f"My name is Sam and I am 10"']
+            },
+            {
+                task: 'Make "HELLO" lowercase using a method',
+                expected: 'hello',
+                answers: ['"HELLO".lower()']
+            },
+            {
+                task: 'Combine three strings: "I", "love", "Python" with spaces',
+                expected: 'I love Python',
+                answers: ['"I" + " " + "love" + " " + "Python"', '"I " + "love " + "Python"', 'f"I love Python"']
+            }
+        ];
+
+        function loadBuilder() {
+            if (builderLevel >= builderChallenges.length) {
+                showBuilderEnd();
+                return;
+            }
+            
+            const challenge = builderChallenges[builderLevel];
+            document.getElementById('builderNum').textContent = builderLevel + 1;
+            document.getElementById('builderTask').textContent = challenge.task;
+            document.getElementById('builderExpected').textContent = challenge.expected;
+            document.getElementById('builderAnswer').value = '';
+            document.getElementById('builderResult').innerHTML = '';
+        }
+
+        function checkBuilder() {
+            const answer = document.getElementById('builderAnswer').value.trim();
+            const challenge = builderChallenges[builderLevel];
+            const result = document.getElementById('builderResult');
+            
+            const isCorrect = challenge.answers.some(correctAnswer => {
+                const normalizedAnswer = answer.toLowerCase().replace(/\s+/g, '');
+                const normalizedCorrect = correctAnswer.toLowerCase().replace(/\s+/g, '');
+                return normalizedAnswer.includes(normalizedCorrect) || normalizedCorrect.includes(normalizedAnswer);
             });
             
             if (isCorrect) {
-                correctAnswers++;
-            }
-            
-            updateScore();
-            
-            if (answeredQuestions.size === 6) {
-                showFinalMessage();
-            }
-        }
-        
-        function updateScore() {
-            document.getElementById('score').innerHTML = 
-                `Score: ${correctAnswers} / ${answeredQuestions.size}`;
-        }
-        
-        function showFinalMessage() {
-            const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 6) {
-                finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 4) {
-                finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
+                builderScore++;
+                result.innerHTML = '<div class="success-message">✅ Perfect! That works!</div>';
+                document.getElementById('builderScore').textContent = builderScore;
+                builderLevel++;
+                setTimeout(loadBuilder, 2000);
             } else {
-                finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
+                result.innerHTML = `<div class="error-message">❌ Try again! Hint: ${challenge.answers[0]}</div>`;
             }
         }
-        
-        // Initialize
-        createGrid();
+
+        function showBuilderEnd() {
+            const container = document.querySelector('#builderNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🏗️ Builder Master!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${builderScore}/${builderChallenges.length}</p>
+                    <button class="game-button" onclick="resetBuilder()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetBuilder() {
+            builderLevel = 0;
+            builderScore = 0;
+            document.getElementById('builderScore').textContent = '0';
+            loadBuilder();
+        }
+
+        // Mad Libs Generator
+        function generateMadLib() {
+            const name = document.getElementById('madlib_name').value;
+            const adj1 = document.getElementById('madlib_adj1').value;
+            const noun1 = document.getElementById('madlib_noun1').value;
+            const verb = document.getElementById('madlib_verb').value;
+            const adj2 = document.getElementById('madlib_adj2').value;
+            const place = document.getElementById('madlib_place').value;
+            const noun2 = document.getElementById('madlib_noun2').value;
+            const number = document.getElementById('madlib_number').value;
+            
+            const result = document.getElementById('madlibResult');
+            const codeDiv = document.getElementById('madlibCode');
+            const codeDisplay = document.getElementById('madlibCodeDisplay');
+            
+            if (!name || !adj1 || !noun1 || !verb || !adj2 || !place || !noun2 || !number) {
+                result.innerHTML = '<div class="error-message">Please fill in all fields!</div>';
+                return;
+            }
+            
+            const story = `Once upon a time, there was a ${adj1} person named ${name}. 
+One day, ${name} found a magical ${noun1} while ${verb} in ${place}. 
+The ${noun1} was ${adj2} and could grant ${number} wishes! 
+${name} wished for a pet ${noun2} and they lived happily ever after! 🎉`;
+            
+            result.innerHTML = `
+                <div class="madlib-result">
+                    <h3 style="text-align: center; margin-bottom: 20px;">📖 Your Mad Libs Story! 📖</h3>
+                    <p style="text-align: justify;">${story}</p>
+                </div>
+            `;
+            
+            codeDiv.style.display = 'block';
+            codeDisplay.innerHTML = `
+<span class="comment"># Get user input</span>
+<span class="keyword">name</span> = <span class="string">"${name}"</span>
+<span class="keyword">adj1</span> = <span class="string">"${adj1}"</span>
+<span class="keyword">noun1</span> = <span class="string">"${noun1}"</span>
+<span class="keyword">verb</span> = <span class="string">"${verb}"</span>
+<span class="keyword">adj2</span> = <span class="string">"${adj2}"</span>
+<span class="keyword">place</span> = <span class="string">"${place}"</span>
+<span class="keyword">noun2</span> = <span class="string">"${noun2}"</span>
+<span class="keyword">number</span> = <span class="number">${number}</span>
+
+<span class="comment"># Create story using f-strings</span>
+<span class="keyword">story</span> = <span class="string">f"""
+Once upon a time, there was a {adj1} person named {name}.
+One day, {name} found a magical {noun1} while {verb} in {place}.
+The {noun1} was {adj2} and could grant {number} wishes!
+{name} wished for a pet {noun2} and they lived happily ever after!
+"""</span>
+
+<span class="keyword">print</span>(story)
+            `;
+        }
+
+        // F-String Race Game
+        let raceLevel = 0;
+        let raceScore = 0;
+        const raceChallenges = [
+            {
+                old: '"Hello " + name',
+                answer: 'f"Hello {name}"'
+            },
+            {
+                old: '"I am " + str(age) + " years old"',
+                answer: 'f"I am {age} years old"'
+            },
+            {
+                old: 'name + " scored " + str(score) + " points"',
+                answer: 'f"{name} scored {score} points"'
+            },
+            {
+                old: '"Price: $" + str(price)',
+                answer: 'f"Price: ${price}"'
+            },
+            {
+                old: '"Welcome " + name + "! You have " + str(coins) + " coins"',
+                answer: 'f"Welcome {name}! You have {coins} coins"'
+            }
+        ];
+
+        function loadRace() {
+            if (raceLevel >= raceChallenges.length) {
+                showRaceEnd();
+                return;
+            }
+            
+            const challenge = raceChallenges[raceLevel];
+            document.getElementById('raceNum').textContent = raceLevel + 1;
+            document.getElementById('raceOldCode').textContent = challenge.old;
+            document.getElementById('raceAnswer').value = '';
+            document.getElementById('raceResult').innerHTML = '';
+        }
+
+        function checkRace() {
+            const answer = document.getElementById('raceAnswer').value.trim();
+            const challenge = raceChallenges[raceLevel];
+            const result = document.getElementById('raceResult');
+            
+            const normalizedAnswer = answer.toLowerCase().replace(/\s+/g, '').replace(/['"]/g, '"');
+            const normalizedCorrect = challenge.answer.toLowerCase().replace(/\s+/g, '').replace(/['"]/g, '"');
+            
+            if (normalizedAnswer === normalizedCorrect) {
+                raceScore++;
+                result.innerHTML = '<div class="success-message">✅ Perfect conversion!</div>';
+                document.getElementById('raceScore').textContent = raceScore;
+                raceLevel++;
+                setTimeout(loadRace, 2000);
+            } else {
+                result.innerHTML = `<div class="error-message">❌ Not quite! The answer is: ${challenge.answer}</div>`;
+            }
+        }
+
+        function showRaceEnd() {
+            const container = document.querySelector('#raceNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">⚡ F-String Master!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${raceScore}/${raceChallenges.length}</p>
+                    <button class="game-button" onclick="resetRace()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetRace() {
+            raceLevel = 0;
+            raceScore = 0;
+            document.getElementById('raceScore').textContent = '0';
+            loadRace();
+        }
+
+        // Quiz Functions
+        function selectAnswer(questionId, optionIndex, isCorrect) {
+            const question = document.getElementById(questionId);
+            const options = question.querySelectorAll('.quiz-option');
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            options[optionIndex].classList.add('selected');
+            quizAnswers[questionId] = isCorrect;
+        }
+
+        function calculateScore() {
+            const totalQuestions = 6;
+            let correctAnswers = 0;
+
+            Object.keys(quizAnswers).forEach(qId => {
+                const question = document.getElementById(qId);
+                const selected = question.querySelector('.selected');
+                if (selected) {
+                    if (quizAnswers[qId]) {
+                        selected.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        const options = question.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.onclick.toString().includes('true')) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                }
+            });
+
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const scoreDisplay = document.getElementById('quizScore');
+            
+            let message = '';
+            let emoji = '';
+            
+            if (percentage === 100) {
+                message = 'Perfect Score!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Great Job!';
+                emoji = '🌟';
+            } else if (percentage >= 60) {
+                message = 'Good Effort!';
+                emoji = '👍';
+            } else {
+                message = 'Keep Learning!';
+                emoji = '📚';
+            }
+
+            scoreDisplay.innerHTML = `
+                ${emoji} ${message}<br>
+                You scored ${correctAnswers} out of ${totalQuestions} (${percentage.toFixed(0)}%)
+            `;
+            scoreDisplay.style.display = 'block';
+        }
+
+        // Initialize games
+        window.onload = function() {
+            loadMethodDetective();
+            loadBuilder();
+            loadRace();
+        };
     </script>
 </body>
 </html>
