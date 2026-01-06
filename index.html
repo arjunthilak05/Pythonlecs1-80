@@ -3,561 +3,1429 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 1: Welcome to Programming</title>
+    <title>Lecture 7: Comparison Operators</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
-        h1 {
-            color: #667eea;
+
+        header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
+        }
+
+        header h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        
-        h2 {
-            color: #764ba2;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
-        
+
+        .content {
+            padding: 40px;
+        }
+
         .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9ff;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #11998e;
         }
-        
-        .game-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+        .section h2 {
+            color: #11998e;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "Python";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #11998e;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .boolean {
+            color: #61afef;
+            font-weight: bold;
+        }
+
+        .operator-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #11998e;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .operator-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .operator-symbol {
+            font-size: 3em;
+            color: #11998e;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+            min-width: 80px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .operator-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .interactive-demo {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
-            color: white;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .robot {
-            font-size: 60px;
-            text-align: center;
+
+        .game-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 5px;
-            margin: 20px auto;
-            width: fit-content;
+
+        .game-button {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        .cell {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border: 2px solid #764ba2;
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .game-button:active {
+            transform: translateY(0);
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #11998e;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px 5px;
+        }
+
+        .comparison-demo {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            border-radius: 8px;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
         }
-        
-        .cell.target {
-            background: #ffeb3b;
-        }
-        
-        button {
-            background: #667eea;
+
+        .comparison-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background: #764ba2;
-            transform: scale(1.05);
-        }
-        
-        .code-box {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            font-size: 16px;
-        }
-        
-        .output-box {
-            background: #000;
-            color: #0f0;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            min-height: 50px;
-        }
-        
-        .quiz-box {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
+            font-size: 2em;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
         }
-        
-        .question {
+
+        .comparison-operator {
+            font-size: 3em;
+            color: #11998e;
+            font-weight: bold;
+        }
+
+        .comparison-result {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 2em;
+            font-weight: bold;
+            min-width: 150px;
+            text-align: center;
+            border: 3px solid #11998e;
+        }
+
+        .result-true {
+            color: #28a745;
+            background: #d4edda;
+        }
+
+        .result-false {
+            color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .verification-system {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .verification-result {
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .access-granted {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            border: 3px solid #28a745;
+            color: #155724;
+        }
+
+        .access-denied {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border: 3px solid #dc3545;
+            color: #721c24;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #11998e;
+        }
+
+        .quiz-option.selected {
+            background: #d4f1f4;
+            border-color: #11998e;
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .score-display {
             background: white;
             padding: 20px;
             border-radius: 10px;
-            margin: 15px 0;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #11998e;
+            margin-top: 20px;
         }
-        
-        .option {
-            display: block;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f0f0f0;
-            border-radius: 8px;
+
+        .detective-option {
+            background: white;
+            border: 3px solid #11998e;
+            padding: 20px;
+            font-size: 1.2em;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
+            margin: 10px 0;
         }
-        
-        .option:hover {
-            background: #e0e0e0;
+
+        .detective-option:hover {
+            background: #d4f1f4;
+            transform: translateX(5px);
         }
-        
-        .option.correct {
-            background: #4caf50;
+
+        .detective-option.correct {
+            background: #28a745;
             color: white;
+            border-color: #28a745;
         }
-        
-        .option.wrong {
-            background: #f44336;
+
+        .detective-option.incorrect {
+            background: #dc3545;
             color: white;
+            border-color: #dc3545;
         }
-        
-        .controls {
-            text-align: center;
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 20px 0;
         }
-        
-        .line-highlight {
-            background: #ffeb3b;
-            padding: 2px 5px;
-            border-radius: 3px;
+
+        .comparison-table th {
+            background: #11998e;
+            color: white;
+            padding: 15px;
+            text-align: left;
         }
-        
-        #score {
+
+        .comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-family: 'Courier New', monospace;
+        }
+
+        .comparison-table tr:hover {
+            background: #e8f5e9;
+        }
+
+        .truth-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .truth-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid #11998e;
             text-align: center;
-            font-size: 24px;
+        }
+
+        .truth-value {
+            font-size: 3em;
             font-weight: bold;
-            color: #667eea;
             margin: 20px 0;
         }
-        
-        .celebration {
-            text-align: center;
-            font-size: 50px;
-            margin: 20px 0;
+
+        .truth-true {
+            color: #28a745;
+        }
+
+        .truth-false {
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-demo {
+                flex-direction: column;
+            }
+            
+            .truth-table {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Lecture 1: Welcome to Programming!</h1>
-        
-        <!-- Section 1: What is Programming -->
-        <div class="section">
-            <h2>🤖 What is Programming?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Programming is like giving instructions to a robot! Imagine you have a robot friend who is very smart but only understands specific commands. You need to tell them exactly what to do, step by step.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                For example, if you want the robot to make a sandwich, you can't just say "make a sandwich." You need to say:
-            </p>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px; margin-top: 10px;">
-                <li>Pick up the bread</li>
-                <li>Open the jar of peanut butter</li>
-                <li>Spread peanut butter on the bread</li>
-                <li>Put two slices together</li>
-            </ul>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                That's exactly what programming is! We write instructions (called <strong>code</strong>) that tell the computer exactly what to do!
-            </p>
-        </div>
+        <header>
+            <h1 class="floating">🎓 Lecture 7: Comparison Operators ⚖️</h1>
+            <p>Learn to compare values and make decisions!</p>
+        </header>
 
-        <!-- Game 1: Robot Navigation -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 1: Help the Robot Find the Star!</h2>
-            <p style="font-size: 18px;">Give the robot instructions to reach the ⭐ star!</p>
-            <div class="robot" id="robotDisplay">🤖</div>
-            <div class="grid" id="gameGrid"></div>
-            <div class="controls">
-                <button onclick="moveRobot('up')">⬆️ Up</button>
-                <button onclick="moveRobot('down')">⬇️ Down</button>
-                <button onclick="moveRobot('left')">⬅️ Left</button>
-                <button onclick="moveRobot('right')">➡️ Right</button>
-                <button onclick="resetGame()" style="background: #f5576c;">🔄 Reset</button>
-            </div>
-            <div id="gameMessage" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
-        </div>
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2><span class="emoji">🌟</span>Welcome to Comparison Operators!</h2>
+                <p style="font-size: 1.2em;">Computers need to make decisions all the time! "Is the password correct?", "Is the student old enough?", "Is the score higher than 100?" - These questions use <strong>comparison operators</strong>!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>What You'll Learn Today</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ All comparison operators (==, !=, >, <, >=, <=)</li>
+                        <li>✅ Boolean values (True and False)</li>
+                        <li>✅ How computers make decisions</li>
+                        <li>✅ Build an age verification system</li>
+                    </ul>
+                </div>
 
-        <!-- Section 2: Installing Python -->
-        <div class="section">
-            <h2>💻 Installing Python and VS Code</h2>
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 1: Install Python</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Go to <strong>python.org</strong></li>
-                <li>Click on "Downloads"</li>
-                <li>Download Python (make sure to check "Add Python to PATH")</li>
-                <li>Run the installer and follow the instructions</li>
-            </ol>
-            
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 2: Install VS Code (or IDLE)</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li><strong>VS Code:</strong> Go to <strong>code.visualstudio.com</strong> and download</li>
-                <li><strong>IDLE:</strong> This comes with Python automatically!</li>
-            </ol>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Tip:</strong> VS Code is like a super-powered notebook for writing code. IDLE is simpler and great for beginners!
-            </p>
-        </div>
-
-        <!-- Section 3: First Program -->
-        <div class="section">
-            <h2>🎉 Your First Program: Hello, World!</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                The first program every programmer writes is "Hello, World!" It's a tradition! This program tells the computer to display a message on the screen.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                In Python, we use the <strong>print()</strong> command to display text. Here's how it looks:
-            </p>
-            <div class="code-box">
-                print("Hello, World!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8;">
-                When you run this code, the computer will show: <strong>Hello, World!</strong>
-            </p>
-        </div>
-
-        <!-- Game 2: Interactive Code Simulator -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 2: Try Writing Your Own Code!</h2>
-            <p style="font-size: 18px;">Type your own message in the box below and click "Run Code"!</p>
-            <div style="margin: 20px 0;">
-                <input type="text" id="userCode" placeholder='Type your message here...' 
-                       style="width: 100%; padding: 15px; font-size: 18px; border-radius: 8px; border: none;">
-            </div>
-            <div class="controls">
-                <button onclick="runUserCode()">▶️ Run Code</button>
-                <button onclick="clearOutput()" style="background: #f5576c;">🗑️ Clear</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="output"></div>
-        </div>
-
-        <!-- Section 4: How Computers Read Code -->
-        <div class="section">
-            <h2>📖 How Computers Read Code Line by Line</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Computers are very obedient but not very smart. They read your code <strong>one line at a time</strong>, from top to bottom, just like you read a book!
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                Let's look at an example:
-            </p>
-            <div class="code-box">
-                print("First, I say hello!")<br>
-                print("Then, I say goodbye!")<br>
-                print("And finally, I'm done!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                The computer will:
-            </p>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Read line 1 and print "First, I say hello!"</li>
-                <li>Then read line 2 and print "Then, I say goodbye!"</li>
-                <li>Finally read line 3 and print "And finally, I'm done!"</li>
-            </ol>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Remember:</strong> The order matters! The computer does exactly what you tell it, in the order you tell it.
-            </p>
-        </div>
-
-        <!-- Game 3: Code Order Challenge -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 3: Line by Line Execution</h2>
-            <p style="font-size: 18px;">Watch how the computer reads code one line at a time!</p>
-            <div class="code-box" id="animatedCode">
-                <div id="line1">print("I am line 1")</div>
-                <div id="line2">print("I am line 2")</div>
-                <div id="line3">print("I am line 3")</div>
-            </div>
-            <div class="controls">
-                <button onclick="animateCode()">▶️ Watch Execution</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="animationOutput"></div>
-        </div>
-
-        <!-- Section 5: Compilers vs Interpreters -->
-        <div class="section">
-            <h2>⚙️ What's a Compiler?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates the whole program before running it</li>
-                <li>Shows all errors at the end, together</li>
-                <li>Runs faster once compiled</li>
-                <li>Creates a separate file you can run anytime</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>🔍 What's an Interpreter?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates code one line at a time as it runs</li>
-                <li>Shows errors immediately when it hits that line</li>
-                <li>Slower execution than compiled programs</li>
-                <li>Always needs the original code to run</li>
-            </ul>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
-            </p>
-        </div>
-
-        <!-- Final Quiz -->
-        <div class="quiz-box">
-            <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
-            <div id="score"></div>
-            
-            <div class="question" id="q1">
-                <h3>Question 1: What is programming?</h3>
-                <div class="option" onclick="checkAnswer(1, 'A', false)">A) Playing video games</div>
-                <div class="option" onclick="checkAnswer(1, 'B', true)">B) Giving instructions to a computer</div>
-                <div class="option" onclick="checkAnswer(1, 'C', false)">C) Drawing pictures</div>
-                <div class="option" onclick="checkAnswer(1, 'D', false)">D) Writing stories</div>
+                <div class="info-box">
+                    <h3><span class="emoji">🤔</span>Real-World Examples</h3>
+                    <p style="font-size: 1.1em;">Every day, programs use comparisons:</p>
+                    <ul style="font-size: 1.1em; line-height: 2em; margin-top: 10px;">
+                        <li>🎮 "Is your level > 10?" → Can you enter the boss battle?</li>
+                        <li>🎬 "Is your age >= 13?" → Can you watch this movie?</li>
+                        <li>🔐 "Is password == correct_password?" → Can you log in?</li>
+                        <li>🛒 "Is balance >= price?" → Can you buy this item?</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q2">
-                <h3>Question 2: What command do we use to display text in Python?</h3>
-                <div class="option" onclick="checkAnswer(2, 'A', false)">A) show()</div>
-                <div class="option" onclick="checkAnswer(2, 'B', false)">B) display()</div>
-                <div class="option" onclick="checkAnswer(2, 'C', true)">C) print()</div>
-                <div class="option" onclick="checkAnswer(2, 'D', false)">D) write()</div>
+            <!-- Section 1: Boolean Values -->
+            <div class="section">
+                <h2><span class="emoji">✅❌</span>Boolean Values: True and False</h2>
+                <p>Before we learn comparison operators, we need to understand <strong>Boolean values</strong>!</p>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>What is a Boolean?</h3>
+                    <p style="font-size: 1.1em;">A Boolean is a data type that can only be <strong>True</strong> or <strong>False</strong>. That's it - just two possible values!</p>
+                </div>
+
+                <div class="truth-table">
+                    <div class="truth-box">
+                        <h3>True</h3>
+                        <div class="truth-value truth-true">✅</div>
+                        <p>Yes, correct, 1, on</p>
+                        <div class="code-box">
+<span class="keyword">is_student</span> = <span class="boolean">True</span>
+<span class="keyword">has_permission</span> = <span class="boolean">True</span>
+                        </div>
+                    </div>
+
+                    <div class="truth-box">
+                        <h3>False</h3>
+                        <div class="truth-value truth-false">❌</div>
+                        <p>No, incorrect, 0, off</p>
+                        <div class="code-box">
+<span class="keyword">is_admin</span> = <span class="boolean">False</span>
+<span class="keyword">game_over</span> = <span class="boolean">False</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-box">
+<span class="comment"># Creating Boolean variables</span>
+<span class="keyword">is_raining</span> = <span class="boolean">True</span>
+<span class="keyword">is_sunny</span> = <span class="boolean">False</span>
+
+<span class="comment"># Print Boolean values</span>
+<span class="keyword">print</span>(is_raining)  <span class="comment"># Output: True</span>
+<span class="keyword">print</span>(is_sunny)    <span class="comment"># Output: False</span>
+
+<span class="comment"># Check the type</span>
+<span class="keyword">print</span>(<span class="function">type</span>(is_raining))  <span class="comment"># &lt;class 'bool'&gt;</span>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Important Rules!</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li><strong>Capital Letters:</strong> <code>True</code> and <code>False</code> - NOT <code>true</code> or <code>false</code></li>
+                        <li><strong>No Quotes:</strong> <code>True</code> not <code>"True"</code> (that's a string!)</li>
+                        <li><strong>Only Two Values:</strong> Nothing else - just True or False</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q3">
-                <h3>Question 3: How does a computer read code?</h3>
-                <div class="option" onclick="checkAnswer(3, 'A', false)">A) All at once</div>
-                <div class="option" onclick="checkAnswer(3, 'B', true)">B) One line at a time, from top to bottom</div>
-                <div class="option" onclick="checkAnswer(3, 'C', false)">C) From bottom to top</div>
-                <div class="option" onclick="checkAnswer(3, 'D', false)">D) In random order</div>
+            <!-- Section 2: Comparison Operators -->
+            <div class="section">
+                <h2><span class="emoji">⚖️</span>The Six Comparison Operators</h2>
+                <p>Comparison operators compare two values and return <strong>True</strong> or <strong>False</strong>!</p>
+
+                <div class="operator-card">
+                    <div class="operator-symbol">==</div>
+                    <div class="operator-name">Equal To</div>
+                    <p>Checks if two values are exactly the same</p>
+                    <div class="code-box">
+<span class="keyword">age</span> = <span class="number">15</span>
+<span class="keyword">result</span> = age == <span class="number">15</span>
+<span class="keyword">print</span>(result)  <span class="comment"># True</span>
+
+<span class="keyword">name</span> = <span class="string">"Alex"</span>
+<span class="keyword">print</span>(name == <span class="string">"Bob"</span>)  <span class="comment"># False</span>
+                    </div>
+                    <div class="warning-box" style="margin-top: 15px;">
+                        <strong>⚠️ Common Mistake:</strong> <code>==</code> (comparison) vs <code>=</code> (assignment)<br>
+                        <code>x = 5</code> → Assigns 5 to x<br>
+                        <code>x == 5</code> → Checks if x equals 5
+                    </div>
+                </div>
+
+                <div class="operator-card">
+                    <div class="operator-symbol">!=</div>
+                    <div class="operator-name">Not Equal To</div>
+                    <p>Checks if two values are different</p>
+                    <div class="code-box">
+<span class="keyword">score</span> = <span class="number">85</span>
+<span class="keyword">print</span>(score != <span class="number">100</span>)  <span class="comment"># True (85 is not 100)</span>
+<span class="keyword">print</span>(score != <span class="number">85</span>)   <span class="comment"># False (85 equals 85)</span>
+
+<span class="keyword">status</span> = <span class="string">"active"</span>
+<span class="keyword">print</span>(status != <span class="string">"inactive"</span>)  <span class="comment"># True</span>
+                    </div>
+                </div>
+
+                <div class="operator-card">
+                    <div class="operator-symbol">></div>
+                    <div class="operator-name">Greater Than</div>
+                    <p>Checks if left value is bigger than right value</p>
+                    <div class="code-box">
+<span class="keyword">score</span> = <span class="number">95</span>
+<span class="keyword">print</span>(score > <span class="number">90</span>)   <span class="comment"># True (95 is greater than 90)</span>
+<span class="keyword">print</span>(score > <span class="number">100</span>)  <span class="comment"># False (95 is not greater than 100)</span>
+<span class="keyword">print</span>(score > <span class="number">95</span>)   <span class="comment"># False (95 is not greater than 95)</span>
+                    </div>
+                </div>
+
+                <div class="operator-card">
+                    <div class="operator-symbol"><</div>
+                    <div class="operator-name">Less Than</div>
+                    <p>Checks if left value is smaller than right value</p>
+                    <div class="code-box">
+<span class="keyword">age</span> = <span class="number">12</span>
+<span class="keyword">print</span>(age < <span class="number">18</span>)  <span class="comment"># True (12 is less than 18)</span>
+<span class="keyword">print</span>(age < <span class="number">10</span>)  <span class="comment"># False (12 is not less than 10)</span>
+<span class="keyword">print</span>(age < <span class="number">12</span>)  <span class="comment"># False (12 is not less than 12)</span>
+                    </div>
+                </div>
+
+                <div class="operator-card">
+                    <div class="operator-symbol">>=</div>
+                    <div class="operator-name">Greater Than or Equal To</div>
+                    <p>Checks if left value is bigger than OR equal to right value</p>
+                    <div class="code-box">
+<span class="keyword">score</span> = <span class="number">100</span>
+<span class="keyword">print</span>(score >= <span class="number">90</span>)   <span class="comment"># True (100 is greater than 90)</span>
+<span class="keyword">print</span>(score >= <span class="number">100</span>)  <span class="comment"># True (100 equals 100)</span>
+<span class="keyword">print</span>(score >= <span class="number">101</span>)  <span class="comment"># False (100 is not >= 101)</span>
+                    </div>
+                </div>
+
+                <div class="operator-card">
+                    <div class="operator-symbol"><=</div>
+                    <div class="operator-name">Less Than or Equal To</div>
+                    <p>Checks if left value is smaller than OR equal to right value</p>
+                    <div class="code-box">
+<span class="keyword">age</span> = <span class="number">13</span>
+<span class="keyword">print</span>(age <= <span class="number">18</span>)  <span class="comment"># True (13 is less than 18)</span>
+<span class="keyword">print</span>(age <= <span class="number">13</span>)  <span class="comment"># True (13 equals 13)</span>
+<span class="keyword">print</span>(age <= <span class="number">12</span>)  <span class="comment"># False (13 is not <= 12)</span>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">📊</span>Quick Reference Table</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Operator</th>
+                            <th>Name</th>
+                            <th>Example</th>
+                            <th>Result</th>
+                        </tr>
+                        <tr>
+                            <td>==</td>
+                            <td>Equal to</td>
+                            <td>5 == 5</td>
+                            <td style="color: #28a745; font-weight: bold;">True</td>
+                        </tr>
+                        <tr>
+                            <td>!=</td>
+                            <td>Not equal to</td>
+                            <td>5 != 3</td>
+                            <td style="color: #28a745; font-weight: bold;">True</td>
+                        </tr>
+                        <tr>
+                            <td>></td>
+                            <td>Greater than</td>
+                            <td>5 > 3</td>
+                            <td style="color: #28a745; font-weight: bold;">True</td>
+                        </tr>
+                        <tr>
+                            <td><</td>
+                            <td>Less than</td>
+                            <td>5 < 10</td>
+                            <td style="color: #28a745; font-weight: bold;">True</td>
+                        </tr>
+                        <tr>
+                            <td>>=</td>
+                            <td>Greater than or equal</td>
+                            <td>5 >= 5</td>
+                            <td style="color: #28a745; font-weight: bold;">True</td>
+                        </tr>
+                        <tr>
+                            <td><=</td>
+                            <td>Less than or equal</td>
+                            <td>5 <= 10</td>
+                            <td style="color: #28a745; font-weight: bold;">True</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
-            <div class="question" id="q4">
-                <h3>Question 4: What is the first program every programmer writes?</h3>
-                <div class="option" onclick="checkAnswer(4, 'A', false)">A) Goodbye, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'B', true)">B) Hello, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'C', false)">C) Welcome, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'D', false)">D) Hi, Computer!</div>
+            <!-- Interactive Demo -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Interactive Comparison Demo</h2>
+                <div class="interactive-demo">
+                    <h3>Try Different Comparisons!</h3>
+                    <p>Enter two numbers and select an operator to see the result:</p>
+                    
+                    <div class="comparison-demo">
+                        <div class="comparison-box" id="compNum1">10</div>
+                        <div class="comparison-operator" id="compOp">==</div>
+                        <div class="comparison-box" id="compNum2">10</div>
+                        <div style="font-size: 2em;">=</div>
+                        <div class="comparison-result result-true" id="compResult">True</div>
+                    </div>
+
+                    <div style="margin: 20px 0; text-align: center;">
+                        <input type="number" id="inputNum1" placeholder="First number" value="10">
+                        <input type="number" id="inputNum2" placeholder="Second number" value="10">
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button class="game-button" onclick="compareNumbers('==')">== Equal</button>
+                        <button class="game-button" onclick="compareNumbers('!=')">!= Not Equal</button>
+                        <button class="game-button" onclick="compareNumbers('>')">> Greater</button>
+                        <button class="game-button" onclick="compareNumbers('<')">< Less</button>
+                        <button class="game-button" onclick="compareNumbers('>=')">≥ Greater/Equal</button>
+                        <button class="game-button" onclick="compareNumbers('<=')">≤ Less/Equal</button>
+                    </div>
+
+                    <div id="compCode"></div>
+                </div>
             </div>
 
-            <div class="question" id="q5">
-                <h3>Question 5: Which of these is a code editor we can use?</h3>
-                <div class="option" onclick="checkAnswer(5, 'A', false)">A) Microsoft Word</div>
-                <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
-                <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
-                <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            <!-- Game 1: Comparison Detective -->
+            <div class="section">
+                <h2>Game 1: Comparison Detective 🔍</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Predict the result!</h3>
+                    <p>Look at each comparison and decide if it's True or False!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #11998e; margin-bottom: 15px;">Challenge <span id="detectiveNum">1</span>/10</h4>
+                        
+                        <div class="code-box" id="detectiveCode"></div>
+                        
+                        <h4 style="margin: 20px 0;">What will this print?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="detective-option" onclick="guessDetective('True')">True ✅</div>
+                            <div class="detective-option" onclick="guessDetective('False')">False ❌</div>
+                        </div>
+                        
+                        <div id="detectiveResult" style="margin-top: 20px;"></div>
+                        <div style="margin-top: 20px; font-size: 1.3em; font-weight: bold; text-align: center; color: #11998e;">
+                            Score: <span id="detectiveScore">0</span>/10
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="question" id="q6">
-                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
-                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
-                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
-                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
-                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
+            <!-- Game 2: Build Comparisons -->
+            <div class="section">
+                <h2>Game 2: Build the Comparison 🏗️</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Choose the correct operator!</h3>
+                    <p>Read the question and select which operator makes it True!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #11998e;">Challenge <span id="builderNum">1</span>/8</h4>
+                        
+                        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                            <p id="builderQuestion" style="font-size: 1.3em; text-align: center;"></p>
+                            <div style="font-size: 2em; text-align: center; margin: 20px 0; font-family: 'Courier New', monospace; color: #11998e;">
+                                <span id="builderLeft"></span> <strong>?</strong> <span id="builderRight"></span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                            <div class="detective-option" onclick="guessBuilder('==')">==(Equal)</div>
+                            <div class="detective-option" onclick="guessBuilder('!=')">!= (Not Equal)</div>
+                            <div class="detective-option" onclick="guessBuilder('>')"> > (Greater)</div>
+                            <div class="detective-option" onclick="guessBuilder('<')">< (Less)</div>
+                            <div class="detective-option" onclick="guessBuilder('>=')">≥ (Greater/Equal)</div>
+                            <div class="detective-option" onclick="guessBuilder('<=')">≤ (Less/Equal)</div>
+                        </div>
+                        
+                        <div id="builderResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #11998e; text-align: center;">
+                            Score: <span id="builderScore">0</span>/8
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="finalMessage" class="celebration"></div>
+            <!-- Project: Age Verification System -->
+            <div class="section">
+                <h2><span class="emoji">🎫</span>Project: Age Verification System</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Build a real age verification system!</h3>
+                    <p>Many websites and apps check if users are old enough. Let's build one!</p>
+                    
+                    <div class="verification-system">
+                        <h3 style="color: #11998e; margin-bottom: 20px; text-align: center;">🎬 Movie Theater Entry System 🎬</h3>
+                        
+                        <div class="info-box">
+                            <h4>🎯 System Requirements:</h4>
+                            <ul style="line-height: 2em;">
+                                <li>General Movies: Age >= 13</li>
+                                <li>Teen Movies: Age >= 16</li>
+                                <li>Adult Movies: Age >= 18</li>
+                                <li>Kids Movies: Age < 13</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">👤 Enter Your Age:</label>
+                            <input type="number" id="userAge" placeholder="e.g., 15" min="1" max="120" style="width: 100%; max-width: 100%;">
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">🎬 Select Movie Type:</label>
+                            <select id="movieType" style="width: 100%; padding: 15px; font-size: 1.1em; border: 2px solid #11998e; border-radius: 10px;">
+                                <option value="kids">Kids Movie (< 13)</option>
+                                <option value="general">General Movie (13+)</option>
+                                <option value="teen">Teen Movie (16+)</option>
+                                <option value="adult">Adult Movie (18+)</option>
+                            </select>
+                        </div>
+
+                        <button class="game-button" onclick="verifyAge()" style="width: 100%;">Verify Age 🎫</button>
+
+                        <div id="verificationResult"></div>
+
+                        <div id="verificationCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #11998e; margin-bottom: 10px;">📝 Python Code Behind This:</h4>
+                            <div class="code-box" id="verificationCodeDisplay"></div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h3><span class="emoji">💡</span>How the System Works:</h3>
+                        <ol style="font-size: 1.1em; line-height: 2em;">
+                            <li><strong>Get Input:</strong> User enters their age</li>
+                            <li><strong>Get Movie Type:</strong> User selects movie category</li>
+                            <li><strong>Compare Age:</strong> Use comparison operators to check age</li>
+                            <li><strong>Make Decision:</strong> Grant or deny access based on result</li>
+                            <li><strong>Display Message:</strong> Show appropriate message to user</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 3: True or False Speed Round -->
+            <div class="section">
+                <h2>Game 3: Speed Round ⚡</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Quick! True or False?</h3>
+                    <p>Answer as many as you can correctly!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #11998e;">Question <span id="speedNum">1</span>/15</h4>
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div style="font-size: 0.9em; color: #666;">Time: <span id="speedTime">0</span>s</div>
+                        </div>
+                        
+                        <div style="font-size: 2.5em; text-align: center; margin: 30px 0; font-family: 'Courier New', monospace; color: #11998e; font-weight: bold;" id="speedQuestion"></div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="detective-option" onclick="answerSpeed('True')" style="font-size: 1.5em;">✅ True</div>
+                            <div class="detective-option" onclick="answerSpeed('False')" style="font-size: 1.5em;">❌ False</div>
+                        </div>
+                        
+                        <div id="speedResult"></div>
+                        <div style="margin-top: 20px; text-align: center;">
+                            <div style="font-size: 1.3em; font-weight: bold; color: #11998e;">
+                                Score: <span id="speedScore">0</span>/15
+                            </div>
+                            <div style="font-size: 1.1em; color: #666; margin-top: 10px;">
+                                Streak: <span id="speedStreak">0</span> 🔥
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <h2 style="text-align: center; color: #11998e;"><span class="emoji">📝</span>Final Quiz!</h2>
+                <p style="text-align: center; font-size: 1.2em;">Test your knowledge about comparison operators!</p>
+
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: What does 5 == 5 return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 0, true)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 1, false)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 2, false)">C) 5</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 3, false)">D) Error</div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: What is the difference between = and ==?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 0, false)">A) They are the same</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 1, true)">B) = assigns, == compares</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 2, false)">C) = compares, == assigns</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 3, false)">D) Both compare values</div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: What does 10 > 5 return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 0, true)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 1, false)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 2, false)">C) 10</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 3, false)">D) 5</div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: What does 7 != 7 return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 0, false)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 1, true)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 2, false)">C) 7</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 3, false)">D) 0</div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: What does 15 >= 15 return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 0, true)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 1, false)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 2, false)">C) 15</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 3, false)">D) Error</div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <h3>Question 6: Which operator checks if values are NOT equal?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 0, false)">A) ==</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 1, true)">B) !=</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 2, false)">C) ></div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 3, false)">D) <=</div>
+                </div>
+
+                <div class="quiz-question" id="q7">
+                    <h3>Question 7: What is the correct way to write True in Python?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 0, true)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 1, false)">B) true</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 2, false)">C) TRUE</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 3, false)">D) "True"</div>
+                </div>
+
+                <div class="quiz-question" id="q8">
+                    <h3>Question 8: What does "hello" == "Hello" return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 0, false)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 1, true)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 2, false)">C) "hello"</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 3, false)">D) Error</div>
+                </div>
+
+                <button class="game-button" onclick="calculateScore()" style="display: block; margin: 20px auto;">Submit Quiz</button>
+                <div class="score-display" id="quizScore" style="display: none;"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Lecture Summary</h2>
+                <div class="highlight-box">
+                    <h3>What We Learned Today:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ Boolean values: <code>True</code> and <code>False</code></li>
+                        <li>✅ Six comparison operators: <code>==</code> <code>!=</code> <code>></code> <code><</code> <code>>=</code> <code><=</code></li>
+                        <li>✅ How to compare numbers and strings</li>
+                        <li>✅ Building an age verification system</li>
+                        <li>✅ Real-world applications of comparisons</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3><span class="emoji">🏠</span>Practice at Home:</h3>
+                    <ol style="font-size: 1.1em; line-height: 2em;">
+                        <li>Create a grade checker (A: >= 90, B: >= 80, etc.)</li>
+                        <li>Build a password strength checker</li>
+                        <li>Make a voting eligibility checker (age >= 18)</li>
+                        <li>Create a game level unlocker based on score</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Common Mistakes to Avoid:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>Using <code>=</code> instead of <code>==</code> for comparison</li>
+                        <li>Writing <code>true</code> instead of <code>True</code></li>
+                        <li>Forgetting that <code>>=</code> includes equal to</li>
+                        <li>Comparing strings - remember case matters!</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game 1: Robot Navigation
-        let robotPos = 0;
-        const targetPos = 24;
-        
-        function createGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                if (i === targetPos) {
-                    cell.className += ' target';
-                    cell.textContent = '⭐';
-                }
-                if (i === robotPos) {
-                    cell.textContent = '🤖';
-                }
-                grid.appendChild(cell);
+        let quizAnswers = {};
+
+        // Comparison Demo
+        function compareNumbers(operator) {
+            const num1 = parseFloat(document.getElementById('inputNum1').value) || 0;
+            const num2 = parseFloat(document.getElementById('inputNum2').value) || 0;
+            
+            let result;
+            switch(operator) {
+                case '==': result = num1 === num2; break;
+                case '!=': result = num1 !== num2; break;
+                case '>': result = num1 > num2; break;
+                case '<': result = num1 < num2; break;
+                case '>=': result = num1 >= num2; break;
+                case '<=': result = num1 <= num2; break;
             }
+
+            document.getElementById('compNum1').textContent = num1;
+            document.getElementById('compNum2').textContent = num2;
+            document.getElementById('compOp').textContent = operator;
+            document.getElementById('compResult').textContent = result.toString();
+            document.getElementById('compResult').className = result ? 'comparison-result result-true' : 'comparison-result result-false';
+
+            const codeDiv = document.getElementById('compCode');
+            codeDiv.innerHTML = `
+                <div class="code-box" style="margin-top: 20px;">
+<span class="keyword">num1</span> = <span class="number">${num1}</span>
+<span class="keyword">num2</span> = <span class="number">${num2}</span>
+<span class="keyword">result</span> = num1 ${operator} num2
+<span class="keyword">print</span>(result)  <span class="comment"># ${result}</span>
+                </div>
+            `;
         }
-        
-        function moveRobot(direction) {
-            let newPos = robotPos;
-            switch(direction) {
-                case 'up':
-                    if (robotPos >= 5) newPos -= 5;
+
+        // Comparison Detective Game
+        let detectiveLevel = 0;
+        let detectiveScore = 0;
+        const detectiveChallenges = [
+            { code: 'print(5 == 5)', answer: 'True' },
+            { code: 'print(10 > 5)', answer: 'True' },
+            { code: 'print(7 != 7)', answer: 'False' },
+            { code: 'print(15 >= 15)', answer: 'True' },
+            { code: 'print(3 < 3)', answer: 'False' },
+            { code: 'print(20 <= 25)', answer: 'True' },
+            { code: 'print("hello" == "hello")', answer: 'True' },
+            { code: 'print(100 != 50)', answer: 'True' },
+            { code: 'print(8 > 10)', answer: 'False' },
+            { code: 'print(12 <= 12)', answer: 'True' }
+        ];
+
+        function loadDetective() {
+            if (detectiveLevel >= detectiveChallenges.length) {
+                showDetectiveEnd();
+                return;
+            }
+
+            const challenge = detectiveChallenges[detectiveLevel];
+            document.getElementById('detectiveNum').textContent = detectiveLevel + 1;
+            document.getElementById('detectiveCode').textContent = challenge.code;
+            document.getElementById('detectiveResult').innerHTML = '';
+
+            const buttons = document.querySelectorAll('.detective-option');
+            buttons.forEach(btn => {
+                btn.className = 'detective-option';
+                btn.style.pointerEvents = 'auto';
+            });
+        }
+
+        function guessDetective(guess) {
+            const challenge = detectiveChallenges[detectiveLevel];
+            const buttons = document.querySelectorAll('.detective-option');
+            const result = document.getElementById('detectiveResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (guess === challenge.answer) {
+                detectiveScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct! Great job!</div>';
+                event.target.classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ Not quite! The answer is: ' + challenge.answer + '</div>';
+                event.target.classList.add('incorrect');
+            }
+
+            document.getElementById('detectiveScore').textContent = detectiveScore;
+            detectiveLevel++;
+
+            setTimeout(loadDetective, 2000);
+        }
+
+        function showDetectiveEnd() {
+            const container = document.querySelector('#detectiveNum').closest('.game-container');
+            const percentage = (detectiveScore / detectiveChallenges.length * 100).toFixed(0);
+
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎉 Game Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${detectiveScore}/${detectiveChallenges.length} (${percentage}%)</p>
+                    ${percentage >= 80 ? '<p style="font-size: 1.2em;">🌟 Excellent work!</p>' : '<p style="font-size: 1.2em;">Keep practicing!</p>'}
+                    <button class="game-button" onclick="resetDetective()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetDetective() {
+            detectiveLevel = 0;
+            detectiveScore = 0;
+            document.getElementById('detectiveScore').textContent = '0';
+            loadDetective();
+        }
+
+        // Builder Game
+        let builderLevel = 0;
+        let builderScore = 0;
+        const builderChallenges = [
+            { question: 'Make this True: 10 ? 5', left: 10, right: 5, answer: '>', description: '10 is greater than 5' },
+            { question: 'Make this True: 7 ? 7', left: 7, right: 7, answer: '==', description: '7 equals 7' },
+            { question: 'Make this True: 5 ? 10', left: 5, right: 10, answer: '<', description: '5 is less than 10' },
+            { question: 'Make this True: 15 ? 20', left: 15, right: 20, answer: '!=', description: '15 is not equal to 20' },
+            { question: 'Make this True: 100 ? 100', left: 100, right: 100, answer: '>=', description: '100 is greater than or equal to 100' },
+            { question: 'Make this True: 8 ? 12', left: 8, right: 12, answer: '<=', description: '8 is less than or equal to 12' },
+            { question: 'Make this True: 50 ? 30', left: 50, right: 30, answer: '>', description: '50 is greater than 30' },
+            { question: 'Make this True: 9 ? 9', left: 9, right: 9, answer: '<=', description: '9 is less than or equal to 9' }
+        ];
+
+        function loadBuilder() {
+            if (builderLevel >= builderChallenges.length) {
+                showBuilderEnd();
+                return;
+            }
+
+            const challenge = builderChallenges[builderLevel];
+            document.getElementById('builderNum').textContent = builderLevel + 1;
+            document.getElementById('builderQuestion').textContent = challenge.question;
+            document.getElementById('builderLeft').textContent = challenge.left;
+            document.getElementById('builderRight').textContent = challenge.right;
+            document.getElementById('builderResult').innerHTML = '';
+
+            const buttons = document.querySelectorAll('#builderResult').closest('div').previousElementSibling.querySelectorAll('.detective-option');
+            buttons.forEach(btn => {
+                btn.className = 'detective-option';
+                btn.style.pointerEvents = 'auto';
+            });
+        }
+
+        function guessBuilder(operator) {
+            const challenge = builderChallenges[builderLevel];
+            const buttons = event.target.parentElement.querySelectorAll('.detective-option');
+            const result = document.getElementById('builderResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (operator === challenge.answer) {
+                builderScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct! ' + challenge.description + '</div>';
+                event.target.classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ Try again! The answer is: ' + challenge.answer + '</div>';
+                event.target.classList.add('incorrect');
+            }
+
+            document.getElementById('builderScore').textContent = builderScore;
+            builderLevel++;
+
+            setTimeout(loadBuilder, 2500);
+        }
+
+        function showBuilderEnd() {
+            const container = document.querySelector('#builderNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🏆 Builder Master!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${builderScore}/${builderChallenges.length}</p>
+                    <button class="game-button" onclick="resetBuilder()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetBuilder() {
+            builderLevel = 0;
+            builderScore = 0;
+            document.getElementById('builderScore').textContent = '0';
+            loadBuilder();
+        }
+
+        // Age Verification System
+        function verifyAge() {
+            const age = parseInt(document.getElementById('userAge').value);
+            const movieType = document.getElementById('movieType').value;
+            const result = document.getElementById('verificationResult');
+            const codeDiv = document.getElementById('verificationCode');
+            const codeDisplay = document.getElementById('verificationCodeDisplay');
+
+            if (!age || age < 1) {
+                result.innerHTML = '<div class="error-message">Please enter a valid age!</div>';
+                return;
+            }
+
+            let minAge, movieName, allowed;
+
+            switch(movieType) {
+                case 'kids':
+                    minAge = 0;
+                    movieName = 'Kids Movie';
+                    allowed = age < 13;
                     break;
-                case 'down':
-                    if (robotPos < 20) newPos += 5;
+                case 'general':
+                    minAge = 13;
+                    movieName = 'General Movie (13+)';
+                    allowed = age >= 13;
                     break;
-                case 'left':
-                    if (robotPos % 5 !== 0) newPos -= 1;
+                case 'teen':
+                    minAge = 16;
+                    movieName = 'Teen Movie (16+)';
+                    allowed = age >= 16;
                     break;
-                case 'right':
-                    if (robotPos % 5 !== 4) newPos += 1;
+                case 'adult':
+                    minAge = 18;
+                    movieName = 'Adult Movie (18+)';
+                    allowed = age >= 18;
                     break;
             }
-            
-            robotPos = newPos;
-            createGrid();
-            
-            if (robotPos === targetPos) {
-                document.getElementById('gameMessage').innerHTML = '🎉 Congratulations! You did it!';
+
+            if (allowed) {
+                result.innerHTML = `
+                    <div class="verification-result access-granted">
+                        <h3>✅ ACCESS GRANTED!</h3>
+                        <p style="font-size: 1.2em; margin-top: 15px;">Welcome! You can watch ${movieName}</p>
+                        <p style="margin-top: 10px;">Age: ${age} | Required: ${movieType === 'kids' ? '< 13' : minAge + '+'}</p>
+                    </div>
+                `;
+            } else {
+                result.innerHTML = `
+                    <div class="verification-result access-denied">
+                        <h3>❌ ACCESS DENIED</h3>
+                        <p style="font-size: 1.2em; margin-top: 15px;">Sorry, you must be ${movieType === 'kids' ? 'under 13' : minAge + ' or older'}</p>
+                        <p style="margin-top: 10px;">Your age: ${age} | Required: ${movieType === 'kids' ? '< 13' : minAge + '+'}</p>
+                    </div>
+                `;
             }
+
+            codeDiv.style.display = 'block';
+            const operator = movieType === 'kids' ? '<' : '>=';
+            codeDisplay.innerHTML = `
+<span class="comment"># Get user input</span>
+<span class="keyword">age</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter your age: "</span>))
+<span class="keyword">min_age</span> = <span class="number">${minAge}</span>
+
+<span class="comment"># Check age requirement</span>
+<span class="keyword">allowed</span> = age ${operator} min_age
+
+<span class="comment"># Display result</span>
+<span class="keyword">if</span> allowed:
+    <span class="keyword">print</span>(<span class="string">"✅ ACCESS GRANTED!"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"❌ ACCESS DENIED"</span>)
+
+<span class="comment"># Result: ${allowed ? 'ACCESS GRANTED' : 'ACCESS DENIED'}</span>
+            `;
         }
-        
-        function resetGame() {
-            robotPos = 0;
-            createGrid();
-            document.getElementById('gameMessage').innerHTML = '';
-        }
-        
-        // Game 2: Code Simulator
-        function runUserCode() {
-            const code = document.getElementById('userCode').value;
-            const output = document.getElementById('output');
-            if (code) {
-                output.innerHTML += code + '<br>';
+
+        // Speed Round Game
+        let speedLevel = 0;
+        let speedScore = 0;
+        let speedStreak = 0;
+        let speedTimer = null;
+        let speedStartTime = 0;
+        const speedChallenges = [
+            { expr: '10 == 10', answer: 'True' },
+            { expr: '5 > 3', answer: 'True' },
+            { expr: '7 != 7', answer: 'False' },
+            { expr: '15 < 20', answer: 'True' },
+            { expr: '9 >= 9', answer: 'True' },
+            { expr: '12 <= 10', answer: 'False' },
+            { expr: '100 == 50', answer: 'False' },
+            { expr: '3 < 3', answer: 'False' },
+            { expr: '25 >= 20', answer: 'True' },
+            { expr: '8 != 10', answer: 'True' },
+            { expr: '6 > 10', answer: 'False' },
+            { expr: '14 <= 14', answer: 'True' },
+            { expr: '0 == 0', answer: 'True' },
+            { expr: '50 < 30', answer: 'False' },
+            { expr: '11 >= 12', answer: 'False' }
+        ];
+
+        function loadSpeed() {
+            if (speedLevel >= speedChallenges.length) {
+                showSpeedEnd();
+                return;
             }
+
+            const challenge = speedChallenges[speedLevel];
+            document.getElementById('speedNum').textContent = speedLevel + 1;
+            document.getElementById('speedQuestion').textContent = challenge.expr;
+            document.getElementById('speedResult').innerHTML = '';
+
+            if (speedLevel === 0) {
+                speedStartTime = Date.now();
+                speedTimer = setInterval(updateSpeedTimer, 100);
+            }
+
+            const buttons = document.querySelectorAll('#speedResult').closest('div').previousElementSibling.querySelectorAll('.detective-option');
+            buttons.forEach(btn => {
+                btn.className = 'detective-option';
+                btn.style.pointerEvents = 'auto';
+            });
         }
-        
-        function clearOutput() {
-            document.getElementById('output').innerHTML = '';
+
+        function updateSpeedTimer() {
+            const elapsed = Math.floor((Date.now() - speedStartTime) / 1000);
+            document.getElementById('speedTime').textContent = elapsed;
         }
-        
-        // Game 3: Animation
-        function animateCode() {
-            const output = document.getElementById('animationOutput');
-            output.innerHTML = '';
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 1<br>';
-            }, 500);
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '';
-                document.getElementById('line2').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 2<br>';
-            }, 1500);
-            
-            setTimeout(() => {
-                document.getElementById('line2').style.background = '';
-                document.getElementById('line3').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 3<br>';
-            }, 2500);
-            
-            setTimeout(() => {
-                document.getElementById('line3').style.background = '';
-            }, 3500);
+
+        function answerSpeed(answer) {
+            const challenge = speedChallenges[speedLevel];
+            const result = document.getElementById('speedResult');
+            const buttons = event.target.parentElement.querySelectorAll('.detective-option');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (answer === challenge.answer) {
+                speedScore++;
+                speedStreak++;
+                event.target.classList.add('correct');
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+            } else {
+                speedStreak = 0;
+                event.target.classList.add('incorrect');
+                result.innerHTML = '<div class="error-message">❌ Wrong! It was: ' + challenge.answer + '</div>';
+            }
+
+            document.getElementById('speedScore').textContent = speedScore;
+            document.getElementById('speedStreak').textContent = speedStreak;
+            speedLevel++;
+
+            setTimeout(loadSpeed, 1000);
         }
-        
-        // Quiz
-        let correctAnswers = 0;
-        let answeredQuestions = new Set();
-        
-        function checkAnswer(questionNum, option, isCorrect) {
-            if (answeredQuestions.has(questionNum)) return;
-            
-            answeredQuestions.add(questionNum);
-            const question = document.getElementById('q' + questionNum);
-            const options = question.querySelectorAll('.option');
-            
+
+        function showSpeedEnd() {
+            clearInterval(speedTimer);
+            const totalTime = Math.floor((Date.now() - speedStartTime) / 1000);
+            const container = document.querySelector('#speedNum').closest('.game-container');
+
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">⚡ Speed Round Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${speedScore}/${speedChallenges.length}</p>
+                    <p style="font-size: 1.2em;">Time: ${totalTime} seconds</p>
+                    <button class="game-button" onclick="resetSpeed()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetSpeed() {
+            speedLevel = 0;
+            speedScore = 0;
+            speedStreak = 0;
+            clearInterval(speedTimer);
+            document.getElementById('speedScore').textContent = '0';
+            document.getElementById('speedStreak').textContent = '0';
+            document.getElementById('speedTime').textContent = '0';
+            loadSpeed();
+        }
+
+        // Quiz Functions
+        function selectAnswer(questionId, optionIndex, isCorrect) {
+            const question = document.getElementById(questionId);
+            const options = question.querySelectorAll('.quiz-option');
+
             options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.startsWith(option)) {
-                    opt.className = isCorrect ? 'option correct' : 'option wrong';
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            options[optionIndex].classList.add('selected');
+            quizAnswers[questionId] = isCorrect;
+        }
+
+        function calculateScore() {
+            const totalQuestions = 8;
+            let correctAnswers = 0;
+
+            Object.keys(quizAnswers).forEach(qId => {
+                const question = document.getElementById(qId);
+                const selected = question.querySelector('.selected');
+                if (selected) {
+                    if (quizAnswers[qId]) {
+                        selected.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        const options = question.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.onclick.toString().includes('true')) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
                 }
             });
-            
-            if (isCorrect) {
-                correctAnswers++;
-            }
-            
-            updateScore();
-            
-            if (answeredQuestions.size === 6) {
-                showFinalMessage();
-            }
-        }
-        
-        function updateScore() {
-            document.getElementById('score').innerHTML = 
-                `Score: ${correctAnswers} / ${answeredQuestions.size}`;
-        }
-        
-        function showFinalMessage() {
-            const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 6) {
-                finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 4) {
-                finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
+
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const scoreDisplay = document.getElementById('quizScore');
+
+            let message = '';
+            let emoji = '';
+
+            if (percentage === 100) {
+                message = 'Perfect Score!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Great Job!';
+                emoji = '🌟';
+            } else if (percentage >= 60) {
+                message = 'Good Effort!';
+                emoji = '👍';
             } else {
-                finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
+                message = 'Keep Learning!';
+                emoji = '📚';
             }
+
+            scoreDisplay.innerHTML = `
+                ${emoji} ${message}<br>
+                You scored ${correctAnswers} out of ${totalQuestions} (${percentage.toFixed(0)}%)
+            `;
+            scoreDisplay.style.display = 'block';
         }
-        
-        // Initialize
-        createGrid();
+
+        // Initialize games
+        window.onload = function() {
+            compareNumbers('==');
+            loadDetective();
+            loadBuilder();
+            loadSpeed();
+        };
     </script>
 </body>
 </html>
