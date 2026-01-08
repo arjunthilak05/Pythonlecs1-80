@@ -3,561 +3,1544 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 1: Welcome to Programming</title>
+    <title>Lectures 8 & 9: Conditional Statements</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
-        h1 {
-            color: #667eea;
+
+        header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
+        }
+
+        header h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        
-        h2 {
-            color: #764ba2;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
-        
+
+        .content {
+            padding: 40px;
+        }
+
         .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9ff;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #fa709a;
         }
-        
-        .game-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+        .section h2 {
+            color: #fa709a;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "Python";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #fa709a;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .boolean {
+            color: #61afef;
+            font-weight: bold;
+        }
+
+        .indent {
+            margin-left: 40px;
+        }
+
+        .flowchart {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
-            color: white;
-        }
-        
-        .robot {
-            font-size: 60px;
+            margin: 20px 0;
             text-align: center;
+        }
+
+        .flow-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px auto;
+            max-width: 300px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .flow-diamond {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 30px;
+            margin: 15px auto;
+            max-width: 250px;
+            transform: rotate(45deg);
+            font-weight: bold;
+        }
+
+        .flow-diamond-text {
+            transform: rotate(-45deg);
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: #fa709a;
+            margin: 10px 0;
+        }
+
+        .interactive-demo {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .game-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 5px;
-            margin: 20px auto;
-            width: fit-content;
-        }
-        
-        .cell {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border: 2px solid #764ba2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            border-radius: 8px;
-        }
-        
-        .cell.target {
-            background: #ffeb3b;
-        }
-        
-        button {
-            background: #667eea;
+
+        .game-button {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 5px;
+            margin: 10px 5px;
             transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        button:hover {
-            background: #764ba2;
-            transform: scale(1.05);
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
-        
-        .code-box {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            font-size: 16px;
+
+        .game-button:active {
+            transform: translateY(0);
         }
-        
-        .output-box {
-            background: #000;
-            color: #0f0;
+
+        input[type="number"], input[type="text"], input[type="password"] {
             padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #fa709a;
             border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            min-height: 50px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
         }
-        
-        .quiz-box {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+        .password-checker {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin: 20px auto;
         }
-        
-        .question {
-            background: white;
+
+        .password-result {
             padding: 20px;
             border-radius: 10px;
-            margin: 15px 0;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
         }
-        
-        .option {
-            display: block;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f0f0f0;
+
+        .strength-weak {
+            background: #f8d7da;
+            border: 3px solid #dc3545;
+            color: #721c24;
+        }
+
+        .strength-medium {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            color: #856404;
+        }
+
+        .strength-strong {
+            background: #d4edda;
+            border: 3px solid #28a745;
+            color: #155724;
+        }
+
+        .grade-calculator {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .grade-result {
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .grade-a {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            border: 3px solid #28a745;
+        }
+
+        .grade-b {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            border: 3px solid #17a2b8;
+        }
+
+        .grade-c {
+            background: linear-gradient(135deg, #fee140 0%, #fa709a 100%);
+            border: 3px solid #ffc107;
+        }
+
+        .grade-d {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            border: 3px solid #fd7e14;
+        }
+
+        .grade-f {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border: 3px solid #dc3545;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 2px solid transparent;
         }
-        
-        .option:hover {
-            background: #e0e0e0;
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #fa709a;
         }
-        
-        .option.correct {
-            background: #4caf50;
-            color: white;
+
+        .quiz-option.selected {
+            background: #ffe4e1;
+            border-color: #fa709a;
         }
-        
-        .option.wrong {
-            background: #f44336;
-            color: white;
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
         }
-        
-        .controls {
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .score-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            margin: 20px 0;
-        }
-        
-        .line-highlight {
-            background: #ffeb3b;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        
-        #score {
-            text-align: center;
-            font-size: 24px;
+            font-size: 1.5em;
             font-weight: bold;
-            color: #667eea;
+            color: #fa709a;
+            margin-top: 20px;
+        }
+
+        .detective-option {
+            background: white;
+            border: 3px solid #fa709a;
+            padding: 20px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .detective-option:hover {
+            background: #ffe4e1;
+            transform: translateX(5px);
+        }
+
+        .detective-option.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .detective-option.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .indentation-demo {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #fa709a;
             margin: 20px 0;
         }
-        
-        .celebration {
-            text-align: center;
-            font-size: 50px;
-            margin: 20px 0;
+
+        .indent-line {
+            font-family: 'Courier New', monospace;
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        .indent-1 {
+            margin-left: 0;
+            background: #e3f2fd;
+        }
+
+        .indent-2 {
+            margin-left: 40px;
+            background: #fff3e0;
+        }
+
+        .indent-3 {
+            margin-left: 80px;
+            background: #f3e5f5;
+        }
+
+        @media (max-width: 768px) {
+            input[type="number"], input[type="text"], input[type="password"] {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Lecture 1: Welcome to Programming!</h1>
-        
-        <!-- Section 1: What is Programming -->
-        <div class="section">
-            <h2>🤖 What is Programming?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Programming is like giving instructions to a robot! Imagine you have a robot friend who is very smart but only understands specific commands. You need to tell them exactly what to do, step by step.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                For example, if you want the robot to make a sandwich, you can't just say "make a sandwich." You need to say:
-            </p>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px; margin-top: 10px;">
-                <li>Pick up the bread</li>
-                <li>Open the jar of peanut butter</li>
-                <li>Spread peanut butter on the bread</li>
-                <li>Put two slices together</li>
-            </ul>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                That's exactly what programming is! We write instructions (called <strong>code</strong>) that tell the computer exactly what to do!
-            </p>
-        </div>
+        <header>
+            <h1 class="floating">🎓 Lectures 8 & 9: Conditional Statements 🔀</h1>
+            <p>Learn to make decisions in your programs!</p>
+        </header>
 
-        <!-- Game 1: Robot Navigation -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 1: Help the Robot Find the Star!</h2>
-            <p style="font-size: 18px;">Give the robot instructions to reach the ⭐ star!</p>
-            <div class="robot" id="robotDisplay">🤖</div>
-            <div class="grid" id="gameGrid"></div>
-            <div class="controls">
-                <button onclick="moveRobot('up')">⬆️ Up</button>
-                <button onclick="moveRobot('down')">⬇️ Down</button>
-                <button onclick="moveRobot('left')">⬅️ Left</button>
-                <button onclick="moveRobot('right')">➡️ Right</button>
-                <button onclick="resetGame()" style="background: #f5576c;">🔄 Reset</button>
-            </div>
-            <div id="gameMessage" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
-        </div>
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2><span class="emoji">🌟</span>Welcome to Decision Making!</h2>
+                <p style="font-size: 1.2em;">Until now, our programs ran every line from top to bottom. But real programs need to make <strong>decisions</strong> and take different paths based on conditions!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>What You'll Learn Today</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ Simple if statements</li>
+                        <li>✅ If-else structure (two paths)</li>
+                        <li>✅ If-elif-else (multiple paths)</li>
+                        <li>✅ Nested conditionals</li>
+                        <li>✅ Indentation in Python</li>
+                        <li>✅ Build a password checker</li>
+                        <li>✅ Build a grade calculator</li>
+                    </ul>
+                </div>
 
-        <!-- Section 2: Installing Python -->
-        <div class="section">
-            <h2>💻 Installing Python and VS Code</h2>
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 1: Install Python</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Go to <strong>python.org</strong></li>
-                <li>Click on "Downloads"</li>
-                <li>Download Python (make sure to check "Add Python to PATH")</li>
-                <li>Run the installer and follow the instructions</li>
-            </ol>
-            
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 2: Install VS Code (or IDLE)</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li><strong>VS Code:</strong> Go to <strong>code.visualstudio.com</strong> and download</li>
-                <li><strong>IDLE:</strong> This comes with Python automatically!</li>
-            </ol>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Tip:</strong> VS Code is like a super-powered notebook for writing code. IDLE is simpler and great for beginners!
-            </p>
-        </div>
-
-        <!-- Section 3: First Program -->
-        <div class="section">
-            <h2>🎉 Your First Program: Hello, World!</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                The first program every programmer writes is "Hello, World!" It's a tradition! This program tells the computer to display a message on the screen.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                In Python, we use the <strong>print()</strong> command to display text. Here's how it looks:
-            </p>
-            <div class="code-box">
-                print("Hello, World!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8;">
-                When you run this code, the computer will show: <strong>Hello, World!</strong>
-            </p>
-        </div>
-
-        <!-- Game 2: Interactive Code Simulator -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 2: Try Writing Your Own Code!</h2>
-            <p style="font-size: 18px;">Type your own message in the box below and click "Run Code"!</p>
-            <div style="margin: 20px 0;">
-                <input type="text" id="userCode" placeholder='Type your message here...' 
-                       style="width: 100%; padding: 15px; font-size: 18px; border-radius: 8px; border: none;">
-            </div>
-            <div class="controls">
-                <button onclick="runUserCode()">▶️ Run Code</button>
-                <button onclick="clearOutput()" style="background: #f5576c;">🗑️ Clear</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="output"></div>
-        </div>
-
-        <!-- Section 4: How Computers Read Code -->
-        <div class="section">
-            <h2>📖 How Computers Read Code Line by Line</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Computers are very obedient but not very smart. They read your code <strong>one line at a time</strong>, from top to bottom, just like you read a book!
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                Let's look at an example:
-            </p>
-            <div class="code-box">
-                print("First, I say hello!")<br>
-                print("Then, I say goodbye!")<br>
-                print("And finally, I'm done!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                The computer will:
-            </p>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Read line 1 and print "First, I say hello!"</li>
-                <li>Then read line 2 and print "Then, I say goodbye!"</li>
-                <li>Finally read line 3 and print "And finally, I'm done!"</li>
-            </ol>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Remember:</strong> The order matters! The computer does exactly what you tell it, in the order you tell it.
-            </p>
-        </div>
-
-        <!-- Game 3: Code Order Challenge -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 3: Line by Line Execution</h2>
-            <p style="font-size: 18px;">Watch how the computer reads code one line at a time!</p>
-            <div class="code-box" id="animatedCode">
-                <div id="line1">print("I am line 1")</div>
-                <div id="line2">print("I am line 2")</div>
-                <div id="line3">print("I am line 3")</div>
-            </div>
-            <div class="controls">
-                <button onclick="animateCode()">▶️ Watch Execution</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="animationOutput"></div>
-        </div>
-
-        <!-- Section 5: Compilers vs Interpreters -->
-        <div class="section">
-            <h2>⚙️ What's a Compiler?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates the whole program before running it</li>
-                <li>Shows all errors at the end, together</li>
-                <li>Runs faster once compiled</li>
-                <li>Creates a separate file you can run anytime</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>🔍 What's an Interpreter?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates code one line at a time as it runs</li>
-                <li>Shows errors immediately when it hits that line</li>
-                <li>Slower execution than compiled programs</li>
-                <li>Always needs the original code to run</li>
-            </ul>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
-            </p>
-        </div>
-
-        <!-- Final Quiz -->
-        <div class="quiz-box">
-            <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
-            <div id="score"></div>
-            
-            <div class="question" id="q1">
-                <h3>Question 1: What is programming?</h3>
-                <div class="option" onclick="checkAnswer(1, 'A', false)">A) Playing video games</div>
-                <div class="option" onclick="checkAnswer(1, 'B', true)">B) Giving instructions to a computer</div>
-                <div class="option" onclick="checkAnswer(1, 'C', false)">C) Drawing pictures</div>
-                <div class="option" onclick="checkAnswer(1, 'D', false)">D) Writing stories</div>
+                <div class="info-box">
+                    <h3><span class="emoji">🤔</span>Real-World Examples</h3>
+                    <p style="font-size: 1.1em;">Programs make decisions constantly:</p>
+                    <ul style="font-size: 1.1em; line-height: 2em; margin-top: 10px;">
+                        <li>🔐 <strong>If</strong> password is correct → Log in</li>
+                        <li>🎮 <strong>If</strong> score > 100 → Level up, <strong>else</strong> → Try again</li>
+                        <li>📝 <strong>If</strong> grade >= 90 → A, <strong>elif</strong> grade >= 80 → B, <strong>else</strong> → F</li>
+                        <li>🌡️ <strong>If</strong> temperature > 30 → "Hot", <strong>elif</strong> > 20 → "Warm", <strong>else</strong> → "Cold"</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q2">
-                <h3>Question 2: What command do we use to display text in Python?</h3>
-                <div class="option" onclick="checkAnswer(2, 'A', false)">A) show()</div>
-                <div class="option" onclick="checkAnswer(2, 'B', false)">B) display()</div>
-                <div class="option" onclick="checkAnswer(2, 'C', true)">C) print()</div>
-                <div class="option" onclick="checkAnswer(2, 'D', false)">D) write()</div>
+            <!-- Section 1: Simple If Statements -->
+            <div class="section">
+                <h2><span class="emoji">🚦</span>Part 1: Simple If Statements</h2>
+                <p>The <strong>if statement</strong> is the most basic way to make decisions. If a condition is True, the code inside runs. If False, it's skipped!</p>
+
+                <div class="code-box">
+<span class="comment"># Basic if statement structure</span>
+<span class="keyword">if</span> condition:
+    <span class="comment"># This code runs ONLY if condition is True</span>
+    <span class="keyword">print</span>(<span class="string">"Condition is True!"</span>)
+
+<span class="comment"># Example 1: Simple age check</span>
+<span class="keyword">age</span> = <span class="number">16</span>
+
+<span class="keyword">if</span> age >= <span class="number">13</span>:
+    <span class="keyword">print</span>(<span class="string">"You are a teenager!"</span>)
+
+<span class="comment"># Example 2: Password check</span>
+<span class="keyword">password</span> = <span class="string">"python123"</span>
+
+<span class="keyword">if</span> password == <span class="string">"python123"</span>:
+    <span class="keyword">print</span>(<span class="string">"Access granted!"</span>)
+
+<span class="comment"># Example 3: Score check</span>
+<span class="keyword">score</span> = <span class="number">95</span>
+
+<span class="keyword">if</span> score > <span class="number">90</span>:
+    <span class="keyword">print</span>(<span class="string">"Excellent work!"</span>)
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>CRITICAL: Indentation!</h3>
+                    <p style="font-size: 1.1em;">Python uses <strong>indentation</strong> (spaces at the beginning of lines) to know what code belongs to the if statement!</p>
+                    <div class="indentation-demo">
+                        <div class="indent-line indent-1">if age >= 18:  ← Colon here!</div>
+                        <div class="indent-line indent-2">    print("Adult")  ← 4 spaces indent!</div>
+                        <div class="indent-line indent-2">    print("Can vote")  ← Same indent!</div>
+                        <div class="indent-line indent-1">print("Program continues")  ← Back to start</div>
+                    </div>
+                    <p style="margin-top: 10px;"><strong>Remember:</strong></p>
+                    <ul style="line-height: 2em;">
+                        <li>Always use a <strong>colon (:)</strong> after the condition</li>
+                        <li>Indent with <strong>4 spaces</strong> (or 1 Tab)</li>
+                        <li>All indented lines belong to the if</li>
+                    </ul>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try Simple If Statements!</h3>
+                    <p>Enter a number and see if statements in action:</p>
+                    
+                    <input type="number" id="simpleIfNum" placeholder="Enter a number" value="15">
+                    <button class="game-button" onclick="testSimpleIf()">Test Conditions</button>
+                    
+                    <div id="simpleIfResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q3">
-                <h3>Question 3: How does a computer read code?</h3>
-                <div class="option" onclick="checkAnswer(3, 'A', false)">A) All at once</div>
-                <div class="option" onclick="checkAnswer(3, 'B', true)">B) One line at a time, from top to bottom</div>
-                <div class="option" onclick="checkAnswer(3, 'C', false)">C) From bottom to top</div>
-                <div class="option" onclick="checkAnswer(3, 'D', false)">D) In random order</div>
+            <!-- Section 2: If-Else Statements -->
+            <div class="section">
+                <h2><span class="emoji">↔️</span>Part 2: If-Else Statements</h2>
+                <p>What if we want to do something when the condition is False? Use <strong>else</strong>!</p>
+
+                <div class="flowchart">
+                    <h3 style="color: #fa709a;">If-Else Flow</h3>
+                    <div class="flow-box">Start</div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-diamond">
+                        <div class="flow-diamond-text">Condition<br>True?</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 600px; margin: 20px auto;">
+                        <div>
+                            <div style="color: #28a745; font-weight: bold;">✓ YES</div>
+                            <div class="flow-box" style="background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);">
+                                Run if block
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color: #dc3545; font-weight: bold;">✗ NO</div>
+                            <div class="flow-box" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                                Run else block
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-box">Continue Program</div>
+                </div>
+
+                <div class="code-box">
+<span class="comment"># If-Else structure</span>
+<span class="keyword">if</span> condition:
+    <span class="comment"># Runs if True</span>
+    <span class="keyword">print</span>(<span class="string">"Condition is True"</span>)
+<span class="keyword">else</span>:
+    <span class="comment"># Runs if False</span>
+    <span class="keyword">print</span>(<span class="string">"Condition is False"</span>)
+
+<span class="comment"># Example 1: Age verification</span>
+<span class="keyword">age</span> = <span class="number">12</span>
+
+<span class="keyword">if</span> age >= <span class="number">18</span>:
+    <span class="keyword">print</span>(<span class="string">"You can vote!"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"You cannot vote yet."</span>)
+
+<span class="comment"># Example 2: Password check</span>
+<span class="keyword">password</span> = <span class="function">input</span>(<span class="string">"Enter password: "</span>)
+
+<span class="keyword">if</span> password == <span class="string">"secret123"</span>:
+    <span class="keyword">print</span>(<span class="string">"✅ Access granted!"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"❌ Access denied!"</span>)
+
+<span class="comment"># Example 3: Even or Odd</span>
+<span class="keyword">number</span> = <span class="number">7</span>
+
+<span class="keyword">if</span> number % <span class="number">2</span> == <span class="number">0</span>:
+    <span class="keyword">print</span>(<span class="string">"Even number"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Odd number"</span>)
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try If-Else Statements!</h3>
+                    <p>Enter your age to see if-else in action:</p>
+                    
+                    <input type="number" id="ifElseAge" placeholder="Enter your age" value="16">
+                    <button class="game-button" onclick="testIfElse()">Check Eligibility</button>
+                    
+                    <div id="ifElseResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q4">
-                <h3>Question 4: What is the first program every programmer writes?</h3>
-                <div class="option" onclick="checkAnswer(4, 'A', false)">A) Goodbye, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'B', true)">B) Hello, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'C', false)">C) Welcome, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'D', false)">D) Hi, Computer!</div>
+            <!-- Section 3: If-Elif-Else -->
+            <div class="section">
+                <h2><span class="emoji">🔀</span>Part 3: If-Elif-Else (Multiple Paths)</h2>
+                <p>What if we have MORE than two options? Use <strong>elif</strong> (else if) to check multiple conditions!</p>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>When to Use Elif</h3>
+                    <p>Use <strong>elif</strong> when you have multiple exclusive conditions (only one can be true):</p>
+                    <ul style="line-height: 2em; margin-top: 10px;">
+                        <li>Grade ranges (A, B, C, D, F)</li>
+                        <li>Age groups (child, teen, adult, senior)</li>
+                        <li>Temperature ranges (cold, warm, hot)</li>
+                        <li>Price tiers (budget, standard, premium)</li>
+                    </ul>
+                </div>
+
+                <div class="code-box">
+<span class="comment"># If-Elif-Else structure</span>
+<span class="keyword">if</span> condition1:
+    <span class="comment"># Runs if condition1 is True</span>
+    <span class="keyword">print</span>(<span class="string">"First condition"</span>)
+<span class="keyword">elif</span> condition2:
+    <span class="comment"># Runs if condition1 is False AND condition2 is True</span>
+    <span class="keyword">print</span>(<span class="string">"Second condition"</span>)
+<span class="keyword">elif</span> condition3:
+    <span class="comment"># Runs if previous conditions are False AND condition3 is True</span>
+    <span class="keyword">print</span>(<span class="string">"Third condition"</span>)
+<span class="keyword">else</span>:
+    <span class="comment"># Runs if ALL conditions are False</span>
+    <span class="keyword">print</span>(<span class="string">"None of the above"</span>)
+
+<span class="comment"># Example 1: Grade system</span>
+<span class="keyword">score</span> = <span class="number">85</span>
+
+<span class="keyword">if</span> score >= <span class="number">90</span>:
+    <span class="keyword">print</span>(<span class="string">"Grade: A"</span>)
+<span class="keyword">elif</span> score >= <span class="number">80</span>:
+    <span class="keyword">print</span>(<span class="string">"Grade: B"</span>)
+<span class="keyword">elif</span> score >= <span class="number">70</span>:
+    <span class="keyword">print</span>(<span class="string">"Grade: C"</span>)
+<span class="keyword">elif</span> score >= <span class="number">60</span>:
+    <span class="keyword">print</span>(<span class="string">"Grade: D"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Grade: F"</span>)
+
+<span class="comment"># Example 2: Age groups</span>
+<span class="keyword">age</span> = <span class="number">25</span>
+
+<span class="keyword">if</span> age < <span class="number">13</span>:
+    <span class="keyword">print</span>(<span class="string">"Child"</span>)
+<span class="keyword">elif</span> age < <span class="number">20</span>:
+    <span class="keyword">print</span>(<span class="string">"Teenager"</span>)
+<span class="keyword">elif</span> age < <span class="number">60</span>:
+    <span class="keyword">print</span>(<span class="string">"Adult"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Senior"</span>)
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Important: Order Matters!</h3>
+                    <p>Python checks conditions from TOP to BOTTOM and stops at the FIRST True condition!</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                        <div>
+                            <h4 style="color: #dc3545;">❌ Wrong Order</h4>
+                            <div class="code-box">
+<span class="keyword">score</span> = <span class="number">95</span>
+<span class="keyword">if</span> score >= <span class="number">60</span>:
+    <span class="keyword">print</span>(<span class="string">"D"</span>)  <span class="comment"># Always runs first!</span>
+<span class="keyword">elif</span> score >= <span class="number">90</span>:
+    <span class="keyword">print</span>(<span class="string">"A"</span>)  <span class="comment"># Never reached!</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="color: #28a745;">✅ Correct Order</h4>
+                            <div class="code-box">
+<span class="keyword">score</span> = <span class="number">95</span>
+<span class="keyword">if</span> score >= <span class="number">90</span>:
+    <span class="keyword">print</span>(<span class="string">"A"</span>)  <span class="comment"># Checks highest first!</span>
+<span class="keyword">elif</span> score >= <span class="number">60</span>:
+    <span class="keyword">print</span>(<span class="string">"D"</span>)  <span class="comment"># Checks lower values</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="question" id="q5">
-                <h3>Question 5: Which of these is a code editor we can use?</h3>
-                <div class="option" onclick="checkAnswer(5, 'A', false)">A) Microsoft Word</div>
-                <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
-                <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
-                <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            <!-- Section 4: Nested Conditionals -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Part 4: Nested Conditionals</h2>
+                <p>You can put if statements INSIDE other if statements! This is called <strong>nesting</strong>.</p>
+
+                <div class="code-box">
+<span class="comment"># Nested if statements</span>
+<span class="keyword">age</span> = <span class="number">20</span>
+<span class="keyword">has_license</span> = <span class="boolean">True</span>
+
+<span class="keyword">if</span> age >= <span class="number">18</span>:
+    <span class="keyword">print</span>(<span class="string">"You are old enough to drive"</span>)
+    
+    <span class="keyword">if</span> has_license:
+        <span class="keyword">print</span>(<span class="string">"You can drive!"</span>)
+    <span class="keyword">else</span>:
+        <span class="keyword">print</span>(<span class="string">"But you need a license first"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"You are too young to drive"</span>)
+
+<span class="comment"># Example 2: Login system with multiple checks</span>
+<span class="keyword">username</span> = <span class="string">"admin"</span>
+<span class="keyword">password</span> = <span class="string">"pass123"</span>
+<span class="keyword">is_active</span> = <span class="boolean">True</span>
+
+<span class="keyword">if</span> username == <span class="string">"admin"</span>:
+    <span class="keyword">if</span> password == <span class="string">"pass123"</span>:
+        <span class="keyword">if</span> is_active:
+            <span class="keyword">print</span>(<span class="string">"✅ Login successful!"</span>)
+        <span class="keyword">else</span>:
+            <span class="keyword">print</span>(<span class="string">"❌ Account is inactive"</span>)
+    <span class="keyword">else</span>:
+        <span class="keyword">print</span>(<span class="string">"❌ Wrong password"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"❌ User not found"</span>)
+                </div>
+
+                <div class="indentation-demo">
+                    <h4>Notice the Indentation Levels:</h4>
+                    <div class="indent-line indent-1">if outer_condition:  ← Level 1</div>
+                    <div class="indent-line indent-2">    if inner_condition:  ← Level 2 (nested)</div>
+                    <div class="indent-line indent-3">        print("Both true")  ← Level 3 (inside nested)</div>
+                </div>
             </div>
 
-            <div class="question" id="q6">
-                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
-                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
-                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
-                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
-                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
+            <!-- Game 1: Code Detective -->
+            <div class="section">
+                <h2>Game 1: Conditional Detective 🔍</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Predict what will be printed!</h3>
+                    <p>Read the code and figure out what will be displayed!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #fa709a; margin-bottom: 15px;">Challenge <span id="detectiveNum">1</span>/10</h4>
+                        
+                        <div class="code-box" id="detectiveCode"></div>
+                        
+                        <h4 style="margin: 20px 0;">What will be printed?</h4>
+                        <div id="detectiveOptions"></div>
+                        
+                        <div id="detectiveResult" style="margin-top: 20px;"></div>
+                        <div style="margin-top: 20px; font-size: 1.3em; font-weight: bold; text-align: center; color: #fa709a;">
+                            Score: <span id="detectiveScore">0</span>/10
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="finalMessage" class="celebration"></div>
+            <!-- Project 1: Password Checker -->
+            <div class="section">
+                <h2><span class="emoji">🔐</span>Project 1: Password Strength Checker</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Build a password security system!</h3>
+                    <p>Check if passwords are weak, medium, or strong based on length!</p>
+                    
+                    <div class="password-checker">
+                        <h3 style="color: #fa709a; margin-bottom: 20px; text-align: center;">🔐 Password Strength Checker 🔐</h3>
+                        
+                        <div class="info-box">
+                            <h4>🎯 Password Rules:</h4>
+                            <ul style="line-height: 2em;">
+                                <li><strong>Weak:</strong> Less than 6 characters</li>
+                                <li><strong>Medium:</strong> 6 to 10 characters</li>
+                                <li><strong>Strong:</strong> More than 10 characters</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">🔑 Enter Password:</label>
+                            <input type="password" id="passwordInput" placeholder="Enter a password" style="width: 100%; max-width: 100%;">
+                            <div style="margin-top: 10px;">
+                                <input type="checkbox" id="showPassword" onclick="togglePassword()">
+                                <label for="showPassword">Show password</label>
+                            </div>
+                        </div>
+
+                        <button class="game-button" onclick="checkPassword()" style="width: 100%;">Check Strength 🔍</button>
+
+                        <div id="passwordResult"></div>
+
+                        <div id="passwordCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #fa709a; margin-bottom: 10px;">📝 Python Code Behind This:</h4>
+                            <div class="code-box" id="passwordCodeDisplay"></div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h3><span class="emoji">💡</span>How It Works:</h3>
+                        <ol style="font-size: 1.1em; line-height: 2em;">
+                            <li><strong>Get password:</strong> User enters a password</li>
+                            <li><strong>Check length:</strong> Use <code>len(password)</code></li>
+                            <li><strong>Use if-elif-else:</strong> Check different length ranges</li>
+                            <li><strong>Display result:</strong> Show strength and advice</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2: Grade Calculator -->
+            <div class="section">
+                <h2><span class="emoji">📝</span>Project 2: Grade Calculator (A-F System)</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Build a complete grading system!</h3>
+                    <p>Convert numerical scores to letter grades with feedback!</p>
+                    
+                    <div class="grade-calculator">
+                        <h3 style="color: #fa709a; margin-bottom: 20px; text-align: center;">📚 Grade Calculator 📚</h3>
+                        
+                        <div class="info-box">
+                            <h4>📊 Grading Scale:</h4>
+                            <ul style="line-height: 2em;">
+                                <li><strong>A:</strong> 90-100 (Excellent!)</li>
+                                <li><strong>B:</strong> 80-89 (Good Job!)</li>
+                                <li><strong>C:</strong> 70-79 (Satisfactory)</li>
+                                <li><strong>D:</strong> 60-69 (Needs Improvement)</li>
+                                <li><strong>F:</strong> Below 60 (Failing)</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">📊 Enter Score (0-100):</label>
+                            <input type="number" id="scoreInput" placeholder="e.g., 85" min="0" max="100" style="width: 100%; max-width: 100%;">
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">📖 Subject (optional):</label>
+                            <input type="text" id="subjectInput" placeholder="e.g., Math, Science" style="width: 100%; max-width: 100%;">
+                        </div>
+
+                        <button class="game-button" onclick="calculateGrade()" style="width: 100%;">Calculate Grade 🎯</button>
+
+                        <div id="gradeResult"></div>
+
+                        <div id="gradeCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #fa709a; margin-bottom: 10px;">📝 Python Code Behind This:</h4>
+                            <div class="code-box" id="gradeCodeDisplay"></div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h3><span class="emoji">💡</span>How It Works:</h3>
+                        <ol style="font-size: 1.1em; line-height: 2em;">
+                            <li><strong>Get score:</strong> User enters numerical score (0-100)</li>
+                            <li><strong>Use if-elif-else:</strong> Check score ranges from highest to lowest</li>
+                            <li><strong>Assign grade:</strong> A, B, C, D, or F based on score</li>
+                            <li><strong>Give feedback:</strong> Provide encouraging or constructive message</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 2: Build the Condition -->
+            <div class="section">
+                <h2>Game 2: Build the Condition 🏗️</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Complete the if statement!</h3>
+                    <p>Fill in the missing condition to make the code work!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #fa709a;">Challenge <span id="builderNum">1</span>/8</h4>
+                        
+                        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                            <p id="builderTask" style="font-size: 1.2em; margin-bottom: 15px;"></p>
+                            <div class="code-box" id="builderCode"></div>
+                        </div>
+                        
+                        <h4 style="margin: 20px 0;">What condition should go in the if statement?</h4>
+                        <div id="builderOptions"></div>
+                        
+                        <div id="builderResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #fa709a; text-align: center;">
+                            Score: <span id="builderScore">0</span>/8
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <h2 style="text-align: center; color: #fa709a;"><span class="emoji">📝</span>Final Quiz!</h2>
+                <p style="text-align: center; font-size: 1.2em;">Test your knowledge about conditional statements!</p>
+
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: What symbol comes after an if statement?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 0, false)">A) Semicolon (;)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 1, true)">B) Colon (:)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 2, false)">C) Comma (,)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 3, false)">D) Period (.)</div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: How many spaces should you indent in Python?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 0, false)">A) 2 spaces</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 1, true)">B) 4 spaces</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 2, false)">C) 8 spaces</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 3, false)">D) No indentation needed</div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: When does the else block run?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 0, false)">A) When the if condition is True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 1, true)">B) When the if condition is False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 2, false)">C) Always</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 3, false)">D) Never</div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: What is elif short for?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 0, true)">A) else if</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 1, false)">B) else in false</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 2, false)">C) element if</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 3, false)">D) end if</div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: Can you have multiple elif statements?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 0, true)">A) Yes</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 1, false)">B) No</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 2, false)">C) Only 2</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 3, false)">D) Only 3</div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <h3>Question 6: What is a nested if statement?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 0, true)">A) An if statement inside another if</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 1, false)">B) An if without else</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 2, false)">C) Multiple elif statements</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 3, false)">D) An error in code</div>
+                </div>
+
+                <div class="quiz-question" id="q7">
+                    <h3>Question 7: In if-elif-else, which runs if all conditions are False?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 0, false)">A) if block</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 1, false)">B) elif block</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 2, true)">C) else block</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 3, false)">D) Nothing runs</div>
+                </div>
+
+                <div class="quiz-question" id="q8">
+                    <h3>Question 8: What happens if you forget the colon after if?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 0, false)">A) Nothing</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 1, false)">B) It works fine</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 2, true)">C) Syntax error</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 3, false)">D) Warning only</div>
+                </div>
+
+                <button class="game-button" onclick="calculateScore()" style="display: block; margin: 20px auto;">Submit Quiz</button>
+                <div class="score-display" id="quizScore" style="display: none;"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Lecture Summary</h2>
+                <div class="highlight-box">
+                    <h3>What We Learned Today:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ Simple <code>if</code> statements</li>
+                        <li>✅ <code>if-else</code> for two paths</li>
+                        <li>✅ <code>if-elif-else</code> for multiple paths</li>
+                        <li>✅ Nested conditionals (if inside if)</li>
+                        <li>✅ Importance of indentation</li>
+                        <li>✅ Built a password checker</li>
+                        <li>✅ Built a grade calculator</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3><span class="emoji">🏠</span>Practice at Home:</h3>
+                    <ol style="font-size: 1.1em; line-height: 2em;">
+                        <li>Create a BMI calculator with health advice</li>
+                        <li>Build a rock-paper-scissors game</li>
+                        <li>Make a movie ticket price calculator (age-based pricing)</li>
+                        <li>Create a temperature converter with unit validation</li>
+                        <li>Build a simple quiz with score calculation</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Common Mistakes to Avoid:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>Forgetting the colon (:) after if/elif/else</li>
+                        <li>Wrong indentation (use 4 spaces)</li>
+                        <li>Using = instead of == for comparison</li>
+                        <li>Wrong order in elif chains (check highest values first)</li>
+                        <li>Missing else when you need a default case</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game 1: Robot Navigation
-        let robotPos = 0;
-        const targetPos = 24;
-        
-        function createGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                if (i === targetPos) {
-                    cell.className += ' target';
-                    cell.textContent = '⭐';
-                }
-                if (i === robotPos) {
-                    cell.textContent = '🤖';
-                }
-                grid.appendChild(cell);
-            }
-        }
-        
-        function moveRobot(direction) {
-            let newPos = robotPos;
-            switch(direction) {
-                case 'up':
-                    if (robotPos >= 5) newPos -= 5;
-                    break;
-                case 'down':
-                    if (robotPos < 20) newPos += 5;
-                    break;
-                case 'left':
-                    if (robotPos % 5 !== 0) newPos -= 1;
-                    break;
-                case 'right':
-                    if (robotPos % 5 !== 4) newPos += 1;
-                    break;
+        let quizAnswers = {};
+
+        // Simple If Test
+        function testSimpleIf() {
+            const num = parseInt(document.getElementById('simpleIfNum').value);
+            const result = document.getElementById('simpleIfResult');
+            
+            let output = '<div style="margin-top: 20px; background: white; padding: 25px; border-radius: 10px; border: 3px solid #fa709a;">';
+            output += '<h4 style="color: #fa709a;">Testing number: ' + num + '</h4>';
+            output += '<div class="code-box">';
+            
+            if (num > 0) {
+                output += '\n<span class="keyword">if</span> num > <span class="number">0</span>:\n';
+                output += '    <span class="keyword">print</span>(<span class="string">"Positive number"</span>)  <span class="comment"># ✅ This runs!</span>\n\n';
+            } else {
+                output += '\n<span class="keyword">if</span> num > <span class="number">0</span>:\n';
+                output += '    <span class="keyword">print</span>(<span class="string">"Positive number"</span>)  <span class="comment"># ❌ Skipped</span>\n\n';
             }
             
-            robotPos = newPos;
-            createGrid();
-            
-            if (robotPos === targetPos) {
-                document.getElementById('gameMessage').innerHTML = '🎉 Congratulations! You did it!';
+            if (num % 2 === 0) {
+                output += '<span class="keyword">if</span> num % <span class="number">2</span> == <span class="number">0</span>:\n';
+                output += '    <span class="keyword">print</span>(<span class="string">"Even number"</span>)  <span class="comment"># ✅ This runs!</span>\n\n';
+            } else {
+                output += '<span class="keyword">if</span> num % <span class="number">2</span> == <span class="number">0</span>:\n';
+                output += '    <span class="keyword">print</span>(<span class="string">"Even number"</span>)  <span class="comment"># ❌ Skipped</span>\n\n';
             }
-        }
-        
-        function resetGame() {
-            robotPos = 0;
-            createGrid();
-            document.getElementById('gameMessage').innerHTML = '';
-        }
-        
-        // Game 2: Code Simulator
-        function runUserCode() {
-            const code = document.getElementById('userCode').value;
-            const output = document.getElementById('output');
-            if (code) {
-                output.innerHTML += code + '<br>';
+            
+            if (num >= 10) {
+                output += '<span class="keyword">if</span> num >= <span class="number">10</span>:\n';
+                output += '    <span class="keyword">print</span>(<span class="string">"Two digits or more"</span>)  <span class="comment"># ✅ This runs!</span>';
+            } else {
+                output += '<span class="keyword">if</span> num >= <span class="number">10</span>:\n';
+                output += '    <span class="keyword">print</span>(<span class="string">"Two digits or more"</span>)  <span class="comment"># ❌ Skipped</span>';
             }
+            
+            output += '</div></div>';
+            result.innerHTML = output;
         }
-        
-        function clearOutput() {
-            document.getElementById('output').innerHTML = '';
+
+        // If-Else Test
+        function testIfElse() {
+            const age = parseInt(document.getElementById('ifElseAge').value);
+            const result = document.getElementById('ifElseResult');
+            
+            const canVote = age >= 18;
+            const canDrive = age >= 16;
+            
+            result.innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 25px; border-radius: 10px; border: 3px solid #fa709a;">
+                    <h4 style="color: #fa709a;">Age: ${age}</h4>
+                    
+                    <div class="code-box">
+<span class="keyword">if</span> age >= <span class="number">18</span>:
+    <span class="keyword">print</span>(<span class="string">"Can vote"</span>)  ${canVote ? '<span class="comment"># ✅ Runs</span>' : '<span class="comment"># ❌ Skipped</span>'}
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Cannot vote"</span>)  ${!canVote ? '<span class="comment"># ✅ Runs</span>' : '<span class="comment"># ❌ Skipped</span>'}
+
+<span class="keyword">if</span> age >= <span class="number">16</span>:
+    <span class="keyword">print</span>(<span class="string">"Can drive"</span>)  ${canDrive ? '<span class="comment"># ✅ Runs</span>' : '<span class="comment"># ❌ Skipped</span>'}
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Cannot drive"</span>)  ${!canDrive ? '<span class="comment"># ✅ Runs</span>' : '<span class="comment"># ❌ Skipped</span>'}
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: ${canVote ? '#d4edda' : '#f8d7da'}; border-radius: 10px;">
+                        <strong>Results:</strong><br>
+                        Voting: ${canVote ? '✅ Eligible' : '❌ Not eligible'}<br>
+                        Driving: ${canDrive ? '✅ Eligible' : '❌ Not eligible'}
+                    </div>
+                </div>
+            `;
         }
-        
-        // Game 3: Animation
-        function animateCode() {
-            const output = document.getElementById('animationOutput');
-            output.innerHTML = '';
+
+        // Detective Game
+        let detectiveLevel = 0;
+        let detectiveScore = 0;
+        const detectiveChallenges = [
+            {
+                code: 'age = 15\nif age >= 18:\n    print("Adult")\nelse:\n    print("Minor")',
+                options: ['"Adult"', '"Minor"', 'Both', 'Nothing'],
+                answer: 1
+            },
+            {
+                code: 'score = 95\nif score >= 90:\n    print("A")\nelif score >= 80:\n    print("B")',
+                options: ['"A"', '"B"', 'Both', 'Nothing'],
+                answer: 0
+            },
+            {
+                code: 'x = 10\nif x > 5:\n    print("Big")',
+                options: ['"Big"', 'Nothing', 'Error', '"Small"'],
+                answer: 0
+            },
+            {
+                code: 'num = 7\nif num % 2 == 0:\n    print("Even")\nelse:\n    print("Odd")',
+                options: ['"Even"', '"Odd"', 'Both', 'Nothing'],
+                answer: 1
+            },
+            {
+                code: 'temp = 25\nif temp > 30:\n    print("Hot")\nelif temp > 20:\n    print("Warm")\nelse:\n    print("Cold")',
+                options: ['"Hot"', '"Warm"', '"Cold"', 'Nothing'],
+                answer: 1
+            },
+            {
+                code: 'password = "abc"\nif password == "xyz":\n    print("Correct")\nelse:\n    print("Wrong")',
+                options: ['"Correct"', '"Wrong"', 'Both', 'Error'],
+                answer: 1
+            },
+            {
+                code: 'grade = 75\nif grade >= 90:\n    print("A")\nelif grade >= 80:\n    print("B")\nelif grade >= 70:\n    print("C")',
+                options: ['"A"', '"B"', '"C"', 'Nothing'],
+                answer: 2
+            },
+            {
+                code: 'x = 5\nif x > 10:\n    print("A")\nif x > 0:\n    print("B")',
+                options: ['"A"', '"B"', 'Both', 'Nothing'],
+                answer: 1
+            },
+            {
+                code: 'age = 20\nlicense = True\nif age >= 18:\n    if license:\n        print("Can drive")',
+                options: ['"Can drive"', 'Nothing', 'Error', '"Cannot drive"'],
+                answer: 0
+            },
+            {
+                code: 'score = 60\nif score >= 60:\n    print("Pass")\nelse:\n    print("Fail")',
+                options: ['"Pass"', '"Fail"', 'Both', 'Nothing'],
+                answer: 0
+            }
+        ];
+
+        function loadDetective() {
+            if (detectiveLevel >= detectiveChallenges.length) {
+                showDetectiveEnd();
+                return;
+            }
+
+            const challenge = detectiveChallenges[detectiveLevel];
+            document.getElementById('detectiveNum').textContent = detectiveLevel + 1;
+            document.getElementById('detectiveCode').textContent = challenge.code;
             
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 1<br>';
-            }, 500);
+            const optionsDiv = document.getElementById('detectiveOptions');
+            optionsDiv.innerHTML = '';
             
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '';
-                document.getElementById('line2').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 2<br>';
-            }, 1500);
-            
-            setTimeout(() => {
-                document.getElementById('line2').style.background = '';
-                document.getElementById('line3').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 3<br>';
-            }, 2500);
-            
-            setTimeout(() => {
-                document.getElementById('line3').style.background = '';
-            }, 3500);
-        }
-        
-        // Quiz
-        let correctAnswers = 0;
-        let answeredQuestions = new Set();
-        
-        function checkAnswer(questionNum, option, isCorrect) {
-            if (answeredQuestions.has(questionNum)) return;
-            
-            answeredQuestions.add(questionNum);
-            const question = document.getElementById('q' + questionNum);
-            const options = question.querySelectorAll('.option');
-            
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.startsWith(option)) {
-                    opt.className = isCorrect ? 'option correct' : 'option wrong';
-                }
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkDetective(i);
+                optionsDiv.appendChild(btn);
             });
             
-            if (isCorrect) {
-                correctAnswers++;
-            }
-            
-            updateScore();
-            
-            if (answeredQuestions.size === 6) {
-                showFinalMessage();
-            }
+            document.getElementById('detectiveResult').innerHTML = '';
         }
-        
-        function updateScore() {
-            document.getElementById('score').innerHTML = 
-                `Score: ${correctAnswers} / ${answeredQuestions.size}`;
-        }
-        
-        function showFinalMessage() {
-            const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 6) {
-                finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 4) {
-                finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
+
+        function checkDetective(choice) {
+            const challenge = detectiveChallenges[detectiveLevel];
+            const buttons = document.querySelectorAll('#detectiveOptions .detective-option');
+            const result = document.getElementById('detectiveResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.answer) {
+                detectiveScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                buttons[choice].classList.add('correct');
             } else {
-                finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.options[challenge.answer] + '</div>';
+                buttons[choice].classList.add('incorrect');
+                buttons[challenge.answer].classList.add('correct');
             }
+
+            document.getElementById('detectiveScore').textContent = detectiveScore;
+            detectiveLevel++;
+
+            setTimeout(loadDetective, 2500);
         }
-        
+
+        function showDetectiveEnd() {
+            const container = document.querySelector('#detectiveNum').closest('.game-container');
+            const percentage = (detectiveScore / detectiveChallenges.length * 100).toFixed(0);
+
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎉 Detective Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${detectiveScore}/${detectiveChallenges.length} (${percentage}%)</p>
+                    <button class="game-button" onclick="resetDetective()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetDetective() {
+            detectiveLevel = 0;
+            detectiveScore = 0;
+            document.getElementById('detectiveScore').textContent = '0';
+            loadDetective();
+        }
+
+        // Password Checker
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+        }
+
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const result = document.getElementById('passwordResult');
+            const codeDiv = document.getElementById('passwordCode');
+            const codeDisplay = document.getElementById('passwordCodeDisplay');
+
+            if (!password) {
+                result.innerHTML = '<div class="error-message">Please enter a password!</div>';
+                return;
+            }
+
+            const length = password.length;
+            let strength, message, className;
+
+            if (length < 6) {
+                strength = 'Weak';
+                message = '⚠️ Too short! Use at least 6 characters.';
+                className = 'strength-weak';
+            } else if (length <= 10) {
+                strength = 'Medium';
+                message = '👍 Good! Consider making it longer.';
+                className = 'strength-medium';
+            } else {
+                strength = 'Strong';
+                message = '✅ Excellent! Very secure password!';
+                className = 'strength-strong';
+            }
+
+            result.innerHTML = `
+                <div class="password-result ${className}">
+                    <h3>Password Strength: ${strength}</h3>
+                    <p style="margin-top: 10px;">Length: ${length} characters</p>
+                    <p style="margin-top: 10px;">${message}</p>
+                </div>
+            `;
+
+            codeDiv.style.display = 'block';
+            codeDisplay.innerHTML = `
+<span class="comment"># Get password from user</span>
+<span class="keyword">password</span> = <span class="function">input</span>(<span class="string">"Enter password: "</span>)
+<span class="keyword">length</span> = <span class="function">len</span>(password)
+
+<span class="comment"># Check password strength</span>
+<span class="keyword">if</span> length < <span class="number">6</span>:
+    <span class="keyword">print</span>(<span class="string">"Weak - Too short!"</span>)
+<span class="keyword">elif</span> length <= <span class="number">10</span>:
+    <span class="keyword">print</span>(<span class="string">"Medium - Good!"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"Strong - Excellent!"</span>)
+
+<span class="comment"># Your password: "${password}" - ${strength}</span>
+            `;
+        }
+
+        // Grade Calculator
+        function calculateGrade() {
+            const score = parseInt(document.getElementById('scoreInput').value);
+            const subject = document.getElementById('subjectInput').value || 'this subject';
+            const result = document.getElementById('gradeResult');
+            const codeDiv = document.getElementById('gradeCode');
+            const codeDisplay = document.getElementById('gradeCodeDisplay');
+
+            if (isNaN(score) || score < 0 || score > 100) {
+                result.innerHTML = '<div class="error-message">Please enter a valid score between 0 and 100!</div>';
+                return;
+            }
+
+            let grade, message, className;
+
+            if (score >= 90) {
+                grade = 'A';
+                message = '🌟 Outstanding! Excellent work!';
+                className = 'grade-a';
+            } else if (score >= 80) {
+                grade = 'B';
+                message = '👍 Great job! Keep it up!';
+                className = 'grade-b';
+            } else if (score >= 70) {
+                grade = 'C';
+                message = '📚 Good effort! You can do better!';
+                className = 'grade-c';
+            } else if (score >= 60) {
+                grade = 'D';
+                message = '⚠️ Needs improvement. Study harder!';
+                className = 'grade-d';
+            } else {
+                grade = 'F';
+                message = '❌ Failing. Need to work much harder!';
+                className = 'grade-f';
+            }
+
+            result.innerHTML = `
+                <div class="grade-result ${className}">
+                    <h2 style="font-size: 3em; margin-bottom: 10px;">${grade}</h2>
+                    <p style="font-size: 1.3em;">Score: ${score}/100</p>
+                    <p style="font-size: 1.1em; margin-top: 10px;">Subject: ${subject}</p>
+                    <p style="font-size: 1.2em; margin-top: 15px;">${message}</p>
+                </div>
+            `;
+
+            codeDiv.style.display = 'block';
+            codeDisplay.innerHTML = `
+<span class="comment"># Get score from user</span>
+<span class="keyword">score</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter score: "</span>))
+
+<span class="comment"># Calculate grade using if-elif-else</span>
+<span class="keyword">if</span> score >= <span class="number">90</span>:
+    <span class="keyword">grade</span> = <span class="string">"A"</span>
+    <span class="keyword">print</span>(<span class="string">"Outstanding!"</span>)
+<span class="keyword">elif</span> score >= <span class="number">80</span>:
+    <span class="keyword">grade</span> = <span class="string">"B"</span>
+    <span class="keyword">print</span>(<span class="string">"Great job!"</span>)
+<span class="keyword">elif</span> score >= <span class="number">70</span>:
+    <span class="keyword">grade</span> = <span class="string">"C"</span>
+    <span class="keyword">print</span>(<span class="string">"Good effort!"</span>)
+<span class="keyword">elif</span> score >= <span class="number">60</span>:
+    <span class="keyword">grade</span> = <span class="string">"D"</span>
+    <span class="keyword">print</span>(<span class="string">"Needs improvement"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">grade</span> = <span class="string">"F"</span>
+    <span class="keyword">print</span>(<span class="string">"Failing"</span>)
+
+<span class="comment"># Result: Score ${score} = Grade ${grade}</span>
+            `;
+        }
+
+        // Builder Game
+        let builderLevel = 0;
+        let builderScore = 0;
+        const builderChallenges = [
+            {
+                task: 'Print "Adult" if age is 18 or older',
+                code: 'age = 20\nif ___:\n    print("Adult")',
+                options: ['age >= 18', 'age > 18', 'age == 18', 'age < 18'],
+                answer: 0
+            },
+            {
+                task: 'Print "Even" if number is even',
+                code: 'num = 8\nif ___:\n    print("Even")',
+                options: ['num % 2 == 0', 'num / 2 == 0', 'num % 2 == 1', 'num == 2'],
+                answer: 0
+            },
+            {
+                task: 'Print "Pass" if score is 60 or more',
+                code: 'score = 75\nif ___:\n    print("Pass")',
+                options: ['score >= 60', 'score > 60', 'score == 60', 'score <= 60'],
+                answer: 0
+            },
+            {
+                task: 'Print "Match" if password equals "secret"',
+                code: 'password = "secret"\nif ___:\n    print("Match")',
+                options: ['password == "secret"', 'password = "secret"', 'password != "secret"', 'password > "secret"'],
+                answer: 0
+            },
+            {
+                task: 'Print "Positive" if x is greater than 0',
+                code: 'x = 5\nif ___:\n    print("Positive")',
+                options: ['x > 0', 'x >= 0', 'x < 0', 'x == 0'],
+                answer: 0
+            },
+            {
+                task: 'Print "Cold" if temperature is below 15',
+                code: 'temp = 10\nif ___:\n    print("Cold")',
+                options: ['temp < 15', 'temp <= 15', 'temp > 15', 'temp == 15'],
+                answer: 0
+            },
+            {
+                task: 'Print "Teen" if age is between 13 and 19',
+                code: 'age = 15\nif ___:\n    print("Teen")',
+                options: ['age >= 13 and age < 20', 'age == 13', 'age > 13', 'age < 20'],
+                answer: 0
+            },
+            {
+                task: 'Print "Different" if a is not equal to b',
+                code: 'a = 5\nb = 10\nif ___:\n    print("Different")',
+                options: ['a != b', 'a == b', 'a > b', 'a < b'],
+                answer: 0
+            }
+        ];
+
+        function loadBuilder() {
+            if (builderLevel >= builderChallenges.length) {
+                showBuilderEnd();
+                return;
+            }
+
+            const challenge = builderChallenges[builderLevel];
+            document.getElementById('builderNum').textContent = builderLevel + 1;
+            document.getElementById('builderTask').textContent = challenge.task;
+            document.getElementById('builderCode').textContent = challenge.code;
+
+            const optionsDiv = document.getElementById('builderOptions');
+            optionsDiv.innerHTML = '';
+
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkBuilder(i);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('builderResult').innerHTML = '';
+        }
+
+        function checkBuilder(choice) {
+            const challenge = builderChallenges[builderLevel];
+            const buttons = document.querySelectorAll('#builderOptions .detective-option');
+            const result = document.getElementById('builderResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.answer) {
+                builderScore++;
+                result.innerHTML = '<div class="success-message">✅ Perfect!</div>';
+                buttons[choice].classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The correct answer is: ' + challenge.options[challenge.answer] + '</div>';
+                buttons[choice].classList.add('incorrect');
+                buttons[challenge.answer].classList.add('correct');
+            }
+
+            document.getElementById('builderScore').textContent = builderScore;
+            builderLevel++;
+
+            setTimeout(loadBuilder, 2500);
+        }
+
+        function showBuilderEnd() {
+            const container = document.querySelector('#builderNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🏗️ Builder Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${builderScore}/${builderChallenges.length}</p>
+                    <button class="game-button" onclick="resetBuilder()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetBuilder() {
+            builderLevel = 0;
+            builderScore = 0;
+            document.getElementById('builderScore').textContent = '0';
+            loadBuilder();
+        }
+
+        // Quiz Functions
+        function selectAnswer(questionId, optionIndex, isCorrect) {
+            const question = document.getElementById(questionId);
+            const options = question.querySelectorAll('.quiz-option');
+
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            options[optionIndex].classList.add('selected');
+            quizAnswers[questionId] = isCorrect;
+        }
+
+        function calculateScore() {
+            const totalQuestions = 8;
+            let correctAnswers = 0;
+
+            Object.keys(quizAnswers).forEach(qId => {
+                const question = document.getElementById(qId);
+                const selected = question.querySelector('.selected');
+                if (selected) {
+                    if (quizAnswers[qId]) {
+                        selected.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        const options = question.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.onclick.toString().includes('true')) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                }
+            });
+
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const scoreDisplay = document.getElementById('quizScore');
+
+            let message = '';
+            let emoji = '';
+
+            if (percentage === 100) {
+                message = 'Perfect Score!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Great Job!';
+                emoji = '🌟';
+            } else if (percentage >= 60) {
+                message = 'Good Effort!';
+                emoji = '👍';
+            } else {
+                message = 'Keep Learning!';
+                emoji = '📚';
+            }
+
+            scoreDisplay.innerHTML = `
+                ${emoji} ${message}<br>
+                You scored ${correctAnswers} out of ${totalQuestions} (${percentage.toFixed(0)}%)
+            `;
+            scoreDisplay.style.display = 'block';
+        }
+
         // Initialize
-        createGrid();
+        window.onload = function() {
+            loadDetective();
+            loadBuilder();
+        };
     </script>
 </body>
 </html>
