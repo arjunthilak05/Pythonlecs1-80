@@ -3,561 +3,1490 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 1: Welcome to Programming</title>
+    <title>Lecture 10: Logical Operators</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
-        h1 {
-            color: #667eea;
+
+        header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
+        }
+
+        header h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        
-        h2 {
-            color: #764ba2;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
-        
+
+        .content {
+            padding: 40px;
+        }
+
         .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9ff;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #4facfe;
         }
-        
-        .game-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+        .section h2 {
+            color: #4facfe;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "Python";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #4facfe;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .boolean {
+            color: #61afef;
+            font-weight: bold;
+        }
+
+        .operator {
+            color: #c678dd;
+            font-weight: bold;
+        }
+
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .truth-table th {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .truth-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+        }
+
+        .truth-table tr:hover {
+            background: #e3f2fd;
+        }
+
+        .true-cell {
+            background: #d4edda;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .false-cell {
+            background: #f8d7da;
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .interactive-demo {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
-            color: white;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .robot {
-            font-size: 60px;
-            text-align: center;
+
+        .game-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 5px;
-            margin: 20px auto;
-            width: fit-content;
+
+        .game-button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        .cell {
-            width: 60px;
-            height: 60px;
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .game-button:active {
+            transform: translateY(0);
+        }
+
+        input[type="text"], input[type="password"], input[type="number"] {
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #4facfe;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .login-system {
             background: white;
-            border: 2px solid #764ba2;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .login-result {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .login-success {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            border: 3px solid #28a745;
+            color: #155724;
+        }
+
+        .login-failed {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border: 3px solid #dc3545;
+            color: #721c24;
+        }
+
+        .operator-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #4facfe;
+            transition: all 0.3s;
+        }
+
+        .operator-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .operator-symbol {
+            font-size: 3em;
+            color: #4facfe;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .operator-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .logic-demo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .logic-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #4facfe;
+        }
+
+        .quiz-option.selected {
+            background: #cfe2ff;
+            border-color: #4facfe;
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .score-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-top: 20px;
+        }
+
+        .detective-option {
+            background: white;
+            border: 3px solid #4facfe;
+            padding: 20px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .detective-option:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        .detective-option.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .detective-option.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .venn-diagram {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .venn-circles {
+            position: relative;
+            height: 200px;
+            margin: 30px auto;
+            max-width: 400px;
+        }
+
+        .circle {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            opacity: 0.6;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            border-radius: 8px;
-        }
-        
-        .cell.target {
-            background: #ffeb3b;
-        }
-        
-        button {
-            background: #667eea;
             color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background: #764ba2;
-            transform: scale(1.05);
-        }
-        
-        .code-box {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            font-size: 16px;
-        }
-        
-        .output-box {
-            background: #000;
-            color: #0f0;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            min-height: 50px;
-        }
-        
-        .quiz-box {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
-        }
-        
-        .question {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
-        
-        .option {
-            display: block;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f0f0f0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .option:hover {
-            background: #e0e0e0;
-        }
-        
-        .option.correct {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .option.wrong {
-            background: #f44336;
-            color: white;
-        }
-        
-        .controls {
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .line-highlight {
-            background: #ffeb3b;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        
-        #score {
-            text-align: center;
-            font-size: 24px;
             font-weight: bold;
-            color: #667eea;
-            margin: 20px 0;
+            font-size: 1.2em;
         }
-        
-        .celebration {
-            text-align: center;
-            font-size: 50px;
-            margin: 20px 0;
+
+        .circle-a {
+            background: #4facfe;
+            left: 0;
+            top: 25px;
+        }
+
+        .circle-b {
+            background: #00f2fe;
+            right: 0;
+            top: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .logic-demo {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Lecture 1: Welcome to Programming!</h1>
-        
-        <!-- Section 1: What is Programming -->
-        <div class="section">
-            <h2>🤖 What is Programming?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Programming is like giving instructions to a robot! Imagine you have a robot friend who is very smart but only understands specific commands. You need to tell them exactly what to do, step by step.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                For example, if you want the robot to make a sandwich, you can't just say "make a sandwich." You need to say:
-            </p>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px; margin-top: 10px;">
-                <li>Pick up the bread</li>
-                <li>Open the jar of peanut butter</li>
-                <li>Spread peanut butter on the bread</li>
-                <li>Put two slices together</li>
-            </ul>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                That's exactly what programming is! We write instructions (called <strong>code</strong>) that tell the computer exactly what to do!
-            </p>
-        </div>
+        <header>
+            <h1 class="floating">🎓 Lecture 10: Logical Operators 🔗</h1>
+            <p>Combine conditions and build complex logic!</p>
+        </header>
 
-        <!-- Game 1: Robot Navigation -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 1: Help the Robot Find the Star!</h2>
-            <p style="font-size: 18px;">Give the robot instructions to reach the ⭐ star!</p>
-            <div class="robot" id="robotDisplay">🤖</div>
-            <div class="grid" id="gameGrid"></div>
-            <div class="controls">
-                <button onclick="moveRobot('up')">⬆️ Up</button>
-                <button onclick="moveRobot('down')">⬇️ Down</button>
-                <button onclick="moveRobot('left')">⬅️ Left</button>
-                <button onclick="moveRobot('right')">➡️ Right</button>
-                <button onclick="resetGame()" style="background: #f5576c;">🔄 Reset</button>
-            </div>
-            <div id="gameMessage" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
-        </div>
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2><span class="emoji">🌟</span>Welcome to Logical Operators!</h2>
+                <p style="font-size: 1.2em;">So far we've checked single conditions. But what if you need to check <strong>multiple conditions</strong> at once? That's where <strong>logical operators</strong> come in!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>What You'll Learn Today</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ AND operator - both conditions must be True</li>
+                        <li>✅ OR operator - at least one must be True</li>
+                        <li>✅ NOT operator - reverse True/False</li>
+                        <li>✅ Complex boolean expressions</li>
+                        <li>✅ Combining multiple operators</li>
+                        <li>✅ Build a multi-factor login system</li>
+                    </ul>
+                </div>
 
-        <!-- Section 2: Installing Python -->
-        <div class="section">
-            <h2>💻 Installing Python and VS Code</h2>
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 1: Install Python</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Go to <strong>python.org</strong></li>
-                <li>Click on "Downloads"</li>
-                <li>Download Python (make sure to check "Add Python to PATH")</li>
-                <li>Run the installer and follow the instructions</li>
-            </ol>
-            
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 2: Install VS Code (or IDLE)</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li><strong>VS Code:</strong> Go to <strong>code.visualstudio.com</strong> and download</li>
-                <li><strong>IDLE:</strong> This comes with Python automatically!</li>
-            </ol>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Tip:</strong> VS Code is like a super-powered notebook for writing code. IDLE is simpler and great for beginners!
-            </p>
-        </div>
-
-        <!-- Section 3: First Program -->
-        <div class="section">
-            <h2>🎉 Your First Program: Hello, World!</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                The first program every programmer writes is "Hello, World!" It's a tradition! This program tells the computer to display a message on the screen.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                In Python, we use the <strong>print()</strong> command to display text. Here's how it looks:
-            </p>
-            <div class="code-box">
-                print("Hello, World!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8;">
-                When you run this code, the computer will show: <strong>Hello, World!</strong>
-            </p>
-        </div>
-
-        <!-- Game 2: Interactive Code Simulator -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 2: Try Writing Your Own Code!</h2>
-            <p style="font-size: 18px;">Type your own message in the box below and click "Run Code"!</p>
-            <div style="margin: 20px 0;">
-                <input type="text" id="userCode" placeholder='Type your message here...' 
-                       style="width: 100%; padding: 15px; font-size: 18px; border-radius: 8px; border: none;">
-            </div>
-            <div class="controls">
-                <button onclick="runUserCode()">▶️ Run Code</button>
-                <button onclick="clearOutput()" style="background: #f5576c;">🗑️ Clear</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="output"></div>
-        </div>
-
-        <!-- Section 4: How Computers Read Code -->
-        <div class="section">
-            <h2>📖 How Computers Read Code Line by Line</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Computers are very obedient but not very smart. They read your code <strong>one line at a time</strong>, from top to bottom, just like you read a book!
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                Let's look at an example:
-            </p>
-            <div class="code-box">
-                print("First, I say hello!")<br>
-                print("Then, I say goodbye!")<br>
-                print("And finally, I'm done!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                The computer will:
-            </p>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Read line 1 and print "First, I say hello!"</li>
-                <li>Then read line 2 and print "Then, I say goodbye!"</li>
-                <li>Finally read line 3 and print "And finally, I'm done!"</li>
-            </ol>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Remember:</strong> The order matters! The computer does exactly what you tell it, in the order you tell it.
-            </p>
-        </div>
-
-        <!-- Game 3: Code Order Challenge -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 3: Line by Line Execution</h2>
-            <p style="font-size: 18px;">Watch how the computer reads code one line at a time!</p>
-            <div class="code-box" id="animatedCode">
-                <div id="line1">print("I am line 1")</div>
-                <div id="line2">print("I am line 2")</div>
-                <div id="line3">print("I am line 3")</div>
-            </div>
-            <div class="controls">
-                <button onclick="animateCode()">▶️ Watch Execution</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="animationOutput"></div>
-        </div>
-
-        <!-- Section 5: Compilers vs Interpreters -->
-        <div class="section">
-            <h2>⚙️ What's a Compiler?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates the whole program before running it</li>
-                <li>Shows all errors at the end, together</li>
-                <li>Runs faster once compiled</li>
-                <li>Creates a separate file you can run anytime</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>🔍 What's an Interpreter?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates code one line at a time as it runs</li>
-                <li>Shows errors immediately when it hits that line</li>
-                <li>Slower execution than compiled programs</li>
-                <li>Always needs the original code to run</li>
-            </ul>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
-            </p>
-        </div>
-
-        <!-- Final Quiz -->
-        <div class="quiz-box">
-            <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
-            <div id="score"></div>
-            
-            <div class="question" id="q1">
-                <h3>Question 1: What is programming?</h3>
-                <div class="option" onclick="checkAnswer(1, 'A', false)">A) Playing video games</div>
-                <div class="option" onclick="checkAnswer(1, 'B', true)">B) Giving instructions to a computer</div>
-                <div class="option" onclick="checkAnswer(1, 'C', false)">C) Drawing pictures</div>
-                <div class="option" onclick="checkAnswer(1, 'D', false)">D) Writing stories</div>
+                <div class="info-box">
+                    <h3><span class="emoji">🤔</span>Real-World Examples</h3>
+                    <p style="font-size: 1.1em;">Logical operators are everywhere:</p>
+                    <ul style="font-size: 1.1em; line-height: 2em; margin-top: 10px;">
+                        <li>🔐 Login: Username correct <strong>AND</strong> password correct <strong>AND</strong> account active</li>
+                        <li>🎮 Level unlock: Score > 1000 <strong>OR</strong> Has premium <strong>OR</strong> Completed tutorial</li>
+                        <li>🎫 Movie ticket: Age >= 13 <strong>AND</strong> Has ticket <strong>AND NOT</strong> banned</li>
+                        <li>🛒 Discount: (Student <strong>OR</strong> Senior) <strong>AND</strong> First purchase</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q2">
-                <h3>Question 2: What command do we use to display text in Python?</h3>
-                <div class="option" onclick="checkAnswer(2, 'A', false)">A) show()</div>
-                <div class="option" onclick="checkAnswer(2, 'B', false)">B) display()</div>
-                <div class="option" onclick="checkAnswer(2, 'C', true)">C) print()</div>
-                <div class="option" onclick="checkAnswer(2, 'D', false)">D) write()</div>
+            <!-- Section 1: AND Operator -->
+            <div class="section">
+                <h2><span class="emoji">🤝</span>The AND Operator</h2>
+                <p>The <strong>and</strong> operator returns True only if <strong>BOTH</strong> conditions are True. If even one is False, the whole thing is False!</p>
+
+                <div class="operator-card">
+                    <div class="operator-symbol">and</div>
+                    <div class="operator-name">Logical AND</div>
+                    <p>Both conditions must be True</p>
+                    <div class="code-box">
+<span class="comment"># Basic AND syntax</span>
+<span class="keyword">if</span> condition1 <span class="operator">and</span> condition2:
+    <span class="keyword">print</span>(<span class="string">"Both are True!"</span>)
+
+<span class="comment"># Example 1: Login check</span>
+<span class="keyword">username</span> = <span class="string">"admin"</span>
+<span class="keyword">password</span> = <span class="string">"pass123"</span>
+
+<span class="keyword">if</span> username == <span class="string">"admin"</span> <span class="operator">and</span> password == <span class="string">"pass123"</span>:
+    <span class="keyword">print</span>(<span class="string">"✅ Login successful!"</span>)
+
+<span class="comment"># Example 2: Age and license check</span>
+<span class="keyword">age</span> = <span class="number">20</span>
+<span class="keyword">has_license</span> = <span class="boolean">True</span>
+
+<span class="keyword">if</span> age >= <span class="number">18</span> <span class="operator">and</span> has_license:
+    <span class="keyword">print</span>(<span class="string">"You can drive!"</span>)
+
+<span class="comment"># Example 3: Grade requirements</span>
+<span class="keyword">score</span> = <span class="number">85</span>
+<span class="keyword">attendance</span> = <span class="number">95</span>
+
+<span class="keyword">if</span> score >= <span class="number">80</span> <span class="operator">and</span> attendance >= <span class="number">90</span>:
+    <span class="keyword">print</span>(<span class="string">"Pass with honors!"</span>)
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">📊</span>AND Truth Table</h3>
+                    <p>See when AND returns True or False:</p>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Condition A</th>
+                            <th>Condition B</th>
+                            <th>A and B</th>
+                        </tr>
+                        <tr>
+                            <td class="true-cell">True</td>
+                            <td class="true-cell">True</td>
+                            <td class="true-cell">True</td>
+                        </tr>
+                        <tr>
+                            <td class="true-cell">True</td>
+                            <td class="false-cell">False</td>
+                            <td class="false-cell">False</td>
+                        </tr>
+                        <tr>
+                            <td class="false-cell">False</td>
+                            <td class="true-cell">True</td>
+                            <td class="false-cell">False</td>
+                        </tr>
+                        <tr>
+                            <td class="false-cell">False</td>
+                            <td class="false-cell">False</td>
+                            <td class="false-cell">False</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 15px; font-weight: bold;">Remember: BOTH must be True for AND to be True!</p>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try AND Operator!</h3>
+                    <p>Set the conditions and see how AND works:</p>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="andA" checked>
+                        <label for="andA" style="font-size: 1.2em;">Condition A is True</label>
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="andB" checked>
+                        <label for="andB" style="font-size: 1.2em;">Condition B is True</label>
+                    </div>
+                    
+                    <button class="game-button" onclick="testAND()">Test AND</button>
+                    
+                    <div id="andResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q3">
-                <h3>Question 3: How does a computer read code?</h3>
-                <div class="option" onclick="checkAnswer(3, 'A', false)">A) All at once</div>
-                <div class="option" onclick="checkAnswer(3, 'B', true)">B) One line at a time, from top to bottom</div>
-                <div class="option" onclick="checkAnswer(3, 'C', false)">C) From bottom to top</div>
-                <div class="option" onclick="checkAnswer(3, 'D', false)">D) In random order</div>
+            <!-- Section 2: OR Operator -->
+            <div class="section">
+                <h2><span class="emoji">🔀</span>The OR Operator</h2>
+                <p>The <strong>or</strong> operator returns True if <strong>AT LEAST ONE</strong> condition is True. Only False if ALL are False!</p>
+
+                <div class="operator-card">
+                    <div class="operator-symbol">or</div>
+                    <div class="operator-name">Logical OR</div>
+                    <p>At least one condition must be True</p>
+                    <div class="code-box">
+<span class="comment"># Basic OR syntax</span>
+<span class="keyword">if</span> condition1 <span class="operator">or</span> condition2:
+    <span class="keyword">print</span>(<span class="string">"At least one is True!"</span>)
+
+<span class="comment"># Example 1: Weekend check</span>
+<span class="keyword">day</span> = <span class="string">"Saturday"</span>
+
+<span class="keyword">if</span> day == <span class="string">"Saturday"</span> <span class="operator">or</span> day == <span class="string">"Sunday"</span>:
+    <span class="keyword">print</span>(<span class="string">"It's the weekend!"</span>)
+
+<span class="comment"># Example 2: Discount eligibility</span>
+<span class="keyword">is_student</span> = <span class="boolean">True</span>
+<span class="keyword">is_senior</span> = <span class="boolean">False</span>
+
+<span class="keyword">if</span> is_student <span class="operator">or</span> is_senior:
+    <span class="keyword">print</span>(<span class="string">"You get a discount!"</span>)
+
+<span class="comment"># Example 3: Access permission</span>
+<span class="keyword">is_admin</span> = <span class="boolean">False</span>
+<span class="keyword">is_owner</span> = <span class="boolean">True</span>
+<span class="keyword">has_key</span> = <span class="boolean">False</span>
+
+<span class="keyword">if</span> is_admin <span class="operator">or</span> is_owner <span class="operator">or</span> has_key:
+    <span class="keyword">print</span>(<span class="string">"Access granted!"</span>)
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">📊</span>OR Truth Table</h3>
+                    <p>See when OR returns True or False:</p>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Condition A</th>
+                            <th>Condition B</th>
+                            <th>A or B</th>
+                        </tr>
+                        <tr>
+                            <td class="true-cell">True</td>
+                            <td class="true-cell">True</td>
+                            <td class="true-cell">True</td>
+                        </tr>
+                        <tr>
+                            <td class="true-cell">True</td>
+                            <td class="false-cell">False</td>
+                            <td class="true-cell">True</td>
+                        </tr>
+                        <tr>
+                            <td class="false-cell">False</td>
+                            <td class="true-cell">True</td>
+                            <td class="true-cell">True</td>
+                        </tr>
+                        <tr>
+                            <td class="false-cell">False</td>
+                            <td class="false-cell">False</td>
+                            <td class="false-cell">False</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 15px; font-weight: bold;">Remember: Only ONE needs to be True for OR to be True!</p>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try OR Operator!</h3>
+                    <p>Set the conditions and see how OR works:</p>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="orA">
+                        <label for="orA" style="font-size: 1.2em;">Condition A is True</label>
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="orB">
+                        <label for="orB" style="font-size: 1.2em;">Condition B is True</label>
+                    </div>
+                    
+                    <button class="game-button" onclick="testOR()">Test OR</button>
+                    
+                    <div id="orResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q4">
-                <h3>Question 4: What is the first program every programmer writes?</h3>
-                <div class="option" onclick="checkAnswer(4, 'A', false)">A) Goodbye, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'B', true)">B) Hello, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'C', false)">C) Welcome, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'D', false)">D) Hi, Computer!</div>
+            <!-- Section 3: NOT Operator -->
+            <div class="section">
+                <h2><span class="emoji">🔄</span>The NOT Operator</h2>
+                <p>The <strong>not</strong> operator <strong>reverses</strong> a boolean value. True becomes False, and False becomes True!</p>
+
+                <div class="operator-card">
+                    <div class="operator-symbol">not</div>
+                    <div class="operator-name">Logical NOT</div>
+                    <p>Reverses True/False</p>
+                    <div class="code-box">
+<span class="comment"># Basic NOT syntax</span>
+<span class="keyword">if</span> <span class="operator">not</span> condition:
+    <span class="keyword">print</span>(<span class="string">"Condition is False!"</span>)
+
+<span class="comment"># Example 1: Checking if NOT logged in</span>
+<span class="keyword">is_logged_in</span> = <span class="boolean">False</span>
+
+<span class="keyword">if</span> <span class="operator">not</span> is_logged_in:
+    <span class="keyword">print</span>(<span class="string">"Please log in first"</span>)
+
+<span class="comment"># Example 2: Account active check</span>
+<span class="keyword">account_suspended</span> = <span class="boolean">False</span>
+
+<span class="keyword">if</span> <span class="operator">not</span> account_suspended:
+    <span class="keyword">print</span>(<span class="string">"Account is active"</span>)
+
+<span class="comment"># Example 3: Checking age (NOT a minor)</span>
+<span class="keyword">age</span> = <span class="number">25</span>
+<span class="keyword">is_minor</span> = age < <span class="number">18</span>
+
+<span class="keyword">if</span> <span class="operator">not</span> is_minor:
+    <span class="keyword">print</span>(<span class="string">"Adult access granted"</span>)
+
+<span class="comment"># NOT with comparisons</span>
+<span class="keyword">username</span> = <span class="string">"guest"</span>
+
+<span class="keyword">if</span> <span class="operator">not</span> username == <span class="string">"admin"</span>:
+    <span class="keyword">print</span>(<span class="string">"Limited access"</span>)
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">📊</span>NOT Truth Table</h3>
+                    <p>See how NOT reverses values:</p>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Condition</th>
+                            <th>not Condition</th>
+                        </tr>
+                        <tr>
+                            <td class="true-cell">True</td>
+                            <td class="false-cell">False</td>
+                        </tr>
+                        <tr>
+                            <td class="false-cell">False</td>
+                            <td class="true-cell">True</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 15px; font-weight: bold;">Remember: NOT flips the value!</p>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try NOT Operator!</h3>
+                    <p>Set the condition and see how NOT reverses it:</p>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="notA">
+                        <label for="notA" style="font-size: 1.2em;">Condition is True</label>
+                    </div>
+                    
+                    <button class="game-button" onclick="testNOT()">Test NOT</button>
+                    
+                    <div id="notResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q5">
-                <h3>Question 5: Which of these is a code editor we can use?</h3>
-                <div class="option" onclick="checkAnswer(5, 'A', false)">A) Microsoft Word</div>
-                <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
-                <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
-                <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            <!-- Section 4: Combining Operators -->
+            <div class="section">
+                <h2><span class="emoji">🔗</span>Combining Multiple Operators</h2>
+                <p>The real power comes when you <strong>combine</strong> and, or, and not together!</p>
+
+                <div class="code-box">
+<span class="comment"># Example 1: Complex login system</span>
+<span class="keyword">username</span> = <span class="string">"admin"</span>
+<span class="keyword">password</span> = <span class="string">"secret"</span>
+<span class="keyword">is_active</span> = <span class="boolean">True</span>
+<span class="keyword">is_banned</span> = <span class="boolean">False</span>
+
+<span class="keyword">if</span> username == <span class="string">"admin"</span> <span class="operator">and</span> password == <span class="string">"secret"</span> <span class="operator">and</span> is_active <span class="operator">and not</span> is_banned:
+    <span class="keyword">print</span>(<span class="string">"✅ Login successful!"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"❌ Login failed!"</span>)
+
+<span class="comment"># Example 2: Ticket pricing</span>
+<span class="keyword">age</span> = <span class="number">15</span>
+<span class="keyword">is_student</span> = <span class="boolean">True</span>
+<span class="keyword">is_weekend</span> = <span class="boolean">True</span>
+
+<span class="keyword">if</span> (age < <span class="number">18</span> <span class="operator">or</span> is_student) <span class="operator">and not</span> is_weekend:
+    <span class="keyword">print</span>(<span class="string">"Discount available!"</span>)
+
+<span class="comment"># Example 3: Access control</span>
+<span class="keyword">is_admin</span> = <span class="boolean">False</span>
+<span class="keyword">is_moderator</span> = <span class="boolean">True</span>
+<span class="keyword">has_permission</span> = <span class="boolean">True</span>
+<span class="keyword">is_verified</span> = <span class="boolean">True</span>
+
+<span class="keyword">if</span> (is_admin <span class="operator">or</span> is_moderator) <span class="operator">and</span> has_permission <span class="operator">and</span> is_verified:
+    <span class="keyword">print</span>(<span class="string">"Full access granted!"</span>)
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Order of Operations!</h3>
+                    <p>Python evaluates logical operators in this order:</p>
+                    <ol style="font-size: 1.1em; line-height: 2em; margin-top: 10px;">
+                        <li><strong>not</strong> (highest priority)</li>
+                        <li><strong>and</strong> (medium priority)</li>
+                        <li><strong>or</strong> (lowest priority)</li>
+                    </ol>
+                    <p style="margin-top: 10px;">Use <strong>parentheses ( )</strong> to make your logic clear!</p>
+                    <div class="code-box">
+<span class="comment"># Without parentheses - confusing!</span>
+<span class="keyword">if</span> a <span class="operator">or</span> b <span class="operator">and</span> c:  <span class="comment"># Which is evaluated first?</span>
+
+<span class="comment"># With parentheses - clear!</span>
+<span class="keyword">if</span> a <span class="operator">or</span> (b <span class="operator">and</span> c):  <span class="comment"># Much better!</span>
+<span class="keyword">if</span> (a <span class="operator">or</span> b) <span class="operator">and</span> c:  <span class="comment"># Different meaning!</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="question" id="q6">
-                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
-                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
-                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
-                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
-                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
+            <!-- Game 1: Logic Detective -->
+            <div class="section">
+                <h2>Game 1: Logic Detective 🔍</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Predict the result!</h3>
+                    <p>Look at the code and decide if it will print True or False!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #4facfe; margin-bottom: 15px;">Challenge <span id="detectiveNum">1</span>/10</h4>
+                        
+                        <div class="code-box" id="detectiveCode"></div>
+                        
+                        <h4 style="margin: 20px 0;">What will be printed?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="detective-option" onclick="guessDetective('True')">True ✅</div>
+                            <div class="detective-option" onclick="guessDetective('False')">False ❌</div>
+                        </div>
+                        
+                        <div id="detectiveResult" style="margin-top: 20px;"></div>
+                        <div style="margin-top: 20px; font-size: 1.3em; font-weight: bold; text-align: center; color: #4facfe;">
+                            Score: <span id="detectiveScore">0</span>/10
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="finalMessage" class="celebration"></div>
+            <!-- Project: Multi-Factor Login System -->
+            <div class="section">
+                <h2><span class="emoji">🔐</span>Project: Multi-Factor Login System</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Build a secure authentication system!</h3>
+                    <p>Use logical operators to create a login that checks multiple factors!</p>
+                    
+                    <div class="login-system">
+                        <h3 style="color: #4facfe; margin-bottom: 20px; text-align: center;">🔒 Secure Login System 🔒</h3>
+                        
+                        <div class="info-box">
+                            <h4>🎯 Login Requirements:</h4>
+                            <p style="margin: 10px 0;">ALL of these must be True:</p>
+                            <ul style="line-height: 2em;">
+                                <li>✅ Username must be correct</li>
+                                <li>✅ Password must be correct</li>
+                                <li>✅ Age must be 18 or older</li>
+                                <li>✅ Account must be active</li>
+                                <li>✅ User must NOT be banned</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">👤 Username:</label>
+                            <input type="text" id="loginUsername" placeholder="admin" style="width: 100%; max-width: 100%;">
+                            <small style="color: #666;">Correct username: admin</small>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">🔑 Password:</label>
+                            <input type="password" id="loginPassword" placeholder="password123" style="width: 100%; max-width: 100%;">
+                            <small style="color: #666;">Correct password: password123</small>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">🎂 Age:</label>
+                            <input type="number" id="loginAge" placeholder="e.g., 20" min="1" max="120" style="width: 100%; max-width: 100%;">
+                        </div>
+
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="loginActive" checked>
+                            <label for="loginActive">Account is active</label>
+                        </div>
+
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="loginBanned">
+                            <label for="loginBanned">User is banned</label>
+                        </div>
+
+                        <button class="game-button" onclick="attemptLogin()" style="width: 100%;">Login 🔓</button>
+
+                        <div id="loginResult"></div>
+
+                        <div id="loginCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #4facfe; margin-bottom: 10px;">📝 Python Code Behind This:</h4>
+                            <div class="code-box" id="loginCodeDisplay"></div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h3><span class="emoji">💡</span>How It Works:</h3>
+                        <ol style="font-size: 1.1em; line-height: 2em;">
+                            <li><strong>Get all credentials:</strong> Username, password, age, status</li>
+                            <li><strong>Check each condition:</strong> Use comparison operators</li>
+                            <li><strong>Combine with AND:</strong> All must be True</li>
+                            <li><strong>Use NOT:</strong> Make sure user is NOT banned</li>
+                            <li><strong>Grant or deny access:</strong> Based on result</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 2: Build the Logic -->
+            <div class="section">
+                <h2>Game 2: Build the Logic 🏗️</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Complete the logical expression!</h3>
+                    <p>Choose the correct operator to make the condition work!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #4facfe;">Challenge <span id="builderNum">1</span>/8</h4>
+                        
+                        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                            <p id="builderTask" style="font-size: 1.2em; margin-bottom: 15px;"></p>
+                            <div class="code-box" id="builderCode"></div>
+                        </div>
+                        
+                        <h4 style="margin: 20px 0;">What operator should fill the blank?</h4>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                            <div class="detective-option" onclick="guessBuilder('and')">and</div>
+                            <div class="detective-option" onclick="guessBuilder('or')">or</div>
+                            <div class="detective-option" onclick="guessBuilder('not')">not</div>
+                        </div>
+                        
+                        <div id="builderResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #4facfe; text-align: center;">
+                            Score: <span id="builderScore">0</span>/8
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <h2 style="text-align: center; color: #4facfe;"><span class="emoji">📝</span>Final Quiz!</h2>
+                <p style="text-align: center; font-size: 1.2em;">Test your knowledge about logical operators!</p>
+
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: What does (True and False) return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 0, false)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 1, true)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 2, false)">C) None</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 3, false)">D) Error</div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: What does (True or False) return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 0, true)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 1, false)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 2, false)">C) None</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 3, false)">D) Error</div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: What does (not True) return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 0, false)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 1, true)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 2, false)">C) None</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 3, false)">D) Error</div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: When is (A and B) True?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 0, true)">A) When both A and B are True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 1, false)">B) When at least one is True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 2, false)">C) When both are False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 3, false)">D) Always</div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: When is (A or B) False?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 0, false)">A) When both are True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 1, false)">B) When one is True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 2, true)">C) When both are False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 3, false)">D) Never</div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <h3>Question 6: What's the order of logical operators?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 0, true)">A) not, and, or</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 1, false)">B) and, or, not</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 2, false)">C) or, and, not</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 3, false)">D) All equal priority</div>
+                </div>
+
+                <div class="quiz-question" id="q7">
+                    <h3>Question 7: What does (False and True) or True return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 0, true)">A) True</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 1, false)">B) False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 2, false)">C) None</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 3, false)">D) Error</div>
+                </div>
+
+                <div class="quiz-question" id="q8">
+                    <h3>Question 8: What's the best way to make complex logic clear?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 0, true)">A) Use parentheses</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 1, false)">B) Avoid parentheses</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 2, false)">C) Use only AND</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 3, false)">D) Use only OR</div>
+                </div>
+
+                <button class="game-button" onclick="calculateScore()" style="display: block; margin: 20px auto;">Submit Quiz</button>
+                <div class="score-display" id="quizScore" style="display: none;"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Lecture Summary</h2>
+                <div class="highlight-box">
+                    <h3>What We Learned Today:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ <code>and</code> - Both conditions must be True</li>
+                        <li>✅ <code>or</code> - At least one condition must be True</li>
+                        <li>✅ <code>not</code> - Reverses True/False</li>
+                        <li>✅ Combining multiple operators</li>
+                        <li>✅ Truth tables for each operator</li>
+                        <li>✅ Built a multi-factor login system</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3><span class="emoji">🏠</span>Practice at Home:</h3>
+                    <ol style="font-size: 1.1em; line-height: 2em;">
+                        <li>Create a movie rating system (age + rating)</li>
+                        <li>Build a shipping calculator (weight AND distance)</li>
+                        <li>Make a discount calculator (student OR senior)</li>
+                        <li>Create a game access checker (level OR premium)</li>
+                        <li>Build a form validator (all fields filled AND valid)</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Common Mistakes to Avoid:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>Confusing AND with OR</li>
+                        <li>Forgetting NOT reverses the value</li>
+                        <li>Not using parentheses in complex expressions</li>
+                        <li>Checking equality with = instead of ==</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game 1: Robot Navigation
-        let robotPos = 0;
-        const targetPos = 24;
-        
-        function createGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                if (i === targetPos) {
-                    cell.className += ' target';
-                    cell.textContent = '⭐';
-                }
-                if (i === robotPos) {
-                    cell.textContent = '🤖';
-                }
-                grid.appendChild(cell);
+        let quizAnswers = {};
+
+        // AND Test
+        function testAND() {
+            const a = document.getElementById('andA').checked;
+            const b = document.getElementById('andB').checked;
+            const result = a && b;
+            
+            document.getElementById('andResult').innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 25px; border-radius: 10px; border: 3px solid #4facfe;">
+                    <h4 style="color: #4facfe;">Testing AND Operator</h4>
+                    <div class="logic-demo" style="margin: 20px 0;">
+                        <div class="logic-box" style="background: ${a ? '#28a745' : '#dc3545'};">A = ${a}</div>
+                        <div class="logic-box" style="background: #4facfe;">AND</div>
+                        <div class="logic-box" style="background: ${b ? '#28a745' : '#dc3545'};">B = ${b}</div>
+                    </div>
+                    <div style="text-align: center; font-size: 2em; font-weight: bold; color: ${result ? '#28a745' : '#dc3545'}; margin: 20px 0;">
+                        Result: ${result}
+                    </div>
+                    <div class="code-box">
+<span class="keyword">a</span> = <span class="boolean">${a}</span>
+<span class="keyword">b</span> = <span class="boolean">${b}</span>
+<span class="keyword">result</span> = a <span class="operator">and</span> b
+<span class="keyword">print</span>(result)  <span class="comment"># ${result}</span>
+                    </div>
+                    <p style="margin-top: 15px; text-align: center; font-size: 1.1em;">
+                        ${result ? '✅ Both conditions are True!' : '❌ At least one condition is False!'}
+                    </p>
+                </div>
+            `;
+        }
+
+        // OR Test
+        function testOR() {
+            const a = document.getElementById('orA').checked;
+            const b = document.getElementById('orB').checked;
+            const result = a || b;
+            
+            document.getElementById('orResult').innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 25px; border-radius: 10px; border: 3px solid #4facfe;">
+                    <h4 style="color: #4facfe;">Testing OR Operator</h4>
+                    <div class="logic-demo" style="margin: 20px 0;">
+                        <div class="logic-box" style="background: ${a ? '#28a745' : '#dc3545'};">A = ${a}</div>
+                        <div class="logic-box" style="background: #4facfe;">OR</div>
+                        <div class="logic-box" style="background: ${b ? '#28a745' : '#dc3545'};">B = ${b}</div>
+                    </div>
+                    <div style="text-align: center; font-size: 2em; font-weight: bold; color: ${result ? '#28a745' : '#dc3545'}; margin: 20px 0;">
+                        Result: ${result}
+                    </div>
+                    <div class="code-box">
+<span class="keyword">a</span> = <span class="boolean">${a}</span>
+<span class="keyword">b</span> = <span class="boolean">${b}</span>
+<span class="keyword">result</span> = a <span class="operator">or</span> b
+<span class="keyword">print</span>(result)  <span class="comment"># ${result}</span>
+                    </div>
+                    <p style="margin-top: 15px; text-align: center; font-size: 1.1em;">
+                        ${result ? '✅ At least one condition is True!' : '❌ Both conditions are False!'}
+                    </p>
+                </div>
+            `;
+        }
+
+        // NOT Test
+        function testNOT() {
+            const a = document.getElementById('notA').checked;
+            const result = !a;
+            
+            document.getElementById('notResult').innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 25px; border-radius: 10px; border: 3px solid #4facfe;">
+                    <h4 style="color: #4facfe;">Testing NOT Operator</h4>
+                    <div class="logic-demo" style="margin: 20px 0;">
+                        <div class="logic-box" style="background: #4facfe;">NOT</div>
+                        <div class="logic-box" style="background: ${a ? '#28a745' : '#dc3545'};">A = ${a}</div>
+                        <div class="logic-box" style="background: ${result ? '#28a745' : '#dc3545'};">= ${result}</div>
+                    </div>
+                    <div style="text-align: center; font-size: 2em; font-weight: bold; color: ${result ? '#28a745' : '#dc3545'}; margin: 20px 0;">
+                        Result: ${result}
+                    </div>
+                    <div class="code-box">
+<span class="keyword">a</span> = <span class="boolean">${a}</span>
+<span class="keyword">result</span> = <span class="operator">not</span> a
+<span class="keyword">print</span>(result)  <span class="comment"># ${result}</span>
+                    </div>
+                    <p style="margin-top: 15px; text-align: center; font-size: 1.1em;">
+                        🔄 NOT reversed the value!
+                    </p>
+                </div>
+            `;
+        }
+
+        // Detective Game
+        let detectiveLevel = 0;
+        let detectiveScore = 0;
+        const detectiveChallenges = [
+            { code: 'print(True and True)', answer: 'True' },
+            { code: 'print(True and False)', answer: 'False' },
+            { code: 'print(True or False)', answer: 'True' },
+            { code: 'print(False or False)', answer: 'False' },
+            { code: 'print(not True)', answer: 'False' },
+            { code: 'print(not False)', answer: 'True' },
+            { code: 'print((True and False) or True)', answer: 'True' },
+            { code: 'print(True and (False or True))', answer: 'True' },
+            { code: 'print(not (True and False))', answer: 'True' },
+            { code: 'print((True or False) and (False or True))', answer: 'True' }
+        ];
+
+        function loadDetective() {
+            if (detectiveLevel >= detectiveChallenges.length) {
+                showDetectiveEnd();
+                return;
             }
+
+            const challenge = detectiveChallenges[detectiveLevel];
+            document.getElementById('detectiveNum').textContent = detectiveLevel + 1;
+            document.getElementById('detectiveCode').textContent = challenge.code;
+            document.getElementById('detectiveResult').innerHTML = '';
+
+            const buttons = document.querySelectorAll('.detective-option');
+            buttons.forEach(btn => {
+                btn.className = 'detective-option';
+                btn.style.pointerEvents = 'auto';
+            });
         }
-        
-        function moveRobot(direction) {
-            let newPos = robotPos;
-            switch(direction) {
-                case 'up':
-                    if (robotPos >= 5) newPos -= 5;
-                    break;
-                case 'down':
-                    if (robotPos < 20) newPos += 5;
-                    break;
-                case 'left':
-                    if (robotPos % 5 !== 0) newPos -= 1;
-                    break;
-                case 'right':
-                    if (robotPos % 5 !== 4) newPos += 1;
-                    break;
+
+        function guessDetective(guess) {
+            const challenge = detectiveChallenges[detectiveLevel];
+            const buttons = document.querySelectorAll('.detective-option');
+            const result = document.getElementById('detectiveResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (guess === challenge.answer) {
+                detectiveScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                event.target.classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.answer + '</div>';
+                event.target.classList.add('incorrect');
             }
+
+            document.getElementById('detectiveScore').textContent = detectiveScore;
+            detectiveLevel++;
+
+            setTimeout(loadDetective, 2000);
+        }
+
+        function showDetectiveEnd() {
+            const container = document.querySelector('#detectiveNum').closest('.game-container');
+            const percentage = (detectiveScore / detectiveChallenges.length * 100).toFixed(0);
+
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎉 Detective Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${detectiveScore}/${detectiveChallenges.length} (${percentage}%)</p>
+                    <button class="game-button" onclick="resetDetective()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetDetective() {
+            detectiveLevel = 0;
+            detectiveScore = 0;
+            document.getElementById('detectiveScore').textContent = '0';
+            loadDetective();
+        }
+
+        // Login System
+        function attemptLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const age = parseInt(document.getElementById('loginAge').value);
+            const isActive = document.getElementById('loginActive').checked;
+            const isBanned = document.getElementById('loginBanned').checked;
             
-            robotPos = newPos;
-            createGrid();
-            
-            if (robotPos === targetPos) {
-                document.getElementById('gameMessage').innerHTML = '🎉 Congratulations! You did it!';
+            const result = document.getElementById('loginResult');
+            const codeDiv = document.getElementById('loginCode');
+            const codeDisplay = document.getElementById('loginCodeDisplay');
+
+            // Check all conditions
+            const usernameCorrect = username === 'admin';
+            const passwordCorrect = password === 'password123';
+            const ageValid = age >= 18;
+            const accountActive = isActive;
+            const notBanned = !isBanned;
+
+            const loginSuccess = usernameCorrect && passwordCorrect && ageValid && accountActive && notBanned;
+
+            let failReasons = [];
+            if (!usernameCorrect) failReasons.push('❌ Wrong username');
+            if (!passwordCorrect) failReasons.push('❌ Wrong password');
+            if (!ageValid) failReasons.push('❌ Must be 18 or older');
+            if (!accountActive) failReasons.push('❌ Account not active');
+            if (!notBanned) failReasons.push('❌ User is banned');
+
+            if (loginSuccess) {
+                result.innerHTML = `
+                    <div class="login-result login-success">
+                        <h3>✅ LOGIN SUCCESSFUL!</h3>
+                        <p style="margin-top: 15px;">Welcome back, admin!</p>
+                        <p style="margin-top: 10px;">All security checks passed.</p>
+                    </div>
+                `;
+            } else {
+                result.innerHTML = `
+                    <div class="login-result login-failed">
+                        <h3>❌ LOGIN FAILED</h3>
+                        <p style="margin-top: 15px;">Failed checks:</p>
+                        <div style="margin-top: 10px; text-align: left;">
+                            ${failReasons.join('<br>')}
+                        </div>
+                    </div>
+                `;
             }
+
+            codeDiv.style.display = 'block';
+            codeDisplay.innerHTML = `
+<span class="comment"># Get user credentials</span>
+<span class="keyword">username</span> = <span class="string">"${username}"</span>
+<span class="keyword">password</span> = <span class="string">"${password}"</span>
+<span class="keyword">age</span> = <span class="number">${age || 0}</span>
+<span class="keyword">is_active</span> = <span class="boolean">${isActive}</span>
+<span class="keyword">is_banned</span> = <span class="boolean">${isBanned}</span>
+
+<span class="comment"># Check all conditions with AND and NOT</span>
+<span class="keyword">if</span> username == <span class="string">"admin"</span> <span class="operator">and</span> \\
+   password == <span class="string">"password123"</span> <span class="operator">and</span> \\
+   age >= <span class="number">18</span> <span class="operator">and</span> \\
+   is_active <span class="operator">and</span> \\
+   <span class="operator">not</span> is_banned:
+    <span class="keyword">print</span>(<span class="string">"✅ Login successful!"</span>)
+<span class="keyword">else</span>:
+    <span class="keyword">print</span>(<span class="string">"❌ Login failed!"</span>)
+
+<span class="comment"># Result: ${loginSuccess ? 'Login successful!' : 'Login failed!'}</span>
+            `;
         }
-        
-        function resetGame() {
-            robotPos = 0;
-            createGrid();
-            document.getElementById('gameMessage').innerHTML = '';
-        }
-        
-        // Game 2: Code Simulator
-        function runUserCode() {
-            const code = document.getElementById('userCode').value;
-            const output = document.getElementById('output');
-            if (code) {
-                output.innerHTML += code + '<br>';
+
+        // Builder Game
+        let builderLevel = 0;
+        let builderScore = 0;
+        const builderChallenges = [
+            {
+                task: 'Print "Yes" if BOTH age >= 18 AND has_license are True',
+                code: 'age = 20\nhas_license = True\nif age >= 18 ___ has_license:\n    print("Yes")',
+                answer: 'and'
+            },
+            {
+                task: 'Print "Discount" if person is student OR senior',
+                code: 'is_student = True\nis_senior = False\nif is_student ___ is_senior:\n    print("Discount")',
+                answer: 'or'
+            },
+            {
+                task: 'Print "Active" if account is NOT suspended',
+                code: 'suspended = False\nif ___ suspended:\n    print("Active")',
+                answer: 'not'
+            },
+            {
+                task: 'Grant access if user is admin OR moderator',
+                code: 'is_admin = False\nis_mod = True\nif is_admin ___ is_mod:\n    print("Access granted")',
+                answer: 'or'
+            },
+            {
+                task: 'Check if username AND password are correct',
+                code: 'user_ok = True\npass_ok = True\nif user_ok ___ pass_ok:\n    print("Login")',
+                answer: 'and'
+            },
+            {
+                task: 'Check if user is NOT banned',
+                code: 'banned = False\nif ___ banned:\n    print("Welcome")',
+                answer: 'not'
+            },
+            {
+                task: 'Weekend check: day is Saturday OR Sunday',
+                code: 'day = "Saturday"\nif day == "Saturday" ___ day == "Sunday":\n    print("Weekend")',
+                answer: 'or'
+            },
+            {
+                task: 'Full access needs: verified AND active',
+                code: 'verified = True\nactive = True\nif verified ___ active:\n    print("Full access")',
+                answer: 'and'
             }
+        ];
+
+        function loadBuilder() {
+            if (builderLevel >= builderChallenges.length) {
+                showBuilderEnd();
+                return;
+            }
+
+            const challenge = builderChallenges[builderLevel];
+            document.getElementById('builderNum').textContent = builderLevel + 1;
+            document.getElementById('builderTask').textContent = challenge.task;
+            document.getElementById('builderCode').textContent = challenge.code;
+            document.getElementById('builderResult').innerHTML = '';
+
+            const buttons = document.querySelectorAll('#builderResult').closest('div').previousElementSibling.querySelectorAll('.detective-option');
+            buttons.forEach(btn => {
+                btn.className = 'detective-option';
+                btn.style.pointerEvents = 'auto';
+            });
         }
-        
-        function clearOutput() {
-            document.getElementById('output').innerHTML = '';
+
+        function guessBuilder(operator) {
+            const challenge = builderChallenges[builderLevel];
+            const buttons = event.target.parentElement.querySelectorAll('.detective-option');
+            const result = document.getElementById('builderResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (operator === challenge.answer) {
+                builderScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                event.target.classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.answer + '</div>';
+                event.target.classList.add('incorrect');
+            }
+
+            document.getElementById('builderScore').textContent = builderScore;
+            builderLevel++;
+
+            setTimeout(loadBuilder, 2500);
         }
-        
-        // Game 3: Animation
-        function animateCode() {
-            const output = document.getElementById('animationOutput');
-            output.innerHTML = '';
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 1<br>';
-            }, 500);
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '';
-                document.getElementById('line2').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 2<br>';
-            }, 1500);
-            
-            setTimeout(() => {
-                document.getElementById('line2').style.background = '';
-                document.getElementById('line3').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 3<br>';
-            }, 2500);
-            
-            setTimeout(() => {
-                document.getElementById('line3').style.background = '';
-            }, 3500);
+
+        function showBuilderEnd() {
+            const container = document.querySelector('#builderNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🏗️ Builder Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${builderScore}/${builderChallenges.length}</p>
+                    <button class="game-button" onclick="resetBuilder()">Play Again</button>
+                </div>
+            `;
         }
-        
-        // Quiz
-        let correctAnswers = 0;
-        let answeredQuestions = new Set();
-        
-        function checkAnswer(questionNum, option, isCorrect) {
-            if (answeredQuestions.has(questionNum)) return;
-            
-            answeredQuestions.add(questionNum);
-            const question = document.getElementById('q' + questionNum);
-            const options = question.querySelectorAll('.option');
-            
+
+        function resetBuilder() {
+            builderLevel = 0;
+            builderScore = 0;
+            document.getElementById('builderScore').textContent = '0';
+            loadBuilder();
+        }
+
+        // Quiz Functions
+        function selectAnswer(questionId, optionIndex, isCorrect) {
+            const question = document.getElementById(questionId);
+            const options = question.querySelectorAll('.quiz-option');
+
             options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.startsWith(option)) {
-                    opt.className = isCorrect ? 'option correct' : 'option wrong';
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            options[optionIndex].classList.add('selected');
+            quizAnswers[questionId] = isCorrect;
+        }
+
+        function calculateScore() {
+            const totalQuestions = 8;
+            let correctAnswers = 0;
+
+            Object.keys(quizAnswers).forEach(qId => {
+                const question = document.getElementById(qId);
+                const selected = question.querySelector('.selected');
+                if (selected) {
+                    if (quizAnswers[qId]) {
+                        selected.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        const options = question.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.onclick.toString().includes('true')) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
                 }
             });
-            
-            if (isCorrect) {
-                correctAnswers++;
-            }
-            
-            updateScore();
-            
-            if (answeredQuestions.size === 6) {
-                showFinalMessage();
-            }
-        }
-        
-        function updateScore() {
-            document.getElementById('score').innerHTML = 
-                `Score: ${correctAnswers} / ${answeredQuestions.size}`;
-        }
-        
-        function showFinalMessage() {
-            const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 6) {
-                finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 4) {
-                finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
+
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const scoreDisplay = document.getElementById('quizScore');
+
+            let message = '';
+            let emoji = '';
+
+            if (percentage === 100) {
+                message = 'Perfect Score!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Great Job!';
+                emoji = '🌟';
+            } else if (percentage >= 60) {
+                message = 'Good Effort!';
+                emoji = '👍';
             } else {
-                finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
+                message = 'Keep Learning!';
+                emoji = '📚';
             }
+
+            scoreDisplay.innerHTML = `
+                ${emoji} ${message}<br>
+                You scored ${correctAnswers} out of ${totalQuestions} (${percentage.toFixed(0)}%)
+            `;
+            scoreDisplay.style.display = 'block';
         }
-        
+
         // Initialize
-        createGrid();
+        window.onload = function() {
+            loadDetective();
+            loadBuilder();
+        };
     </script>
 </body>
 </html>
