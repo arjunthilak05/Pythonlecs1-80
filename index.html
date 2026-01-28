@@ -3,561 +3,1420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 1: Welcome to Programming</title>
+    <title>Lecture 11: Lists - Introduction</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
-        h1 {
-            color: #667eea;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
-        
-        h2 {
-            color: #764ba2;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-        
-        .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9ff;
-            border-radius: 15px;
-            border-left: 5px solid #667eea;
-        }
-        
-        .game-box {
+
+        header {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #f093fb;
+        }
+
+        .section h2 {
+            color: #f093fb;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "Python";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #f093fb;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .boolean {
+            color: #61afef;
+            font-weight: bold;
+        }
+
+        .list-visual {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .list-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 80px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .list-index {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .interactive-demo {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
-            color: white;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .robot {
-            font-size: 60px;
-            text-align: center;
+
+        .game-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 5px;
-            margin: 20px auto;
-            width: fit-content;
-        }
-        
-        .cell {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border: 2px solid #764ba2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            border-radius: 8px;
-        }
-        
-        .cell.target {
-            background: #ffeb3b;
-        }
-        
-        button {
-            background: #667eea;
+
+        .game-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 5px;
+            margin: 10px 5px;
             transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        button:hover {
-            background: #764ba2;
-            transform: scale(1.05);
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
-        
-        .code-box {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            font-size: 16px;
+
+        .game-button:active {
+            transform: translateY(0);
         }
-        
-        .output-box {
-            background: #000;
-            color: #0f0;
+
+        input[type="text"], input[type="number"] {
             padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #f093fb;
             border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            min-height: 50px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
         }
-        
-        .quiz-box {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+        .grade-tracker {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 700px;
+            margin: 20px auto;
         }
-        
-        .question {
-            background: white;
+
+        .grade-list {
+            background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
-            margin: 15px 0;
+            margin: 20px 0;
+            min-height: 100px;
         }
-        
-        .option {
-            display: block;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f0f0f0;
+
+        .grade-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #f093fb;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .grade-item button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .grade-item button:hover {
+            background: #c82333;
+        }
+
+        .stats-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 2px solid transparent;
         }
-        
-        .option:hover {
-            background: #e0e0e0;
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #f093fb;
         }
-        
-        .option.correct {
-            background: #4caf50;
-            color: white;
+
+        .quiz-option.selected {
+            background: #ffe4e1;
+            border-color: #f093fb;
         }
-        
-        .option.wrong {
-            background: #f44336;
-            color: white;
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
         }
-        
-        .controls {
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .score-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            margin: 20px 0;
-        }
-        
-        .line-highlight {
-            background: #ffeb3b;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        
-        #score {
-            text-align: center;
-            font-size: 24px;
+            font-size: 1.5em;
             font-weight: bold;
-            color: #667eea;
-            margin: 20px 0;
+            color: #f093fb;
+            margin-top: 20px;
         }
-        
-        .celebration {
-            text-align: center;
-            font-size: 50px;
-            margin: 20px 0;
+
+        .detective-option {
+            background: white;
+            border: 3px solid #f093fb;
+            padding: 20px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .detective-option:hover {
+            background: #ffe4e1;
+            transform: translateX(5px);
+        }
+
+        .detective-option.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .detective-option.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .method-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #f093fb;
+            transition: all 0.3s;
+        }
+
+        .method-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .method-name {
+            font-size: 1.8em;
+            color: #f093fb;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .list-visual {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Lecture 1: Welcome to Programming!</h1>
-        
-        <!-- Section 1: What is Programming -->
-        <div class="section">
-            <h2>🤖 What is Programming?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Programming is like giving instructions to a robot! Imagine you have a robot friend who is very smart but only understands specific commands. You need to tell them exactly what to do, step by step.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                For example, if you want the robot to make a sandwich, you can't just say "make a sandwich." You need to say:
-            </p>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px; margin-top: 10px;">
-                <li>Pick up the bread</li>
-                <li>Open the jar of peanut butter</li>
-                <li>Spread peanut butter on the bread</li>
-                <li>Put two slices together</li>
-            </ul>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                That's exactly what programming is! We write instructions (called <strong>code</strong>) that tell the computer exactly what to do!
-            </p>
-        </div>
+        <header>
+            <h1 class="floating">🎓 Lecture 11: Lists - Introduction 📝</h1>
+            <p>Learn to store and manage multiple values!</p>
+        </header>
 
-        <!-- Game 1: Robot Navigation -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 1: Help the Robot Find the Star!</h2>
-            <p style="font-size: 18px;">Give the robot instructions to reach the ⭐ star!</p>
-            <div class="robot" id="robotDisplay">🤖</div>
-            <div class="grid" id="gameGrid"></div>
-            <div class="controls">
-                <button onclick="moveRobot('up')">⬆️ Up</button>
-                <button onclick="moveRobot('down')">⬇️ Down</button>
-                <button onclick="moveRobot('left')">⬅️ Left</button>
-                <button onclick="moveRobot('right')">➡️ Right</button>
-                <button onclick="resetGame()" style="background: #f5576c;">🔄 Reset</button>
-            </div>
-            <div id="gameMessage" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
-        </div>
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2><span class="emoji">🌟</span>Welcome to Lists!</h2>
+                <p style="font-size: 1.2em;">Until now, we've only stored one value in a variable. But what if you need to store <strong>many values</strong> - like all students in a class, all scores in a game, or all items in a shopping cart? That's where <strong>Lists</strong> come in!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>What You'll Learn Today</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ What are lists and why use them</li>
+                        <li>✅ Creating lists with square brackets [ ]</li>
+                        <li>✅ Accessing items using index numbers</li>
+                        <li>✅ List methods: append(), insert(), remove(), pop()</li>
+                        <li>✅ Building a student grade tracker</li>
+                    </ul>
+                </div>
 
-        <!-- Section 2: Installing Python -->
-        <div class="section">
-            <h2>💻 Installing Python and VS Code</h2>
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 1: Install Python</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Go to <strong>python.org</strong></li>
-                <li>Click on "Downloads"</li>
-                <li>Download Python (make sure to check "Add Python to PATH")</li>
-                <li>Run the installer and follow the instructions</li>
-            </ol>
-            
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 2: Install VS Code (or IDLE)</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li><strong>VS Code:</strong> Go to <strong>code.visualstudio.com</strong> and download</li>
-                <li><strong>IDLE:</strong> This comes with Python automatically!</li>
-            </ol>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Tip:</strong> VS Code is like a super-powered notebook for writing code. IDLE is simpler and great for beginners!
-            </p>
-        </div>
-
-        <!-- Section 3: First Program -->
-        <div class="section">
-            <h2>🎉 Your First Program: Hello, World!</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                The first program every programmer writes is "Hello, World!" It's a tradition! This program tells the computer to display a message on the screen.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                In Python, we use the <strong>print()</strong> command to display text. Here's how it looks:
-            </p>
-            <div class="code-box">
-                print("Hello, World!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8;">
-                When you run this code, the computer will show: <strong>Hello, World!</strong>
-            </p>
-        </div>
-
-        <!-- Game 2: Interactive Code Simulator -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 2: Try Writing Your Own Code!</h2>
-            <p style="font-size: 18px;">Type your own message in the box below and click "Run Code"!</p>
-            <div style="margin: 20px 0;">
-                <input type="text" id="userCode" placeholder='Type your message here...' 
-                       style="width: 100%; padding: 15px; font-size: 18px; border-radius: 8px; border: none;">
-            </div>
-            <div class="controls">
-                <button onclick="runUserCode()">▶️ Run Code</button>
-                <button onclick="clearOutput()" style="background: #f5576c;">🗑️ Clear</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="output"></div>
-        </div>
-
-        <!-- Section 4: How Computers Read Code -->
-        <div class="section">
-            <h2>📖 How Computers Read Code Line by Line</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Computers are very obedient but not very smart. They read your code <strong>one line at a time</strong>, from top to bottom, just like you read a book!
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                Let's look at an example:
-            </p>
-            <div class="code-box">
-                print("First, I say hello!")<br>
-                print("Then, I say goodbye!")<br>
-                print("And finally, I'm done!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                The computer will:
-            </p>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Read line 1 and print "First, I say hello!"</li>
-                <li>Then read line 2 and print "Then, I say goodbye!"</li>
-                <li>Finally read line 3 and print "And finally, I'm done!"</li>
-            </ol>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Remember:</strong> The order matters! The computer does exactly what you tell it, in the order you tell it.
-            </p>
-        </div>
-
-        <!-- Game 3: Code Order Challenge -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 3: Line by Line Execution</h2>
-            <p style="font-size: 18px;">Watch how the computer reads code one line at a time!</p>
-            <div class="code-box" id="animatedCode">
-                <div id="line1">print("I am line 1")</div>
-                <div id="line2">print("I am line 2")</div>
-                <div id="line3">print("I am line 3")</div>
-            </div>
-            <div class="controls">
-                <button onclick="animateCode()">▶️ Watch Execution</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="animationOutput"></div>
-        </div>
-
-        <!-- Section 5: Compilers vs Interpreters -->
-        <div class="section">
-            <h2>⚙️ What's a Compiler?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates the whole program before running it</li>
-                <li>Shows all errors at the end, together</li>
-                <li>Runs faster once compiled</li>
-                <li>Creates a separate file you can run anytime</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>🔍 What's an Interpreter?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates code one line at a time as it runs</li>
-                <li>Shows errors immediately when it hits that line</li>
-                <li>Slower execution than compiled programs</li>
-                <li>Always needs the original code to run</li>
-            </ul>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
-            </p>
-        </div>
-
-        <!-- Final Quiz -->
-        <div class="quiz-box">
-            <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
-            <div id="score"></div>
-            
-            <div class="question" id="q1">
-                <h3>Question 1: What is programming?</h3>
-                <div class="option" onclick="checkAnswer(1, 'A', false)">A) Playing video games</div>
-                <div class="option" onclick="checkAnswer(1, 'B', true)">B) Giving instructions to a computer</div>
-                <div class="option" onclick="checkAnswer(1, 'C', false)">C) Drawing pictures</div>
-                <div class="option" onclick="checkAnswer(1, 'D', false)">D) Writing stories</div>
+                <div class="info-box">
+                    <h3><span class="emoji">🤔</span>Real-World Examples</h3>
+                    <p style="font-size: 1.1em;">Lists are everywhere in programming:</p>
+                    <ul style="font-size: 1.1em; line-height: 2em; margin-top: 10px;">
+                        <li>📚 Student names in a classroom</li>
+                        <li>🛒 Items in a shopping cart</li>
+                        <li>🎮 High scores in a game</li>
+                        <li>📧 Email addresses in contacts</li>
+                        <li>🎵 Songs in a playlist</li>
+                        <li>📊 Monthly sales data</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q2">
-                <h3>Question 2: What command do we use to display text in Python?</h3>
-                <div class="option" onclick="checkAnswer(2, 'A', false)">A) show()</div>
-                <div class="option" onclick="checkAnswer(2, 'B', false)">B) display()</div>
-                <div class="option" onclick="checkAnswer(2, 'C', true)">C) print()</div>
-                <div class="option" onclick="checkAnswer(2, 'D', false)">D) write()</div>
+            <!-- Section 1: What is a List? -->
+            <div class="section">
+                <h2><span class="emoji">📦</span>What is a List?</h2>
+                <p>A <strong>list</strong> is a collection that can store multiple values in a single variable. Think of it as a container with numbered slots!</p>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">🎯</span>List Characteristics</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>📝 <strong>Ordered:</strong> Items stay in the order you add them</li>
+                        <li>🔢 <strong>Indexed:</strong> Each item has a position number (starting from 0)</li>
+                        <li>✏️ <strong>Mutable:</strong> You can change, add, or remove items</li>
+                        <li>🎨 <strong>Mixed types:</strong> Can store different data types</li>
+                        <li>🔁 <strong>Duplicates allowed:</strong> Can have the same value multiple times</li>
+                    </ul>
+                </div>
+
+                <div class="code-box">
+<span class="comment"># Creating lists</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]
+<span class="keyword">numbers</span> = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>]
+<span class="keyword">mixed</span> = [<span class="string">"hello"</span>, <span class="number">42</span>, <span class="boolean">True</span>, <span class="number">3.14</span>]
+<span class="keyword">empty</span> = []
+
+<span class="comment"># Print lists</span>
+<span class="keyword">print</span>(fruits)   <span class="comment"># ['apple', 'banana', 'cherry']</span>
+<span class="keyword">print</span>(numbers)  <span class="comment"># [10, 20, 30, 40, 50]</span>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Visual List Structure</h3>
+                    <p>Here's how a list looks in memory:</p>
+                    
+                    <div class="list-visual">
+                        <div class="list-item">
+                            <div class="list-index">0</div>
+                            <div>apple</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-index">1</div>
+                            <div>banana</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-index">2</div>
+                            <div>cherry</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-index">3</div>
+                            <div>date</div>
+                        </div>
+                    </div>
+
+                    <div class="warning-box" style="margin-top: 20px;">
+                        <h3><span class="emoji">⚠️</span>Important: Index Starts at 0!</h3>
+                        <p style="font-size: 1.1em;">In Python, the <strong>first item</strong> is at index <strong>0</strong>, not 1!</p>
+                        <ul style="line-height: 2em; margin-top: 10px;">
+                            <li>Index 0 → First item</li>
+                            <li>Index 1 → Second item</li>
+                            <li>Index 2 → Third item</li>
+                            <li>And so on...</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
-            <div class="question" id="q3">
-                <h3>Question 3: How does a computer read code?</h3>
-                <div class="option" onclick="checkAnswer(3, 'A', false)">A) All at once</div>
-                <div class="option" onclick="checkAnswer(3, 'B', true)">B) One line at a time, from top to bottom</div>
-                <div class="option" onclick="checkAnswer(3, 'C', false)">C) From bottom to top</div>
-                <div class="option" onclick="checkAnswer(3, 'D', false)">D) In random order</div>
+            <!-- Section 2: Accessing List Items -->
+            <div class="section">
+                <h2><span class="emoji">🔍</span>Accessing List Items</h2>
+                <p>Use <strong>square brackets [ ]</strong> with the index number to access items!</p>
+
+                <div class="code-box">
+<span class="comment"># Create a list</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>, <span class="string">"date"</span>, <span class="string">"elderberry"</span>]
+
+<span class="comment"># Access by index (starts at 0)</span>
+<span class="keyword">print</span>(fruits[<span class="number">0</span>])   <span class="comment"># apple (first item)</span>
+<span class="keyword">print</span>(fruits[<span class="number">1</span>])   <span class="comment"># banana (second item)</span>
+<span class="keyword">print</span>(fruits[<span class="number">2</span>])   <span class="comment"># cherry (third item)</span>
+
+<span class="comment"># Negative indexing (from the end)</span>
+<span class="keyword">print</span>(fruits[<span class="number">-1</span>])  <span class="comment"># elderberry (last item)</span>
+<span class="keyword">print</span>(fruits[<span class="number">-2</span>])  <span class="comment"># date (second from end)</span>
+
+<span class="comment"># Get list length</span>
+<span class="keyword">length</span> = <span class="function">len</span>(fruits)
+<span class="keyword">print</span>(length)    <span class="comment"># 5</span>
+
+<span class="comment"># Change an item</span>
+<span class="keyword">fruits</span>[<span class="number">1</span>] = <span class="string">"blueberry"</span>
+<span class="keyword">print</span>(fruits)    <span class="comment"># ['apple', 'blueberry', 'cherry', 'date', 'elderberry']</span>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try List Access!</h3>
+                    <p>Enter an index to access an item from the list:</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <p><strong>List:</strong> <code>['Python', 'Java', 'C++', 'JavaScript', 'Ruby']</code></p>
+                        <input type="number" id="accessIndex" placeholder="Enter index (0-4)" min="-5" max="4" value="0">
+                        <button class="game-button" onclick="accessItem()">Get Item</button>
+                    </div>
+                    
+                    <div id="accessResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q4">
-                <h3>Question 4: What is the first program every programmer writes?</h3>
-                <div class="option" onclick="checkAnswer(4, 'A', false)">A) Goodbye, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'B', true)">B) Hello, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'C', false)">C) Welcome, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'D', false)">D) Hi, Computer!</div>
+            <!-- Section 3: List Methods -->
+            <div class="section">
+                <h2><span class="emoji">🛠️</span>List Methods</h2>
+                <p>Lists come with built-in methods to add, remove, and modify items!</p>
+
+                <div class="method-card">
+                    <div class="method-name">.append(item)</div>
+                    <p><strong>Purpose:</strong> Add an item to the END of the list</p>
+                    <div class="code-box">
+<span class="comment"># append() - add to end</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>]
+<span class="keyword">fruits</span>.<span class="function">append</span>(<span class="string">"cherry"</span>)
+
+<span class="keyword">print</span>(fruits)  <span class="comment"># ['apple', 'banana', 'cherry']</span>
+
+<span class="comment"># Add multiple items</span>
+<span class="keyword">fruits</span>.<span class="function">append</span>(<span class="string">"date"</span>)
+<span class="keyword">fruits</span>.<span class="function">append</span>(<span class="string">"elderberry"</span>)
+<span class="keyword">print</span>(fruits)  <span class="comment"># ['apple', 'banana', 'cherry', 'date', 'elderberry']</span>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-name">.insert(index, item)</div>
+                    <p><strong>Purpose:</strong> Add an item at a SPECIFIC position</p>
+                    <div class="code-box">
+<span class="comment"># insert() - add at specific index</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"cherry"</span>]
+<span class="keyword">fruits</span>.<span class="function">insert</span>(<span class="number">1</span>, <span class="string">"banana"</span>)  <span class="comment"># Insert at index 1</span>
+
+<span class="keyword">print</span>(fruits)  <span class="comment"># ['apple', 'banana', 'cherry']</span>
+
+<span class="comment"># Insert at beginning</span>
+<span class="keyword">fruits</span>.<span class="function">insert</span>(<span class="number">0</span>, <span class="string">"apricot"</span>)
+<span class="keyword">print</span>(fruits)  <span class="comment"># ['apricot', 'apple', 'banana', 'cherry']</span>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-name">.remove(item)</div>
+                    <p><strong>Purpose:</strong> Remove the FIRST occurrence of an item (by value)</p>
+                    <div class="code-box">
+<span class="comment"># remove() - remove by value</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>, <span class="string">"banana"</span>]
+<span class="keyword">fruits</span>.<span class="function">remove</span>(<span class="string">"banana"</span>)  <span class="comment"># Removes first 'banana'</span>
+
+<span class="keyword">print</span>(fruits)  <span class="comment"># ['apple', 'cherry', 'banana']</span>
+
+<span class="comment"># Error if item doesn't exist!</span>
+<span class="comment"># fruits.remove("mango")  # ValueError!</span>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-name">.pop(index)</div>
+                    <p><strong>Purpose:</strong> Remove and RETURN an item at an index (default: last item)</p>
+                    <div class="code-box">
+<span class="comment"># pop() - remove by index</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]
+
+<span class="comment"># Remove last item (default)</span>
+<span class="keyword">last</span> = <span class="keyword">fruits</span>.<span class="function">pop</span>()
+<span class="keyword">print</span>(last)     <span class="comment"># cherry</span>
+<span class="keyword">print</span>(fruits)   <span class="comment"># ['apple', 'banana']</span>
+
+<span class="comment"># Remove at specific index</span>
+<span class="keyword">first</span> = <span class="keyword">fruits</span>.<span class="function">pop</span>(<span class="number">0</span>)
+<span class="keyword">print</span>(first)    <span class="comment"># apple</span>
+<span class="keyword">print</span>(fruits)   <span class="comment"># ['banana']</span>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">📊</span>Quick Method Comparison</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                        <tr style="background: #f093fb; color: white;">
+                            <th style="padding: 10px; text-align: left;">Method</th>
+                            <th style="padding: 10px; text-align: left;">Action</th>
+                            <th style="padding: 10px; text-align: left;">Returns</th>
+                        </tr>
+                        <tr style="background: white;">
+                            <td style="padding: 10px; font-family: monospace;">append(item)</td>
+                            <td style="padding: 10px;">Add to end</td>
+                            <td style="padding: 10px;">None</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td style="padding: 10px; font-family: monospace;">insert(i, item)</td>
+                            <td style="padding: 10px;">Add at index i</td>
+                            <td style="padding: 10px;">None</td>
+                        </tr>
+                        <tr style="background: white;">
+                            <td style="padding: 10px; font-family: monospace;">remove(item)</td>
+                            <td style="padding: 10px;">Remove by value</td>
+                            <td style="padding: 10px;">None</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td style="padding: 10px; font-family: monospace;">pop(i)</td>
+                            <td style="padding: 10px;">Remove at index i</td>
+                            <td style="padding: 10px;">Removed item</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
-            <div class="question" id="q5">
-                <h3>Question 5: Which of these is a code editor we can use?</h3>
-                <div class="option" onclick="checkAnswer(5, 'A', false)">A) Microsoft Word</div>
-                <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
-                <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
-                <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            <!-- Game 1: List Detective -->
+            <div class="section">
+                <h2>Game 1: List Detective 🔍</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Predict the result!</h3>
+                    <p>Look at the code and predict what the list will contain!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #f093fb; margin-bottom: 15px;">Challenge <span id="detectiveNum">1</span>/10</h4>
+                        
+                        <div class="code-box" id="detectiveCode"></div>
+                        
+                        <h4 style="margin: 20px 0;">What does the list contain?</h4>
+                        <div id="detectiveOptions"></div>
+                        
+                        <div id="detectiveResult" style="margin-top: 20px;"></div>
+                        <div style="margin-top: 20px; font-size: 1.3em; font-weight: bold; text-align: center; color: #f093fb;">
+                            Score: <span id="detectiveScore">0</span>/10
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="question" id="q6">
-                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
-                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
-                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
-                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
-                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
+            <!-- Interactive Demo: List Playground -->
+            <div class="section">
+                <h2><span class="emoji">🎮</span>Interactive List Playground</h2>
+                <div class="interactive-demo">
+                    <h3>Try List Methods Live!</h3>
+                    <p>Build and modify your own list:</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px; font-weight: bold;">Enter an item:</label>
+                        <input type="text" id="playgroundItem" placeholder="e.g., apple">
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px; font-weight: bold;">Insert at index (optional):</label>
+                        <input type="number" id="playgroundIndex" placeholder="Leave empty for append" min="0">
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <button class="game-button" onclick="playgroundAppend()">Append</button>
+                        <button class="game-button" onclick="playgroundInsert()">Insert</button>
+                        <button class="game-button" onclick="playgroundPop()">Pop Last</button>
+                        <button class="game-button" onclick="playgroundRemove()">Remove</button>
+                        <button class="game-button" onclick="playgroundClear()">Clear All</button>
+                    </div>
+
+                    <div id="playgroundList" class="list-visual"></div>
+                    <div id="playgroundCode"></div>
+                </div>
             </div>
 
-            <div id="finalMessage" class="celebration"></div>
+            <!-- Project: Student Grade Tracker -->
+            <div class="section">
+                <h2><span class="emoji">📊</span>Project: Student Grade Tracker</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Build a complete grade management system!</h3>
+                    <p>Add, remove, and analyze student grades using lists!</p>
+                    
+                    <div class="grade-tracker">
+                        <h3 style="color: #f093fb; margin-bottom: 20px; text-align: center;">📚 Student Grade Tracker 📚</h3>
+                        
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">👤 Student Name:</label>
+                            <input type="text" id="studentName" placeholder="e.g., John Doe" style="width: 100%; max-width: 100%;">
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">📝 Grade (0-100):</label>
+                            <input type="number" id="studentGrade" placeholder="e.g., 85" min="0" max="100" style="width: 100%; max-width: 100%;">
+                        </div>
+
+                        <button class="game-button" onclick="addGrade()" style="width: 100%;">Add Grade ➕</button>
+
+                        <div class="grade-list" id="gradeList">
+                            <p style="text-align: center; color: #666;">No grades added yet. Add your first grade above!</p>
+                        </div>
+
+                        <div class="stats-box" id="statsBox" style="display: none;">
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalGrades">0</div>
+                                <div class="stat-label">Total Grades</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="avgGrade">0</div>
+                                <div class="stat-label">Average</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="highestGrade">0</div>
+                                <div class="stat-label">Highest</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="lowestGrade">0</div>
+                                <div class="stat-label">Lowest</div>
+                            </div>
+                        </div>
+
+                        <div id="gradeMessage"></div>
+
+                        <div id="gradeCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #f093fb; margin-bottom: 10px;">📝 Python Code:</h4>
+                            <div class="code-box" id="gradeCodeDisplay"></div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h3><span class="emoji">💡</span>How It Works:</h3>
+                        <ol style="font-size: 1.1em; line-height: 2em;">
+                            <li><strong>Store grades in a list:</strong> <code>grades = []</code></li>
+                            <li><strong>Add grades:</strong> Use <code>append()</code> method</li>
+                            <li><strong>Remove grades:</strong> Use <code>pop(index)</code> or <code>remove(value)</code></li>
+                            <li><strong>Calculate average:</strong> <code>sum(grades) / len(grades)</code></li>
+                            <li><strong>Find highest:</strong> <code>max(grades)</code></li>
+                            <li><strong>Find lowest:</strong> <code>min(grades)</code></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 2: Method Matcher -->
+            <div class="section">
+                <h2>Game 2: Method Matcher 🎯</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Choose the correct list method!</h3>
+                    <p>Read the task and select which method to use!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #f093fb;">Challenge <span id="matcherNum">1</span>/8</h4>
+                        
+                        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                            <p id="matcherTask" style="font-size: 1.3em; text-align: center; font-weight: bold;"></p>
+                        </div>
+                        
+                        <h4 style="margin: 20px 0;">Which method should you use?</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                            <div class="detective-option" onclick="guessMatcher('append')">append()</div>
+                            <div class="detective-option" onclick="guessMatcher('insert')">insert()</div>
+                            <div class="detective-option" onclick="guessMatcher('remove')">remove()</div>
+                            <div class="detective-option" onclick="guessMatcher('pop')">pop()</div>
+                        </div>
+                        
+                        <div id="matcherResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #f093fb; text-align: center;">
+                            Score: <span id="matcherScore">0</span>/8
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <h2 style="text-align: center; color: #f093fb;"><span class="emoji">📝</span>Final Quiz!</h2>
+                <p style="text-align: center; font-size: 1.2em;">Test your knowledge about lists!</p>
+
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: What is the index of the first item in a list?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 0, true)">A) 0</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 1, false)">B) 1</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 2, false)">C) -1</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 3, false)">D) Depends on the list</div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: How do you create an empty list?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 0, true)">A) []</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 1, false)">B) ()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 2, false)">C) {}</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 3, false)">D) list</div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: Which method adds an item to the END of a list?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 0, true)">A) append()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 1, false)">B) insert()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 2, false)">C) add()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 3, false)">D) push()</div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: What does fruits[-1] return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 0, false)">A) First item</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 1, true)">B) Last item</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 2, false)">C) Error</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 3, false)">D) -1</div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: Which method removes an item by VALUE?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 0, false)">A) pop()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 1, true)">B) remove()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 2, false)">C) delete()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 3, false)">D) clear()</div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <h3>Question 6: What does pop() return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 0, true)">A) The removed item</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 1, false)">B) None</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 2, false)">C) The entire list</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 3, false)">D) True or False</div>
+                </div>
+
+                <div class="quiz-question" id="q7">
+                    <h3>Question 7: How do you get the length of a list?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 0, true)">A) len(list)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 1, false)">B) list.length</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 2, false)">C) size(list)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 3, false)">D) list.size()</div>
+                </div>
+
+                <div class="quiz-question" id="q8">
+                    <h3>Question 8: Which is correct to add "x" at index 2?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 0, true)">A) list.insert(2, "x")</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 1, false)">B) list.insert("x", 2)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 2, false)">C) list.add(2, "x")</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 3, false)">D) list[2] = "x"</div>
+                </div>
+
+                <button class="game-button" onclick="calculateScore()" style="display: block; margin: 20px auto;">Submit Quiz</button>
+                <div class="score-display" id="quizScore" style="display: none;"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Lecture Summary</h2>
+                <div class="highlight-box">
+                    <h3>What We Learned Today:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ Lists store multiple values: <code>[item1, item2, item3]</code></li>
+                        <li>✅ Index starts at 0: <code>list[0]</code> is first item</li>
+                        <li>✅ <code>append(item)</code> - Add to end</li>
+                        <li>✅ <code>insert(index, item)</code> - Add at position</li>
+                        <li>✅ <code>remove(item)</code> - Remove by value</li>
+                        <li>✅ <code>pop(index)</code> - Remove by index and return it</li>
+                        <li>✅ Built a student grade tracker</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3><span class="emoji">🏠</span>Practice at Home:</h3>
+                    <ol style="font-size: 1.1em; line-height: 2em;">
+                        <li>Create a shopping list manager (add/remove items)</li>
+                        <li>Build a to-do list tracker</li>
+                        <li>Make a high score leaderboard (top 5 scores)</li>
+                        <li>Create a playlist manager (songs)</li>
+                        <li>Build an inventory system (items and quantities)</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Common Mistakes to Avoid:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>Starting index at 1 instead of 0</li>
+                        <li>Using remove() with index instead of value</li>
+                        <li>Forgetting that pop() returns the removed item</li>
+                        <li>Trying to access index out of range</li>
+                        <li>Confusing insert(index, item) parameter order</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game 1: Robot Navigation
-        let robotPos = 0;
-        const targetPos = 24;
-        
-        function createGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                if (i === targetPos) {
-                    cell.className += ' target';
-                    cell.textContent = '⭐';
+        let quizAnswers = {};
+        let playgroundList = [];
+        let gradeData = [];
+
+        // Access Item Demo
+        function accessItem() {
+            const languages = ['Python', 'Java', 'C++', 'JavaScript', 'Ruby'];
+            const index = parseInt(document.getElementById('accessIndex').value);
+            const result = document.getElementById('accessResult');
+
+            try {
+                const item = languages[index];
+                if (item === undefined) {
+                    throw new Error('Index out of range');
                 }
-                if (i === robotPos) {
-                    cell.textContent = '🤖';
-                }
-                grid.appendChild(cell);
+                
+                result.innerHTML = `
+                    <div style="margin-top: 20px; background: white; padding: 20px; border-radius: 10px; border: 3px solid #f093fb;">
+                        <h4 style="color: #f093fb;">Result:</h4>
+                        <div class="code-box">
+<span class="keyword">languages</span> = [<span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'C++'</span>, <span class="string">'JavaScript'</span>, <span class="string">'Ruby'</span>]
+<span class="keyword">print</span>(languages[<span class="number">${index}</span>])  <span class="comment"># ${item}</span>
+                        </div>
+                        <div style="margin-top: 15px; padding: 15px; background: #d4edda; border-radius: 10px; text-align: center;">
+                            <strong style="font-size: 1.5em; color: #28a745;">✅ ${item}</strong>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                result.innerHTML = `
+                    <div class="error-message" style="margin-top: 20px;">
+                        ❌ Index ${index} is out of range! Valid indices: 0 to 4 (or -5 to -1)
+                    </div>
+                `;
             }
         }
-        
-        function moveRobot(direction) {
-            let newPos = robotPos;
-            switch(direction) {
-                case 'up':
-                    if (robotPos >= 5) newPos -= 5;
-                    break;
-                case 'down':
-                    if (robotPos < 20) newPos += 5;
-                    break;
-                case 'left':
-                    if (robotPos % 5 !== 0) newPos -= 1;
-                    break;
-                case 'right':
-                    if (robotPos % 5 !== 4) newPos += 1;
-                    break;
+
+        // Playground Functions
+        function updatePlayground() {
+            const listDiv = document.getElementById('playgroundList');
+            const codeDiv = document.getElementById('playgroundCode');
+
+            if (playgroundList.length === 0) {
+                listDiv.innerHTML = '<p style="text-align: center; color: #666;">List is empty</p>';
+            } else {
+                listDiv.innerHTML = playgroundList.map((item, index) => `
+                    <div class="list-item">
+                        <div class="list-index">${index}</div>
+                        <div>${item}</div>
+                    </div>
+                `).join('');
+            }
+
+            codeDiv.innerHTML = `
+                <div class="code-box">
+<span class="keyword">my_list</span> = ${JSON.stringify(playgroundList)}
+<span class="keyword">print</span>(my_list)  <span class="comment"># Current list</span>
+                </div>
+            `;
+        }
+
+        function playgroundAppend() {
+            const item = document.getElementById('playgroundItem').value.trim();
+            if (!item) {
+                alert('Please enter an item!');
+                return;
+            }
+            playgroundList.push(item);
+            document.getElementById('playgroundItem').value = '';
+            updatePlayground();
+        }
+
+        function playgroundInsert() {
+            const item = document.getElementById('playgroundItem').value.trim();
+            const index = parseInt(document.getElementById('playgroundIndex').value);
+            
+            if (!item) {
+                alert('Please enter an item!');
+                return;
             }
             
-            robotPos = newPos;
-            createGrid();
-            
-            if (robotPos === targetPos) {
-                document.getElementById('gameMessage').innerHTML = '🎉 Congratulations! You did it!';
+            if (isNaN(index) || index < 0 || index > playgroundList.length) {
+                alert('Please enter a valid index (0 to ' + playgroundList.length + ')');
+                return;
             }
+            
+            playgroundList.splice(index, 0, item);
+            document.getElementById('playgroundItem').value = '';
+            document.getElementById('playgroundIndex').value = '';
+            updatePlayground();
         }
-        
-        function resetGame() {
-            robotPos = 0;
-            createGrid();
-            document.getElementById('gameMessage').innerHTML = '';
-        }
-        
-        // Game 2: Code Simulator
-        function runUserCode() {
-            const code = document.getElementById('userCode').value;
-            const output = document.getElementById('output');
-            if (code) {
-                output.innerHTML += code + '<br>';
+
+        function playgroundPop() {
+            if (playgroundList.length === 0) {
+                alert('List is empty!');
+                return;
             }
+            const popped = playgroundList.pop();
+            alert('Removed: ' + popped);
+            updatePlayground();
         }
-        
-        function clearOutput() {
-            document.getElementById('output').innerHTML = '';
+
+        function playgroundRemove() {
+            const item = document.getElementById('playgroundItem').value.trim();
+            if (!item) {
+                alert('Please enter an item to remove!');
+                return;
+            }
+            
+            const index = playgroundList.indexOf(item);
+            if (index === -1) {
+                alert('Item "' + item + '" not found in list!');
+                return;
+            }
+            
+            playgroundList.splice(index, 1);
+            document.getElementById('playgroundItem').value = '';
+            updatePlayground();
         }
-        
-        // Game 3: Animation
-        function animateCode() {
-            const output = document.getElementById('animationOutput');
-            output.innerHTML = '';
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 1<br>';
-            }, 500);
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '';
-                document.getElementById('line2').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 2<br>';
-            }, 1500);
-            
-            setTimeout(() => {
-                document.getElementById('line2').style.background = '';
-                document.getElementById('line3').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 3<br>';
-            }, 2500);
-            
-            setTimeout(() => {
-                document.getElementById('line3').style.background = '';
-            }, 3500);
+
+        function playgroundClear() {
+            playgroundList = [];
+            updatePlayground();
         }
-        
-        // Quiz
-        let correctAnswers = 0;
-        let answeredQuestions = new Set();
-        
-        function checkAnswer(questionNum, option, isCorrect) {
-            if (answeredQuestions.has(questionNum)) return;
+
+        // Grade Tracker
+        function addGrade() {
+            const name = document.getElementById('studentName').value.trim();
+            const grade = parseInt(document.getElementById('studentGrade').value);
+            const message = document.getElementById('gradeMessage');
+
+            if (!name) {
+                message.innerHTML = '<div class="error-message">Please enter a student name!</div>';
+                return;
+            }
+
+            if (isNaN(grade) || grade < 0 || grade > 100) {
+                message.innerHTML = '<div class="error-message">Please enter a valid grade (0-100)!</div>';
+                return;
+            }
+
+            gradeData.push({ name, grade });
             
-            answeredQuestions.add(questionNum);
-            const question = document.getElementById('q' + questionNum);
-            const options = question.querySelectorAll('.option');
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentGrade').value = '';
+            message.innerHTML = '<div class="success-message">✅ Grade added successfully!</div>';
             
+            updateGradeDisplay();
+            setTimeout(() => message.innerHTML = '', 2000);
+        }
+
+        function removeGrade(index) {
+            gradeData.splice(index, 1);
+            updateGradeDisplay();
+        }
+
+        function updateGradeDisplay() {
+            const listDiv = document.getElementById('gradeList');
+            const statsDiv = document.getElementById('statsBox');
+            const codeDiv = document.getElementById('gradeCode');
+            const codeDisplay = document.getElementById('gradeCodeDisplay');
+
+            if (gradeData.length === 0) {
+                listDiv.innerHTML = '<p style="text-align: center; color: #666;">No grades added yet. Add your first grade above!</p>';
+                statsDiv.style.display = 'none';
+                codeDiv.style.display = 'none';
+                return;
+            }
+
+            // Display grades
+            listDiv.innerHTML = gradeData.map((item, index) => `
+                <div class="grade-item">
+                    <div>
+                        <strong>${item.name}</strong>: ${item.grade}%
+                    </div>
+                    <button onclick="removeGrade(${index})">Remove</button>
+                </div>
+            `).join('');
+
+            // Calculate statistics
+            const grades = gradeData.map(item => item.grade);
+            const total = grades.length;
+            const sum = grades.reduce((a, b) => a + b, 0);
+            const avg = (sum / total).toFixed(1);
+            const highest = Math.max(...grades);
+            const lowest = Math.min(...grades);
+
+            // Update stats
+            statsDiv.style.display = 'grid';
+            document.getElementById('totalGrades').textContent = total;
+            document.getElementById('avgGrade').textContent = avg;
+            document.getElementById('highestGrade').textContent = highest;
+            document.getElementById('lowestGrade').textContent = lowest;
+
+            // Show code
+            codeDiv.style.display = 'block';
+            codeDisplay.innerHTML = `
+<span class="comment"># Create empty list</span>
+<span class="keyword">grades</span> = []
+
+<span class="comment"># Add grades using append()</span>
+${gradeData.map(item => `<span class="keyword">grades</span>.<span class="function">append</span>(<span class="number">${item.grade}</span>)  <span class="comment"># ${item.name}</span>`).join('\n')}
+
+<span class="comment"># Calculate statistics</span>
+<span class="keyword">total</span> = <span class="function">len</span>(grades)          <span class="comment"># ${total}</span>
+<span class="keyword">average</span> = <span class="function">sum</span>(grades) / total  <span class="comment"># ${avg}</span>
+<span class="keyword">highest</span> = <span class="function">max</span>(grades)         <span class="comment"># ${highest}</span>
+<span class="keyword">lowest</span> = <span class="function">min</span>(grades)          <span class="comment"># ${lowest}</span>
+
+<span class="keyword">print</span>(<span class="string">f"Average: {average}"</span>)
+            `;
+        }
+
+        // Detective Game
+        let detectiveLevel = 0;
+        let detectiveScore = 0;
+        const detectiveChallenges = [
+            {
+                code: "fruits = ['apple', 'banana']\nfruits.append('cherry')\nprint(fruits)",
+                options: ["['apple', 'banana']", "['apple', 'banana', 'cherry']", "['cherry']", "Error"],
+                answer: 1
+            },
+            {
+                code: "nums = [1, 2, 3]\nnums.insert(1, 5)\nprint(nums)",
+                options: ["[1, 2, 3, 5]", "[5, 1, 2, 3]", "[1, 5, 2, 3]", "[1, 2, 5, 3]"],
+                answer: 2
+            },
+            {
+                code: "items = ['a', 'b', 'c']\nitems.remove('b')\nprint(items)",
+                options: ["['a', 'b', 'c']", "['a', 'c']", "['b']", "['c']"],
+                answer: 1
+            },
+            {
+                code: "nums = [10, 20, 30]\nlast = nums.pop()\nprint(nums)",
+                options: ["[10, 20, 30]", "[10, 20]", "[20, 30]", "[30]"],
+                answer: 1
+            },
+            {
+                code: "x = [1, 2]\nx.append(3)\nx.append(4)\nprint(x)",
+                options: ["[1, 2, 3]", "[1, 2, 3, 4]", "[3, 4]", "[1, 2]"],
+                answer: 1
+            },
+            {
+                code: "fruits = ['apple']\nfruits.insert(0, 'banana')\nprint(fruits)",
+                options: ["['banana', 'apple']", "['apple', 'banana']", "['banana']", "Error"],
+                answer: 0
+            },
+            {
+                code: "nums = [5, 10, 15]\nnums.pop(0)\nprint(nums)",
+                options: ["[5, 10, 15]", "[10, 15]", "[5, 10]", "[15]"],
+                answer: 1
+            },
+            {
+                code: "x = [1, 2, 3, 2]\nx.remove(2)\nprint(x)",
+                options: ["[1, 3]", "[1, 2, 3]", "[1, 3, 2]", "[2, 2]"],
+                answer: 2
+            },
+            {
+                code: "items = []\nitems.append('a')\nitems.append('b')\nprint(len(items))",
+                options: ["0", "1", "2", "Error"],
+                answer: 2
+            },
+            {
+                code: "nums = [1, 2, 3]\nfirst = nums.pop(0)\nprint(first)",
+                options: ["[1, 2, 3]", "[2, 3]", "1", "0"],
+                answer: 2
+            }
+        ];
+
+        function loadDetective() {
+            if (detectiveLevel >= detectiveChallenges.length) {
+                showDetectiveEnd();
+                return;
+            }
+
+            const challenge = detectiveChallenges[detectiveLevel];
+            document.getElementById('detectiveNum').textContent = detectiveLevel + 1;
+            document.getElementById('detectiveCode').textContent = challenge.code;
+
+            const optionsDiv = document.getElementById('detectiveOptions');
+            optionsDiv.innerHTML = '';
+
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkDetective(i);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('detectiveResult').innerHTML = '';
+        }
+
+        function checkDetective(choice) {
+            const challenge = detectiveChallenges[detectiveLevel];
+            const buttons = document.querySelectorAll('#detectiveOptions .detective-option');
+            const result = document.getElementById('detectiveResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.answer) {
+                detectiveScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                buttons[choice].classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.options[challenge.answer] + '</div>';
+                buttons[choice].classList.add('incorrect');
+                buttons[challenge.answer].classList.add('correct');
+            }
+
+            document.getElementById('detectiveScore').textContent = detectiveScore;
+            detectiveLevel++;
+
+            setTimeout(loadDetective, 2500);
+        }
+
+        function showDetectiveEnd() {
+            const container = document.querySelector('#detectiveNum').closest('.game-container');
+            const percentage = (detectiveScore / detectiveChallenges.length * 100).toFixed(0);
+
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎉 Detective Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${detectiveScore}/${detectiveChallenges.length} (${percentage}%)</p>
+                    <button class="game-button" onclick="resetDetective()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetDetective() {
+            detectiveLevel = 0;
+            detectiveScore = 0;
+            document.getElementById('detectiveScore').textContent = '0';
+            loadDetective();
+        }
+
+        // Method Matcher Game
+        let matcherLevel = 0;
+        let matcherScore = 0;
+        const matcherChallenges = [
+            { task: "Add an item to the END of the list", answer: "append" },
+            { task: "Add an item at index 2", answer: "insert" },
+            { task: "Remove the item 'apple' from the list", answer: "remove" },
+            { task: "Remove and return the last item", answer: "pop" },
+            { task: "Add 'hello' to the end of the list", answer: "append" },
+            { task: "Remove the item at index 0", answer: "pop" },
+            { task: "Insert 'x' at the beginning (index 0)", answer: "insert" },
+            { task: "Delete the first occurrence of value 10", answer: "remove" }
+        ];
+
+        function loadMatcher() {
+            if (matcherLevel >= matcherChallenges.length) {
+                showMatcherEnd();
+                return;
+            }
+
+            const challenge = matcherChallenges[matcherLevel];
+            document.getElementById('matcherNum').textContent = matcherLevel + 1;
+            document.getElementById('matcherTask').textContent = challenge.task;
+            document.getElementById('matcherResult').innerHTML = '';
+
+            const buttons = document.querySelectorAll('#matcherResult').closest('div').previousElementSibling.querySelectorAll('.detective-option');
+            buttons.forEach(btn => {
+                btn.className = 'detective-option';
+                btn.style.pointerEvents = 'auto';
+            });
+        }
+
+        function guessMatcher(method) {
+            const challenge = matcherChallenges[matcherLevel];
+            const buttons = event.target.parentElement.querySelectorAll('.detective-option');
+            const result = document.getElementById('matcherResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (method === challenge.answer) {
+                matcherScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                event.target.classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.answer + '()</div>';
+                event.target.classList.add('incorrect');
+            }
+
+            document.getElementById('matcherScore').textContent = matcherScore;
+            matcherLevel++;
+
+            setTimeout(loadMatcher, 2500);
+        }
+
+        function showMatcherEnd() {
+            const container = document.querySelector('#matcherNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎯 Matcher Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${matcherScore}/${matcherChallenges.length}</p>
+                    <button class="game-button" onclick="resetMatcher()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetMatcher() {
+            matcherLevel = 0;
+            matcherScore = 0;
+            document.getElementById('matcherScore').textContent = '0';
+            loadMatcher();
+        }
+
+        // Quiz Functions
+        function selectAnswer(questionId, optionIndex, isCorrect) {
+            const question = document.getElementById(questionId);
+            const options = question.querySelectorAll('.quiz-option');
+
             options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.startsWith(option)) {
-                    opt.className = isCorrect ? 'option correct' : 'option wrong';
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            options[optionIndex].classList.add('selected');
+            quizAnswers[questionId] = isCorrect;
+        }
+
+        function calculateScore() {
+            const totalQuestions = 8;
+            let correctAnswers = 0;
+
+            Object.keys(quizAnswers).forEach(qId => {
+                const question = document.getElementById(qId);
+                const selected = question.querySelector('.selected');
+                if (selected) {
+                    if (quizAnswers[qId]) {
+                        selected.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        const options = question.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.onclick.toString().includes('true')) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
                 }
             });
-            
-            if (isCorrect) {
-                correctAnswers++;
-            }
-            
-            updateScore();
-            
-            if (answeredQuestions.size === 6) {
-                showFinalMessage();
-            }
-        }
-        
-        function updateScore() {
-            document.getElementById('score').innerHTML = 
-                `Score: ${correctAnswers} / ${answeredQuestions.size}`;
-        }
-        
-        function showFinalMessage() {
-            const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 6) {
-                finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 4) {
-                finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
+
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const scoreDisplay = document.getElementById('quizScore');
+
+            let message = '';
+            let emoji = '';
+
+            if (percentage === 100) {
+                message = 'Perfect Score!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Great Job!';
+                emoji = '🌟';
+            } else if (percentage >= 60) {
+                message = 'Good Effort!';
+                emoji = '👍';
             } else {
-                finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
+                message = 'Keep Learning!';
+                emoji = '📚';
             }
+
+            scoreDisplay.innerHTML = `
+                ${emoji} ${message}<br>
+                You scored ${correctAnswers} out of ${totalQuestions} (${percentage.toFixed(0)}%)
+            `;
+            scoreDisplay.style.display = 'block';
         }
-        
+
         // Initialize
-        createGrid();
+        window.onload = function() {
+            updatePlayground();
+            loadDetective();
+            loadMatcher();
+        };
     </script>
 </body>
 </html>
