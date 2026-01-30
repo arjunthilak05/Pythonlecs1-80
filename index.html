@@ -3,561 +3,1528 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 1: Welcome to Programming</title>
+    <title>Lecture 12: List Operations</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
-        h1 {
-            color: #667eea;
+
+        header {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            color: white;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
+        }
+
+        header h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        
-        h2 {
-            color: #764ba2;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
-        
+
+        .content {
+            padding: 40px;
+        }
+
         .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9ff;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #30cfd0;
         }
-        
-        .game-box {
+
+        .section h2 {
+            color: #30cfd0;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "Python";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #30cfd0;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .boolean {
+            color: #61afef;
+            font-weight: bold;
+        }
+
+        .slice-visual {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .slice-item {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 60px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .slice-item.selected {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transform: scale(1.1);
+        }
+
+        .slice-index {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .interactive-demo {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
-            color: white;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .robot {
-            font-size: 60px;
-            text-align: center;
+
+        .game-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 5px;
-            margin: 20px auto;
-            width: fit-content;
-        }
-        
-        .cell {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border: 2px solid #764ba2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            border-radius: 8px;
-        }
-        
-        .cell.target {
-            background: #ffeb3b;
-        }
-        
-        button {
-            background: #667eea;
+
+        .game-button {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 5px;
+            margin: 10px 5px;
             transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        button:hover {
-            background: #764ba2;
-            transform: scale(1.05);
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
-        
-        .code-box {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            font-size: 16px;
+
+        .game-button:active {
+            transform: translateY(0);
         }
-        
-        .output-box {
-            background: #000;
-            color: #0f0;
+
+        input[type="text"], input[type="number"] {
             padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #30cfd0;
             border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            min-height: 50px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
         }
-        
-        .quiz-box {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+        .score-analyzer {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 800px;
+            margin: 20px auto;
         }
-        
-        .question {
-            background: white;
+
+        .score-input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .score-chip {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-chip button {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
-            margin: 15px 0;
+            margin: 20px 0;
         }
-        
-        .option {
-            display: block;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f0f0f0;
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            height: 200px;
+            margin: 20px 0;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #30cfd0;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 2px solid transparent;
         }
-        
-        .option:hover {
-            background: #e0e0e0;
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #30cfd0;
         }
-        
-        .option.correct {
-            background: #4caf50;
-            color: white;
+
+        .quiz-option.selected {
+            background: #d4f1f4;
+            border-color: #30cfd0;
         }
-        
-        .option.wrong {
-            background: #f44336;
-            color: white;
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
         }
-        
-        .controls {
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .score-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            margin: 20px 0;
-        }
-        
-        .line-highlight {
-            background: #ffeb3b;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        
-        #score {
-            text-align: center;
-            font-size: 24px;
+            font-size: 1.5em;
             font-weight: bold;
-            color: #667eea;
+            color: #30cfd0;
+            margin-top: 20px;
+        }
+
+        .detective-option {
+            background: white;
+            border: 3px solid #30cfd0;
+            padding: 20px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .detective-option:hover {
+            background: #e0f7fa;
+            transform: translateX(5px);
+        }
+
+        .detective-option.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .detective-option.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 20px 0;
         }
-        
-        .celebration {
-            text-align: center;
-            font-size: 50px;
-            margin: 20px 0;
+
+        table th {
+            background: #30cfd0;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        @media (max-width: 768px) {
+            .slice-visual {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Lecture 1: Welcome to Programming!</h1>
-        
-        <!-- Section 1: What is Programming -->
-        <div class="section">
-            <h2>🤖 What is Programming?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Programming is like giving instructions to a robot! Imagine you have a robot friend who is very smart but only understands specific commands. You need to tell them exactly what to do, step by step.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                For example, if you want the robot to make a sandwich, you can't just say "make a sandwich." You need to say:
-            </p>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px; margin-top: 10px;">
-                <li>Pick up the bread</li>
-                <li>Open the jar of peanut butter</li>
-                <li>Spread peanut butter on the bread</li>
-                <li>Put two slices together</li>
-            </ul>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                That's exactly what programming is! We write instructions (called <strong>code</strong>) that tell the computer exactly what to do!
-            </p>
-        </div>
+        <header>
+            <h1 class="floating">🎓 Lecture 12: List Operations 🔧</h1>
+            <p>Master powerful list techniques!</p>
+        </header>
 
-        <!-- Game 1: Robot Navigation -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 1: Help the Robot Find the Star!</h2>
-            <p style="font-size: 18px;">Give the robot instructions to reach the ⭐ star!</p>
-            <div class="robot" id="robotDisplay">🤖</div>
-            <div class="grid" id="gameGrid"></div>
-            <div class="controls">
-                <button onclick="moveRobot('up')">⬆️ Up</button>
-                <button onclick="moveRobot('down')">⬇️ Down</button>
-                <button onclick="moveRobot('left')">⬅️ Left</button>
-                <button onclick="moveRobot('right')">➡️ Right</button>
-                <button onclick="resetGame()" style="background: #f5576c;">🔄 Reset</button>
-            </div>
-            <div id="gameMessage" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
-        </div>
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2><span class="emoji">🌟</span>Welcome to Advanced List Operations!</h2>
+                <p style="font-size: 1.2em;">In the last lecture, you learned basic list methods. Now let's explore <strong>powerful operations</strong> that make lists incredibly useful!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>What You'll Learn Today</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ Slicing - Extract portions of lists</li>
+                        <li>✅ Sorting - Arrange items in order</li>
+                        <li>✅ Reversing - Flip list order</li>
+                        <li>✅ Built-in functions: len(), min(), max(), sum()</li>
+                        <li>✅ Build a score analyzer with statistics</li>
+                    </ul>
+                </div>
 
-        <!-- Section 2: Installing Python -->
-        <div class="section">
-            <h2>💻 Installing Python and VS Code</h2>
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 1: Install Python</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Go to <strong>python.org</strong></li>
-                <li>Click on "Downloads"</li>
-                <li>Download Python (make sure to check "Add Python to PATH")</li>
-                <li>Run the installer and follow the instructions</li>
-            </ol>
-            
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 2: Install VS Code (or IDLE)</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li><strong>VS Code:</strong> Go to <strong>code.visualstudio.com</strong> and download</li>
-                <li><strong>IDLE:</strong> This comes with Python automatically!</li>
-            </ol>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Tip:</strong> VS Code is like a super-powered notebook for writing code. IDLE is simpler and great for beginners!
-            </p>
-        </div>
-
-        <!-- Section 3: First Program -->
-        <div class="section">
-            <h2>🎉 Your First Program: Hello, World!</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                The first program every programmer writes is "Hello, World!" It's a tradition! This program tells the computer to display a message on the screen.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                In Python, we use the <strong>print()</strong> command to display text. Here's how it looks:
-            </p>
-            <div class="code-box">
-                print("Hello, World!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8;">
-                When you run this code, the computer will show: <strong>Hello, World!</strong>
-            </p>
-        </div>
-
-        <!-- Game 2: Interactive Code Simulator -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 2: Try Writing Your Own Code!</h2>
-            <p style="font-size: 18px;">Type your own message in the box below and click "Run Code"!</p>
-            <div style="margin: 20px 0;">
-                <input type="text" id="userCode" placeholder='Type your message here...' 
-                       style="width: 100%; padding: 15px; font-size: 18px; border-radius: 8px; border: none;">
-            </div>
-            <div class="controls">
-                <button onclick="runUserCode()">▶️ Run Code</button>
-                <button onclick="clearOutput()" style="background: #f5576c;">🗑️ Clear</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="output"></div>
-        </div>
-
-        <!-- Section 4: How Computers Read Code -->
-        <div class="section">
-            <h2>📖 How Computers Read Code Line by Line</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Computers are very obedient but not very smart. They read your code <strong>one line at a time</strong>, from top to bottom, just like you read a book!
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                Let's look at an example:
-            </p>
-            <div class="code-box">
-                print("First, I say hello!")<br>
-                print("Then, I say goodbye!")<br>
-                print("And finally, I'm done!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                The computer will:
-            </p>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Read line 1 and print "First, I say hello!"</li>
-                <li>Then read line 2 and print "Then, I say goodbye!"</li>
-                <li>Finally read line 3 and print "And finally, I'm done!"</li>
-            </ol>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Remember:</strong> The order matters! The computer does exactly what you tell it, in the order you tell it.
-            </p>
-        </div>
-
-        <!-- Game 3: Code Order Challenge -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 3: Line by Line Execution</h2>
-            <p style="font-size: 18px;">Watch how the computer reads code one line at a time!</p>
-            <div class="code-box" id="animatedCode">
-                <div id="line1">print("I am line 1")</div>
-                <div id="line2">print("I am line 2")</div>
-                <div id="line3">print("I am line 3")</div>
-            </div>
-            <div class="controls">
-                <button onclick="animateCode()">▶️ Watch Execution</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="animationOutput"></div>
-        </div>
-
-        <!-- Section 5: Compilers vs Interpreters -->
-        <div class="section">
-            <h2>⚙️ What's a Compiler?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates the whole program before running it</li>
-                <li>Shows all errors at the end, together</li>
-                <li>Runs faster once compiled</li>
-                <li>Creates a separate file you can run anytime</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>🔍 What's an Interpreter?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates code one line at a time as it runs</li>
-                <li>Shows errors immediately when it hits that line</li>
-                <li>Slower execution than compiled programs</li>
-                <li>Always needs the original code to run</li>
-            </ul>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
-            </p>
-        </div>
-
-        <!-- Final Quiz -->
-        <div class="quiz-box">
-            <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
-            <div id="score"></div>
-            
-            <div class="question" id="q1">
-                <h3>Question 1: What is programming?</h3>
-                <div class="option" onclick="checkAnswer(1, 'A', false)">A) Playing video games</div>
-                <div class="option" onclick="checkAnswer(1, 'B', true)">B) Giving instructions to a computer</div>
-                <div class="option" onclick="checkAnswer(1, 'C', false)">C) Drawing pictures</div>
-                <div class="option" onclick="checkAnswer(1, 'D', false)">D) Writing stories</div>
+                <div class="info-box">
+                    <h3><span class="emoji">🤔</span>Real-World Uses</h3>
+                    <p style="font-size: 1.1em;">These operations are essential for:</p>
+                    <ul style="font-size: 1.1em; line-height: 2em; margin-top: 10px;">
+                        <li>📊 Analyzing test scores and grades</li>
+                        <li>🏆 Creating leaderboards (highest to lowest)</li>
+                        <li>📈 Finding trends in data</li>
+                        <li>🎯 Getting top performers or worst cases</li>
+                        <li>💰 Calculating averages, totals, ranges</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q2">
-                <h3>Question 2: What command do we use to display text in Python?</h3>
-                <div class="option" onclick="checkAnswer(2, 'A', false)">A) show()</div>
-                <div class="option" onclick="checkAnswer(2, 'B', false)">B) display()</div>
-                <div class="option" onclick="checkAnswer(2, 'C', true)">C) print()</div>
-                <div class="option" onclick="checkAnswer(2, 'D', false)">D) write()</div>
+            <!-- Section 1: List Slicing -->
+            <div class="section">
+                <h2><span class="emoji">✂️</span>List Slicing</h2>
+                <p><strong>Slicing</strong> lets you extract a portion of a list. It's like cutting out a specific section!</p>
+
+                <div class="code-box">
+<span class="comment"># Slicing syntax: list[start:end:step]</span>
+<span class="comment"># start - where to begin (inclusive)</span>
+<span class="comment"># end - where to stop (exclusive)</span>
+<span class="comment"># step - how many items to skip (optional)</span>
+
+<span class="keyword">numbers</span> = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]
+
+<span class="comment"># Basic slicing</span>
+<span class="keyword">print</span>(numbers[<span class="number">2</span>:<span class="number">5</span>])    <span class="comment"># [2, 3, 4] - index 2 to 4</span>
+<span class="keyword">print</span>(numbers[<span class="number">0</span>:<span class="number">3</span>])    <span class="comment"># [0, 1, 2] - first 3 items</span>
+<span class="keyword">print</span>(numbers[<span class="number">5</span>:<span class="number">8</span>])    <span class="comment"># [5, 6, 7] - middle section</span>
+
+<span class="comment"># Omitting start or end</span>
+<span class="keyword">print</span>(numbers[:<span class="number">3</span>])     <span class="comment"># [0, 1, 2] - from beginning to index 2</span>
+<span class="keyword">print</span>(numbers[<span class="number">7</span>:])     <span class="comment"># [7, 8, 9] - from index 7 to end</span>
+<span class="keyword">print</span>(numbers[:])      <span class="comment"># [0, 1, 2, ...] - entire list (copy)</span>
+
+<span class="comment"># Using step</span>
+<span class="keyword">print</span>(numbers[<span class="number">0</span>:<span class="number">10</span>:<span class="number">2</span>])  <span class="comment"># [0, 2, 4, 6, 8] - every 2nd item</span>
+<span class="keyword">print</span>(numbers[::<span class="number">2</span>])     <span class="comment"># [0, 2, 4, 6, 8] - every 2nd item</span>
+<span class="keyword">print</span>(numbers[::<span class="number">3</span>])     <span class="comment"># [0, 3, 6, 9] - every 3rd item</span>
+
+<span class="comment"># Negative indices</span>
+<span class="keyword">print</span>(numbers[<span class="number">-3</span>:])     <span class="comment"># [7, 8, 9] - last 3 items</span>
+<span class="keyword">print</span>(numbers[:<span class="number">-2</span>])     <span class="comment"># [0, 1, 2, ..., 7] - all except last 2</span>
+
+<span class="comment"># Reverse a list with slicing!</span>
+<span class="keyword">print</span>(numbers[::<span class="number">-1</span>])    <span class="comment"># [9, 8, 7, ..., 0] - reversed!</span>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try List Slicing!</h3>
+                    <p>Slice the list: <code>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</code></p>
+                    
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px;">Start index:</label>
+                        <input type="number" id="sliceStart" value="2" min="0" max="9">
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px;">End index:</label>
+                        <input type="number" id="sliceEnd" value="7" min="1" max="10">
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px;">Step (optional):</label>
+                        <input type="number" id="sliceStep" value="1" min="-10" max="10">
+                    </div>
+
+                    <button class="game-button" onclick="testSlice()">Slice List</button>
+                    
+                    <div id="sliceResult"></div>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Important: End is Exclusive!</h3>
+                    <p style="font-size: 1.1em;"><code>list[2:5]</code> gives you indices 2, 3, 4 - NOT including 5!</p>
+                    <p style="margin-top: 10px;">Think of it as: "from index 2, up to (but not including) index 5"</p>
+                </div>
             </div>
 
-            <div class="question" id="q3">
-                <h3>Question 3: How does a computer read code?</h3>
-                <div class="option" onclick="checkAnswer(3, 'A', false)">A) All at once</div>
-                <div class="option" onclick="checkAnswer(3, 'B', true)">B) One line at a time, from top to bottom</div>
-                <div class="option" onclick="checkAnswer(3, 'C', false)">C) From bottom to top</div>
-                <div class="option" onclick="checkAnswer(3, 'D', false)">D) In random order</div>
+            <!-- Section 2: Sorting -->
+            <div class="section">
+                <h2><span class="emoji">🔢</span>Sorting Lists</h2>
+                <p>Put your list items in order - numbers from smallest to largest, or strings alphabetically!</p>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>Two Ways to Sort</h3>
+                    <table>
+                        <tr>
+                            <th>Method</th>
+                            <th>What It Does</th>
+                            <th>Returns</th>
+                        </tr>
+                        <tr>
+                            <td><code>list.sort()</code></td>
+                            <td>Sorts the list IN PLACE (modifies original)</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>sorted(list)</code></td>
+                            <td>Returns a NEW sorted list (original unchanged)</td>
+                            <td>New sorted list</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="code-box">
+<span class="comment"># Method 1: .sort() - modifies original list</span>
+<span class="keyword">numbers</span> = [<span class="number">64</span>, <span class="number">34</span>, <span class="number">25</span>, <span class="number">12</span>, <span class="number">22</span>, <span class="number">11</span>, <span class="number">90</span>]
+<span class="keyword">numbers</span>.<span class="function">sort</span>()  <span class="comment"># Sort in ascending order</span>
+<span class="keyword">print</span>(numbers)  <span class="comment"># [11, 12, 22, 25, 34, 64, 90]</span>
+
+<span class="comment"># Sort in descending order</span>
+<span class="keyword">numbers</span>.<span class="function">sort</span>(reverse=<span class="boolean">True</span>)
+<span class="keyword">print</span>(numbers)  <span class="comment"># [90, 64, 34, 25, 22, 12, 11]</span>
+
+<span class="comment"># Method 2: sorted() - returns new list</span>
+<span class="keyword">original</span> = [<span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>]
+<span class="keyword">sorted_list</span> = <span class="function">sorted</span>(original)
+
+<span class="keyword">print</span>(original)     <span class="comment"># [5, 2, 8, 1, 9] - unchanged!</span>
+<span class="keyword">print</span>(sorted_list)  <span class="comment"># [1, 2, 5, 8, 9] - new sorted list</span>
+
+<span class="comment"># Sorting strings (alphabetical)</span>
+<span class="keyword">fruits</span> = [<span class="string">"banana"</span>, <span class="string">"apple"</span>, <span class="string">"cherry"</span>, <span class="string">"date"</span>]
+<span class="keyword">fruits</span>.<span class="function">sort</span>()
+<span class="keyword">print</span>(fruits)  <span class="comment"># ['apple', 'banana', 'cherry', 'date']</span>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try Sorting!</h3>
+                    <p>Enter numbers separated by commas:</p>
+                    
+                    <input type="text" id="sortInput" placeholder="e.g., 64, 34, 25, 12, 90" style="max-width: 100%;">
+                    
+                    <div style="margin: 20px 0;">
+                        <button class="game-button" onclick="sortAscending()">Sort Ascending ⬆️</button>
+                        <button class="game-button" onclick="sortDescending()">Sort Descending ⬇️</button>
+                    </div>
+                    
+                    <div id="sortResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q4">
-                <h3>Question 4: What is the first program every programmer writes?</h3>
-                <div class="option" onclick="checkAnswer(4, 'A', false)">A) Goodbye, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'B', true)">B) Hello, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'C', false)">C) Welcome, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'D', false)">D) Hi, Computer!</div>
+            <!-- Section 3: Reversing -->
+            <div class="section">
+                <h2><span class="emoji">🔄</span>Reversing Lists</h2>
+                <p>Flip the order of your list - first becomes last, last becomes first!</p>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>Three Ways to Reverse</h3>
+                    <table>
+                        <tr>
+                            <th>Method</th>
+                            <th>What It Does</th>
+                            <th>Returns</th>
+                        </tr>
+                        <tr>
+                            <td><code>list.reverse()</code></td>
+                            <td>Reverses IN PLACE (modifies original)</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>reversed(list)</code></td>
+                            <td>Returns iterator (need to convert to list)</td>
+                            <td>Iterator</td>
+                        </tr>
+                        <tr>
+                            <td><code>list[::-1]</code></td>
+                            <td>Slicing with negative step</td>
+                            <td>New reversed list</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="code-box">
+<span class="comment"># Method 1: .reverse() - modifies original</span>
+<span class="keyword">numbers</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+<span class="keyword">numbers</span>.<span class="function">reverse</span>()
+<span class="keyword">print</span>(numbers)  <span class="comment"># [5, 4, 3, 2, 1]</span>
+
+<span class="comment"># Method 2: reversed() - returns iterator</span>
+<span class="keyword">original</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+<span class="keyword">reversed_list</span> = <span class="function">list</span>(<span class="function">reversed</span>(original))
+
+<span class="keyword">print</span>(original)       <span class="comment"># [1, 2, 3, 4, 5] - unchanged!</span>
+<span class="keyword">print</span>(reversed_list)  <span class="comment"># [5, 4, 3, 2, 1]</span>
+
+<span class="comment"># Method 3: Slicing [::-1] - creates new list</span>
+<span class="keyword">original</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+<span class="keyword">reversed_list</span> = original[::<span class="number">-1</span>]
+
+<span class="keyword">print</span>(original)       <span class="comment"># [1, 2, 3, 4, 5] - unchanged!</span>
+<span class="keyword">print</span>(reversed_list)  <span class="comment"># [5, 4, 3, 2, 1]</span>
+                </div>
             </div>
 
-            <div class="question" id="q5">
-                <h3>Question 5: Which of these is a code editor we can use?</h3>
-                <div class="option" onclick="checkAnswer(5, 'A', false)">A) Microsoft Word</div>
-                <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
-                <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
-                <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            <!-- Section 4: Built-in Functions -->
+            <div class="section">
+                <h2><span class="emoji">🔢</span>Built-in Functions for Lists</h2>
+                <p>Python provides powerful functions to analyze lists!</p>
+
+                <div class="code-box">
+<span class="comment"># Sample data</span>
+<span class="keyword">scores</span> = [<span class="number">85</span>, <span class="number">92</span>, <span class="number">78</span>, <span class="number">90</span>, <span class="number">88</span>, <span class="number">76</span>, <span class="number">95</span>, <span class="number">89</span>]
+
+<span class="comment"># len() - count items</span>
+<span class="keyword">total_scores</span> = <span class="function">len</span>(scores)
+<span class="keyword">print</span>(<span class="string">f"Total scores: {total_scores}"</span>)  <span class="comment"># 8</span>
+
+<span class="comment"># min() - find smallest value</span>
+<span class="keyword">lowest</span> = <span class="function">min</span>(scores)
+<span class="keyword">print</span>(<span class="string">f"Lowest score: {lowest}"</span>)  <span class="comment"># 76</span>
+
+<span class="comment"># max() - find largest value</span>
+<span class="keyword">highest</span> = <span class="function">max</span>(scores)
+<span class="keyword">print</span>(<span class="string">f"Highest score: {highest}"</span>)  <span class="comment"># 95</span>
+
+<span class="comment"># sum() - add all values</span>
+<span class="keyword">total</span> = <span class="function">sum</span>(scores)
+<span class="keyword">print</span>(<span class="string">f"Total: {total}"</span>)  <span class="comment"># 693</span>
+
+<span class="comment"># Calculate average</span>
+<span class="keyword">average</span> = <span class="function">sum</span>(scores) / <span class="function">len</span>(scores)
+<span class="keyword">print</span>(<span class="string">f"Average: {average}"</span>)  <span class="comment"># 86.625</span>
+
+<span class="comment"># Calculate range</span>
+<span class="keyword">score_range</span> = <span class="function">max</span>(scores) - <span class="function">min</span>(scores)
+<span class="keyword">print</span>(<span class="string">f"Range: {score_range}"</span>)  <span class="comment"># 19</span>
+
+<span class="comment"># Works with strings too!</span>
+<span class="keyword">words</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]
+<span class="keyword">print</span>(<span class="function">min</span>(words))  <span class="comment"># apple (alphabetically first)</span>
+<span class="keyword">print</span>(<span class="function">max</span>(words))  <span class="comment"># cherry (alphabetically last)</span>
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">📊</span>Function Summary</h3>
+                    <table>
+                        <tr>
+                            <th>Function</th>
+                            <th>Purpose</th>
+                            <th>Example</th>
+                            <th>Result</th>
+                        </tr>
+                        <tr>
+                            <td><code>len(list)</code></td>
+                            <td>Count items</td>
+                            <td><code>len([1,2,3])</code></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td><code>min(list)</code></td>
+                            <td>Find smallest</td>
+                            <td><code>min([5,2,8])</code></td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td><code>max(list)</code></td>
+                            <td>Find largest</td>
+                            <td><code>max([5,2,8])</code></td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td><code>sum(list)</code></td>
+                            <td>Add all values</td>
+                            <td><code>sum([1,2,3])</code></td>
+                            <td>6</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
-            <div class="question" id="q6">
-                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
-                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
-                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
-                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
-                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
+            <!-- Game 1: Operation Detective -->
+            <div class="section">
+                <h2>Game 1: Operation Detective 🔍</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Predict the result!</h3>
+                    <p>Look at the code and predict what will be printed!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #30cfd0; margin-bottom: 15px;">Challenge <span id="detectiveNum">1</span>/10</h4>
+                        
+                        <div class="code-box" id="detectiveCode"></div>
+                        
+                        <h4 style="margin: 20px 0;">What will be printed?</h4>
+                        <div id="detectiveOptions"></div>
+                        
+                        <div id="detectiveResult" style="margin-top: 20px;"></div>
+                        <div style="margin-top: 20px; font-size: 1.3em; font-weight: bold; text-align: center; color: #30cfd0;">
+                            Score: <span id="detectiveScore">0</span>/10
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="finalMessage" class="celebration"></div>
+            <!-- Project: Score Analyzer -->
+            <div class="section">
+                <h2><span class="emoji">📊</span>Project: Score Analyzer with Statistics</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Build a complete score analysis system!</h3>
+                    <p>Add scores and see comprehensive statistics with visualizations!</p>
+                    
+                    <div class="score-analyzer">
+                        <h3 style="color: #30cfd0; margin-bottom: 20px; text-align: center;">🎯 Test Score Analyzer 🎯</h3>
+                        
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">📝 Enter Score (0-100):</label>
+                            <input type="number" id="scoreInput" placeholder="e.g., 85" min="0" max="100" style="width: 100%; max-width: 100%;">
+                            <button class="game-button" onclick="addScore()" style="width: 100%; margin-top: 10px;">Add Score ➕</button>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <h4 style="margin-bottom: 10px;">Current Scores:</h4>
+                            <div class="score-input-grid" id="scoreChips">
+                                <p style="text-align: center; color: #666; grid-column: 1/-1;">No scores added yet</p>
+                            </div>
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <button class="game-button" onclick="sortScoresAsc()">Sort Ascending ⬆️</button>
+                            <button class="game-button" onclick="sortScoresDesc()">Sort Descending ⬇️</button>
+                            <button class="game-button" onclick="reverseScores()">Reverse 🔄</button>
+                            <button class="game-button" onclick="clearScores()">Clear All 🗑️</button>
+                        </div>
+
+                        <div class="stats-grid" id="statsDisplay" style="display: none;">
+                            <div class="stat-card">
+                                <div class="stat-label">Count</div>
+                                <div class="stat-value" id="statCount">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Average</div>
+                                <div class="stat-value" id="statAvg">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Highest</div>
+                                <div class="stat-value" id="statMax">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Lowest</div>
+                                <div class="stat-value" id="statMin">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Range</div>
+                                <div class="stat-value" id="statRange">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Sum</div>
+                                <div class="stat-value" id="statSum">0</div>
+                            </div>
+                        </div>
+
+                        <div id="chartSection" style="display: none;">
+                            <div class="chart-container">
+                                <h4 style="color: #30cfd0; margin-bottom: 15px;">📊 Score Distribution</h4>
+                                <div class="bar-chart" id="barChart"></div>
+                            </div>
+                        </div>
+
+                        <div id="analyzerMessage"></div>
+
+                        <div id="analyzerCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #30cfd0; margin-bottom: 10px;">📝 Python Code:</h4>
+                            <div class="code-box" id="analyzerCodeDisplay"></div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h3><span class="emoji">💡</span>Features:</h3>
+                        <ul style="font-size: 1.1em; line-height: 2em;">
+                            <li>✅ Add scores dynamically</li>
+                            <li>✅ Remove individual scores</li>
+                            <li>✅ Sort (ascending/descending)</li>
+                            <li>✅ Reverse order</li>
+                            <li>✅ Calculate: count, average, max, min, range, sum</li>
+                            <li>✅ Visual bar chart</li>
+                            <li>✅ See Python code behind it all</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 2: Operation Matcher -->
+            <div class="section">
+                <h2>Game 2: Operation Matcher 🎯</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Match the operation to the task!</h3>
+                    <p>Read the task and choose which operation to use!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #30cfd0;">Challenge <span id="matcherNum">1</span>/8</h4>
+                        
+                        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                            <p id="matcherTask" style="font-size: 1.3em; text-align: center; font-weight: bold;"></p>
+                        </div>
+                        
+                        <h4 style="margin: 20px 0;">Which operation should you use?</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;" id="matcherOptions"></div>
+                        
+                        <div id="matcherResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #30cfd0; text-align: center;">
+                            Score: <span id="matcherScore">0</span>/8
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <h2 style="text-align: center; color: #30cfd0;"><span class="emoji">📝</span>Final Quiz!</h2>
+                <p style="text-align: center; font-size: 1.2em;">Test your knowledge about list operations!</p>
+
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: What does list[2:5] return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 0, true)">A) Items at indices 2, 3, 4</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 1, false)">B) Items at indices 2, 3, 4, 5</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 2, false)">C) Items at indices 3, 4, 5</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 3, false)">D) Item at index 2</div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: What does list[::-1] do?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 0, true)">A) Reverses the list</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 1, false)">B) Deletes all items</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 2, false)">C) Gets every other item</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 3, false)">D) Sorts the list</div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: What does list.sort() return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 0, false)">A) Sorted list</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 1, true)">B) None</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 2, false)">C) True or False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 3, false)">D) Original list</div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: Which function finds the largest value?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 0, true)">A) max()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 1, false)">B) largest()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 2, false)">C) biggest()</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 3, false)">D) top()</div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: What does sum([1,2,3,4,5]) return?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 0, false)">A) 5</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 1, false)">B) 3</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 2, true)">C) 15</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 3, false)">D) [1,2,3,4,5]</div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <h3>Question 6: Difference between sort() and sorted()?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 0, true)">A) sort() modifies original, sorted() returns new list</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 1, false)">B) They're the same</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 2, false)">C) sorted() is faster</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 3, false)">D) sort() returns new list</div>
+                </div>
+
+                <div class="quiz-question" id="q7">
+                    <h3>Question 7: What does list[::2] do?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 0, true)">A) Gets every 2nd item</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 1, false)">B) Gets first 2 items</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 2, false)">C) Doubles all values</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 3, false)">D) Divides by 2</div>
+                </div>
+
+                <div class="quiz-question" id="q8">
+                    <h3>Question 8: How to calculate average of a list?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 0, true)">A) sum(list) / len(list)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 1, false)">B) avg(list)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 2, false)">C) mean(list)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 3, false)">D) list.average()</div>
+                </div>
+
+                <button class="game-button" onclick="calculateScore()" style="display: block; margin: 20px auto;">Submit Quiz</button>
+                <div class="score-display" id="quizScore" style="display: none;"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Lecture Summary</h2>
+                <div class="highlight-box">
+                    <h3>What We Learned Today:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ <strong>Slicing:</strong> <code>list[start:end:step]</code> - Extract portions</li>
+                        <li>✅ <strong>Sorting:</strong> <code>sort()</code> modifies, <code>sorted()</code> returns new</li>
+                        <li>✅ <strong>Reversing:</strong> <code>reverse()</code>, <code>reversed()</code>, <code>[::-1]</code></li>
+                        <li>✅ <strong>len():</strong> Count items</li>
+                        <li>✅ <strong>min():</strong> Find smallest</li>
+                        <li>✅ <strong>max():</strong> Find largest</li>
+                        <li>✅ <strong>sum():</strong> Add all values</li>
+                        <li>✅ Built a score analyzer with statistics</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3><span class="emoji">🏠</span>Practice at Home:</h3>
+                    <ol style="font-size: 1.1em; line-height: 2em;">
+                        <li>Create a leaderboard system (sort by score)</li>
+                        <li>Build a temperature analyzer (min, max, avg)</li>
+                        <li>Make a playlist manager (reverse, slice)</li>
+                        <li>Create a quiz scorer with statistics</li>
+                        <li>Build a sales analyzer (top 5, bottom 5, trends)</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Common Mistakes to Avoid:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>Forgetting end index is exclusive in slicing</li>
+                        <li>Using sort() when you need sorted() (or vice versa)</li>
+                        <li>Forgetting to convert reversed() to list</li>
+                        <li>Using sum() on string lists (TypeError!)</li>
+                        <li>Not checking if list is empty before min/max</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game 1: Robot Navigation
-        let robotPos = 0;
-        const targetPos = 24;
-        
-        function createGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                if (i === targetPos) {
-                    cell.className += ' target';
-                    cell.textContent = '⭐';
+        let quizAnswers = {};
+        let scores = [];
+
+        // Slice Test
+        function testSlice() {
+            const list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const start = parseInt(document.getElementById('sliceStart').value) || 0;
+            const end = parseInt(document.getElementById('sliceEnd').value) || list.length;
+            const step = parseInt(document.getElementById('sliceStep').value) || 1;
+            
+            const result = document.getElementById('sliceResult');
+            
+            try {
+                let sliced;
+                if (step === 1) {
+                    sliced = list.slice(start, end);
+                } else {
+                    sliced = [];
+                    for (let i = start; step > 0 ? i < end : i > end; i += step) {
+                        if (i >= 0 && i < list.length) {
+                            sliced.push(list[i]);
+                        }
+                    }
                 }
-                if (i === robotPos) {
-                    cell.textContent = '🤖';
-                }
-                grid.appendChild(cell);
+                
+                result.innerHTML = `
+                    <div style="margin-top: 20px; background: white; padding: 20px; border-radius: 10px; border: 3px solid #30cfd0;">
+                        <h4 style="color: #30cfd0;">Original List:</h4>
+                        <div class="slice-visual">
+                            ${list.map((num, idx) => `
+                                <div class="slice-item ${idx >= start && idx < end && (idx - start) % step === 0 ? 'selected' : ''}">
+                                    <div class="slice-index">${idx}</div>
+                                    ${num}
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="code-box">
+<span class="keyword">numbers</span> = [<span class="number">0, 1, 2, 3, 4, 5, 6, 7, 8, 9</span>]
+<span class="keyword">result</span> = numbers[<span class="number">${start}</span>:<span class="number">${end}</span>${step !== 1 ? ':' + step : ''}]
+<span class="keyword">print</span>(result)  <span class="comment"># ${JSON.stringify(sliced)}</span>
+                        </div>
+                        
+                        <div style="margin-top: 15px; padding: 15px; background: #d4edda; border-radius: 10px;">
+                            <strong>Result:</strong> ${JSON.stringify(sliced)}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                result.innerHTML = `<div class="error-message">Invalid slice parameters!</div>`;
             }
         }
-        
-        function moveRobot(direction) {
-            let newPos = robotPos;
-            switch(direction) {
-                case 'up':
-                    if (robotPos >= 5) newPos -= 5;
-                    break;
-                case 'down':
-                    if (robotPos < 20) newPos += 5;
-                    break;
-                case 'left':
-                    if (robotPos % 5 !== 0) newPos -= 1;
-                    break;
-                case 'right':
-                    if (robotPos % 5 !== 4) newPos += 1;
-                    break;
+
+        // Sort Functions
+        function sortAscending() {
+            const input = document.getElementById('sortInput').value;
+            const result = document.getElementById('sortResult');
+            
+            if (!input.trim()) {
+                result.innerHTML = '<div class="error-message">Please enter some numbers!</div>';
+                return;
             }
             
-            robotPos = newPos;
-            createGrid();
+            const numbers = input.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+            const sorted = [...numbers].sort((a, b) => a - b);
             
-            if (robotPos === targetPos) {
-                document.getElementById('gameMessage').innerHTML = '🎉 Congratulations! You did it!';
+            result.innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 20px; border-radius: 10px; border: 3px solid #30cfd0;">
+                    <div class="code-box">
+<span class="keyword">numbers</span> = ${JSON.stringify(numbers)}
+<span class="keyword">numbers</span>.<span class="function">sort</span>()
+<span class="keyword">print</span>(numbers)  <span class="comment"># ${JSON.stringify(sorted)}</span>
+                    </div>
+                    <div style="padding: 15px; background: #d4edda; border-radius: 10px; margin-top: 15px;">
+                        <strong>Sorted (Ascending):</strong> ${JSON.stringify(sorted)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function sortDescending() {
+            const input = document.getElementById('sortInput').value;
+            const result = document.getElementById('sortResult');
+            
+            if (!input.trim()) {
+                result.innerHTML = '<div class="error-message">Please enter some numbers!</div>';
+                return;
             }
+            
+            const numbers = input.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+            const sorted = [...numbers].sort((a, b) => b - a);
+            
+            result.innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 20px; border-radius: 10px; border: 3px solid #30cfd0;">
+                    <div class="code-box">
+<span class="keyword">numbers</span> = ${JSON.stringify(numbers)}
+<span class="keyword">numbers</span>.<span class="function">sort</span>(reverse=<span class="boolean">True</span>)
+<span class="keyword">print</span>(numbers)  <span class="comment"># ${JSON.stringify(sorted)}</span>
+                    </div>
+                    <div style="padding: 15px; background: #d4edda; border-radius: 10px; margin-top: 15px;">
+                        <strong>Sorted (Descending):</strong> ${JSON.stringify(sorted)}
+                    </div>
+                </div>
+            `;
         }
-        
-        function resetGame() {
-            robotPos = 0;
-            createGrid();
-            document.getElementById('gameMessage').innerHTML = '';
-        }
-        
-        // Game 2: Code Simulator
-        function runUserCode() {
-            const code = document.getElementById('userCode').value;
-            const output = document.getElementById('output');
-            if (code) {
-                output.innerHTML += code + '<br>';
+
+        // Score Analyzer
+        function addScore() {
+            const input = document.getElementById('scoreInput');
+            const score = parseInt(input.value);
+            const message = document.getElementById('analyzerMessage');
+            
+            if (isNaN(score) || score < 0 || score > 100) {
+                message.innerHTML = '<div class="error-message">Please enter a valid score (0-100)!</div>';
+                return;
             }
+            
+            scores.push(score);
+            input.value = '';
+            message.innerHTML = '<div class="success-message">✅ Score added!</div>';
+            updateScoreDisplay();
+            setTimeout(() => message.innerHTML = '', 2000);
         }
-        
-        function clearOutput() {
-            document.getElementById('output').innerHTML = '';
+
+        function removeScore(index) {
+            scores.splice(index, 1);
+            updateScoreDisplay();
         }
-        
-        // Game 3: Animation
-        function animateCode() {
-            const output = document.getElementById('animationOutput');
-            output.innerHTML = '';
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 1<br>';
-            }, 500);
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '';
-                document.getElementById('line2').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 2<br>';
-            }, 1500);
-            
-            setTimeout(() => {
-                document.getElementById('line2').style.background = '';
-                document.getElementById('line3').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 3<br>';
-            }, 2500);
-            
-            setTimeout(() => {
-                document.getElementById('line3').style.background = '';
-            }, 3500);
+
+        function sortScoresAsc() {
+            scores.sort((a, b) => a - b);
+            updateScoreDisplay();
         }
-        
-        // Quiz
-        let correctAnswers = 0;
-        let answeredQuestions = new Set();
-        
-        function checkAnswer(questionNum, option, isCorrect) {
-            if (answeredQuestions.has(questionNum)) return;
+
+        function sortScoresDesc() {
+            scores.sort((a, b) => b - a);
+            updateScoreDisplay();
+        }
+
+        function reverseScores() {
+            scores.reverse();
+            updateScoreDisplay();
+        }
+
+        function clearScores() {
+            scores = [];
+            updateScoreDisplay();
+        }
+
+        function updateScoreDisplay() {
+            const chipsDiv = document.getElementById('scoreChips');
+            const statsDiv = document.getElementById('statsDisplay');
+            const chartDiv = document.getElementById('chartSection');
+            const codeDiv = document.getElementById('analyzerCode');
+            const codeDisplay = document.getElementById('analyzerCodeDisplay');
             
-            answeredQuestions.add(questionNum);
-            const question = document.getElementById('q' + questionNum);
-            const options = question.querySelectorAll('.option');
+            if (scores.length === 0) {
+                chipsDiv.innerHTML = '<p style="text-align: center; color: #666; grid-column: 1/-1;">No scores added yet</p>';
+                statsDiv.style.display = 'none';
+                chartDiv.style.display = 'none';
+                codeDiv.style.display = 'none';
+                return;
+            }
             
+            // Display score chips
+            chipsDiv.innerHTML = scores.map((score, idx) => `
+                <div class="score-chip">
+                    ${score}
+                    <button onclick="removeScore(${idx})">×</button>
+                </div>
+            `).join('');
+            
+            // Calculate statistics
+            const count = scores.length;
+            const sum = scores.reduce((a, b) => a + b, 0);
+            const avg = (sum / count).toFixed(1);
+            const max = Math.max(...scores);
+            const min = Math.min(...scores);
+            const range = max - min;
+            
+            // Update stats
+            statsDiv.style.display = 'grid';
+            document.getElementById('statCount').textContent = count;
+            document.getElementById('statAvg').textContent = avg;
+            document.getElementById('statMax').textContent = max;
+            document.getElementById('statMin').textContent = min;
+            document.getElementById('statRange').textContent = range;
+            document.getElementById('statSum').textContent = sum;
+            
+            // Create bar chart
+            chartDiv.style.display = 'block';
+            const chartContainer = document.getElementById('barChart');
+            const maxHeight = 200;
+            chartContainer.innerHTML = scores.slice(0, 10).map((score, idx) => {
+                const height = (score / 100) * maxHeight;
+                return `
+                    <div class="bar" style="height: ${height}px;">
+                        <div class="bar-value">${score}</div>
+                        <div class="bar-label">#${idx + 1}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Show code
+            codeDiv.style.display = 'block';
+            codeDisplay.innerHTML = `
+<span class="comment"># Your scores</span>
+<span class="keyword">scores</span> = ${JSON.stringify(scores)}
+
+<span class="comment"># Calculate statistics</span>
+<span class="keyword">count</span> = <span class="function">len</span>(scores)              <span class="comment"># ${count}</span>
+<span class="keyword">total</span> = <span class="function">sum</span>(scores)              <span class="comment"># ${sum}</span>
+<span class="keyword">average</span> = total / count         <span class="comment"># ${avg}</span>
+<span class="keyword">highest</span> = <span class="function">max</span>(scores)            <span class="comment"># ${max}</span>
+<span class="keyword">lowest</span> = <span class="function">min</span>(scores)             <span class="comment"># ${min}</span>
+<span class="keyword">score_range</span> = highest - lowest  <span class="comment"># ${range}</span>
+
+<span class="comment"># Sort scores</span>
+<span class="keyword">sorted_scores</span> = <span class="function">sorted</span>(scores)  <span class="comment"># Creates new sorted list</span>
+
+<span class="keyword">print</span>(<span class="string">f"Average: {average}"</span>)
+<span class="keyword">print</span>(<span class="string">f"Range: {score_range}"</span>)
+            `;
+        }
+
+        // Detective Game
+        let detectiveLevel = 0;
+        let detectiveScore = 0;
+        const detectiveChallenges = [
+            {
+                code: "nums = [1,2,3,4,5]\nprint(nums[1:4])",
+                options: ["[1, 2, 3]", "[2, 3, 4]", "[1, 2, 3, 4]", "[2, 3, 4, 5]"],
+                answer: 1
+            },
+            {
+                code: "nums = [5,2,8,1,9]\nprint(min(nums))",
+                options: ["1", "5", "9", "2"],
+                answer: 0
+            },
+            {
+                code: "nums = [3,1,4,1,5]\nprint(max(nums))",
+                options: ["3", "4", "5", "1"],
+                answer: 2
+            },
+            {
+                code: "nums = [10,20,30]\nprint(sum(nums))",
+                options: ["10", "30", "60", "20"],
+                answer: 2
+            },
+            {
+                code: "nums = [1,2,3]\nprint(nums[::-1])",
+                options: ["[1, 2, 3]", "[3, 2, 1]", "[2, 3]", "[1, 3]"],
+                answer: 1
+            },
+            {
+                code: "nums = [5,2,8,1]\nnums.sort()\nprint(nums)",
+                options: ["[5, 2, 8, 1]", "[1, 2, 5, 8]", "[8, 5, 2, 1]", "[2, 5, 8, 1]"],
+                answer: 1
+            },
+            {
+                code: "nums = [1,2,3,4,5]\nprint(nums[::2])",
+                options: ["[1, 3, 5]", "[2, 4]", "[1, 2]", "[1, 2, 3, 4, 5]"],
+                answer: 0
+            },
+            {
+                code: "nums = [10,20,30,40]\nprint(len(nums))",
+                options: ["3", "4", "40", "10"],
+                answer: 1
+            },
+            {
+                code: "nums = [7,3,9,1]\nprint(sorted(nums))",
+                options: ["[7, 3, 9, 1]", "[1, 3, 7, 9]", "[9, 7, 3, 1]", "None"],
+                answer: 1
+            },
+            {
+                code: "nums = [5,10,15]\navg = sum(nums)/len(nums)\nprint(avg)",
+                options: ["5", "10", "15", "30"],
+                answer: 1
+            }
+        ];
+
+        function loadDetective() {
+            if (detectiveLevel >= detectiveChallenges.length) {
+                showDetectiveEnd();
+                return;
+            }
+
+            const challenge = detectiveChallenges[detectiveLevel];
+            document.getElementById('detectiveNum').textContent = detectiveLevel + 1;
+            document.getElementById('detectiveCode').textContent = challenge.code;
+
+            const optionsDiv = document.getElementById('detectiveOptions');
+            optionsDiv.innerHTML = '';
+
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkDetective(i);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('detectiveResult').innerHTML = '';
+        }
+
+        function checkDetective(choice) {
+            const challenge = detectiveChallenges[detectiveLevel];
+            const buttons = document.querySelectorAll('#detectiveOptions .detective-option');
+            const result = document.getElementById('detectiveResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.answer) {
+                detectiveScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                buttons[choice].classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.options[challenge.answer] + '</div>';
+                buttons[choice].classList.add('incorrect');
+                buttons[challenge.answer].classList.add('correct');
+            }
+
+            document.getElementById('detectiveScore').textContent = detectiveScore;
+            detectiveLevel++;
+
+            setTimeout(loadDetective, 2500);
+        }
+
+        function showDetectiveEnd() {
+            const container = document.querySelector('#detectiveNum').closest('.game-container');
+            const percentage = (detectiveScore / detectiveChallenges.length * 100).toFixed(0);
+
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎉 Detective Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${detectiveScore}/${detectiveChallenges.length} (${percentage}%)</p>
+                    <button class="game-button" onclick="resetDetective()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetDetective() {
+            detectiveLevel = 0;
+            detectiveScore = 0;
+            document.getElementById('detectiveScore').textContent = '0';
+            loadDetective();
+        }
+
+        // Matcher Game
+        let matcherLevel = 0;
+        let matcherScore = 0;
+        const matcherChallenges = [
+            { task: "Get items from index 2 to 5", answer: "list[2:6]", options: ["list[2:6]", "list.slice(2,5)", "list[2:5]", "list(2,6)"] },
+            { task: "Sort list from smallest to largest", answer: "list.sort()", options: ["list.sort()", "list.order()", "list.arrange()", "sort(list)"] },
+            { task: "Reverse the list order", answer: "list.reverse()", options: ["list.reverse()", "list.flip()", "reverse(list)", "list.backwards()"] },
+            { task: "Find the smallest value", answer: "min(list)", options: ["min(list)", "list.min()", "smallest(list)", "list.smallest()"] },
+            { task: "Calculate total of all values", answer: "sum(list)", options: ["sum(list)", "list.sum()", "total(list)", "list.total()"] },
+            { task: "Count how many items", answer: "len(list)", options: ["len(list)", "list.count()", "size(list)", "list.length"] },
+            { task: "Get every 2nd item", answer: "list[::2]", options: ["list[::2]", "list.every(2)", "list[2]", "list.skip(2)"] },
+            { task: "Find the largest value", answer: "max(list)", options: ["max(list)", "list.max()", "largest(list)", "list.biggest()"] }
+        ];
+
+        function loadMatcher() {
+            if (matcherLevel >= matcherChallenges.length) {
+                showMatcherEnd();
+                return;
+            }
+
+            const challenge = matcherChallenges[matcherLevel];
+            document.getElementById('matcherNum').textContent = matcherLevel + 1;
+            document.getElementById('matcherTask').textContent = challenge.task;
+
+            const optionsDiv = document.getElementById('matcherOptions');
+            optionsDiv.innerHTML = '';
+
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkMatcher(option);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('matcherResult').innerHTML = '';
+        }
+
+        function checkMatcher(choice) {
+            const challenge = matcherChallenges[matcherLevel];
+            const buttons = document.querySelectorAll('#matcherOptions .detective-option');
+            const result = document.getElementById('matcherResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.answer) {
+                matcherScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                event.target.classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.answer + '</div>';
+                event.target.classList.add('incorrect');
+            }
+
+            document.getElementById('matcherScore').textContent = matcherScore;
+            matcherLevel++;
+
+            setTimeout(loadMatcher, 2500);
+        }
+
+        function showMatcherEnd() {
+            const container = document.querySelector('#matcherNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎯 Matcher Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${matcherScore}/${matcherChallenges.length}</p>
+                    <button class="game-button" onclick="resetMatcher()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetMatcher() {
+            matcherLevel = 0;
+            matcherScore = 0;
+            document.getElementById('matcherScore').textContent = '0';
+            loadMatcher();
+        }
+
+        // Quiz Functions
+        function selectAnswer(questionId, optionIndex, isCorrect) {
+            const question = document.getElementById(questionId);
+            const options = question.querySelectorAll('.quiz-option');
+
             options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.startsWith(option)) {
-                    opt.className = isCorrect ? 'option correct' : 'option wrong';
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            options[optionIndex].classList.add('selected');
+            quizAnswers[questionId] = isCorrect;
+        }
+
+        function calculateScore() {
+            const totalQuestions = 8;
+            let correctAnswers = 0;
+
+            Object.keys(quizAnswers).forEach(qId => {
+                const question = document.getElementById(qId);
+                const selected = question.querySelector('.selected');
+                if (selected) {
+                    if (quizAnswers[qId]) {
+                        selected.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        const options = question.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.onclick.toString().includes('true')) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
                 }
             });
-            
-            if (isCorrect) {
-                correctAnswers++;
-            }
-            
-            updateScore();
-            
-            if (answeredQuestions.size === 6) {
-                showFinalMessage();
-            }
-        }
-        
-        function updateScore() {
-            document.getElementById('score').innerHTML = 
-                `Score: ${correctAnswers} / ${answeredQuestions.size}`;
-        }
-        
-        function showFinalMessage() {
-            const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 6) {
-                finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 4) {
-                finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
+
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const scoreDisplay = document.getElementById('quizScore');
+
+            let message = '';
+            let emoji = '';
+
+            if (percentage === 100) {
+                message = 'Perfect Score!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Great Job!';
+                emoji = '🌟';
+            } else if (percentage >= 60) {
+                message = 'Good Effort!';
+                emoji = '👍';
             } else {
-                finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
+                message = 'Keep Learning!';
+                emoji = '📚';
             }
+
+            scoreDisplay.innerHTML = `
+                ${emoji} ${message}<br>
+                You scored ${correctAnswers} out of ${totalQuestions} (${percentage.toFixed(0)}%)
+            `;
+            scoreDisplay.style.display = 'block';
         }
-        
+
         // Initialize
-        createGrid();
+        window.onload = function() {
+            loadDetective();
+            loadMatcher();
+        };
     </script>
 </body>
 </html>
