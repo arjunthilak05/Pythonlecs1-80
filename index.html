@@ -3,561 +3,1473 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 1: Welcome to Programming</title>
+    <title>Lecture 13: While Loops</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
-        h1 {
-            color: #667eea;
+
+        header {
+            background: linear-gradient(135deg, #e96443 0%, #904e95 100%);
+            color: white;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
+        }
+
+        header h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        
-        h2 {
-            color: #764ba2;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
-        
+
+        .content {
+            padding: 40px;
+        }
+
         .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9ff;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #e96443;
         }
-        
-        .game-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+        .section h2 {
+            color: #e96443;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "Python";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #e96443;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .boolean {
+            color: #61afef;
+            font-weight: bold;
+        }
+
+        .loop-flow {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
-            color: white;
-        }
-        
-        .robot {
-            font-size: 60px;
-            text-align: center;
             margin: 20px 0;
+            text-align: center;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 5px;
-            margin: 20px auto;
-            width: fit-content;
+
+        .flow-box {
+            background: linear-gradient(135deg, #e96443 0%, #904e95 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px auto;
+            max-width: 300px;
+            font-weight: bold;
+            font-size: 1.1em;
         }
-        
-        .cell {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border: 2px solid #764ba2;
+
+        .flow-diamond {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            margin: 15px auto;
+            max-width: 250px;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            border-radius: 8px;
         }
-        
-        .cell.target {
-            background: #ffeb3b;
+
+        .flow-arrow {
+            font-size: 2em;
+            color: #e96443;
+            margin: 10px 0;
         }
-        
-        button {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background: #764ba2;
-            transform: scale(1.05);
-        }
-        
-        .code-box {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            font-size: 16px;
-        }
-        
-        .output-box {
-            background: #000;
-            color: #0f0;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            min-height: 50px;
-        }
-        
-        .quiz-box {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+        .interactive-demo {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .question {
+
+        .game-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .game-button {
+            background: linear-gradient(135deg, #e96443 0%, #904e95 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .game-button:active {
+            transform: translateY(0);
+        }
+
+        .game-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #e96443;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
+        }
+
+        .guessing-game {
             background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .guess-feedback {
             padding: 20px;
             border-radius: 10px;
             margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
         }
-        
-        .option {
-            display: block;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f0f0f0;
+
+        .feedback-too-low {
+            background: #cfe2ff;
+            border: 3px solid #0d6efd;
+            color: #084298;
+        }
+
+        .feedback-too-high {
+            background: #f8d7da;
+            border: 3px solid #dc3545;
+            color: #721c24;
+        }
+
+        .feedback-correct {
+            background: #d4edda;
+            border: 3px solid #28a745;
+            color: #155724;
+        }
+
+        .attempts-counter {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .attempt-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e96443 0%, #904e95 100%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .attempt-dot.used {
+            background: #ddd;
+        }
+
+        .loop-visualizer {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .iteration {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #e96443;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .iteration-number {
+            background: linear-gradient(135deg, #e96443 0%, #904e95 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50%;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 2px solid transparent;
         }
-        
-        .option:hover {
-            background: #e0e0e0;
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #e96443;
         }
-        
-        .option.correct {
-            background: #4caf50;
-            color: white;
+
+        .quiz-option.selected {
+            background: #ffe4e1;
+            border-color: #e96443;
         }
-        
-        .option.wrong {
-            background: #f44336;
-            color: white;
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
         }
-        
-        .controls {
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .score-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            margin: 20px 0;
-        }
-        
-        .line-highlight {
-            background: #ffeb3b;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        
-        #score {
-            text-align: center;
-            font-size: 24px;
+            font-size: 1.5em;
             font-weight: bold;
-            color: #667eea;
+            color: #e96443;
+            margin-top: 20px;
+        }
+
+        .detective-option {
+            background: white;
+            border: 3px solid #e96443;
+            padding: 20px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .detective-option:hover {
+            background: #ffe4e1;
+            transform: translateX(5px);
+        }
+
+        .detective-option.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .detective-option.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .spinning {
+            animation: spin 2s linear infinite;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 20px 0;
         }
-        
-        .celebration {
-            text-align: center;
-            font-size: 50px;
+
+        table th {
+            background: #e96443;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .infinite-warning {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            color: #856404;
+            padding: 20px;
+            border-radius: 10px;
             margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .flow-box {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Lecture 1: Welcome to Programming!</h1>
-        
-        <!-- Section 1: What is Programming -->
-        <div class="section">
-            <h2>🤖 What is Programming?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Programming is like giving instructions to a robot! Imagine you have a robot friend who is very smart but only understands specific commands. You need to tell them exactly what to do, step by step.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                For example, if you want the robot to make a sandwich, you can't just say "make a sandwich." You need to say:
-            </p>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px; margin-top: 10px;">
-                <li>Pick up the bread</li>
-                <li>Open the jar of peanut butter</li>
-                <li>Spread peanut butter on the bread</li>
-                <li>Put two slices together</li>
-            </ul>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                That's exactly what programming is! We write instructions (called <strong>code</strong>) that tell the computer exactly what to do!
-            </p>
-        </div>
+        <header>
+            <h1 class="floating">🎓 Lecture 13: While Loops 🔄</h1>
+            <p>Master the art of repetition!</p>
+        </header>
 
-        <!-- Game 1: Robot Navigation -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 1: Help the Robot Find the Star!</h2>
-            <p style="font-size: 18px;">Give the robot instructions to reach the ⭐ star!</p>
-            <div class="robot" id="robotDisplay">🤖</div>
-            <div class="grid" id="gameGrid"></div>
-            <div class="controls">
-                <button onclick="moveRobot('up')">⬆️ Up</button>
-                <button onclick="moveRobot('down')">⬇️ Down</button>
-                <button onclick="moveRobot('left')">⬅️ Left</button>
-                <button onclick="moveRobot('right')">➡️ Right</button>
-                <button onclick="resetGame()" style="background: #f5576c;">🔄 Reset</button>
-            </div>
-            <div id="gameMessage" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
-        </div>
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2><span class="emoji">🌟</span>Welcome to While Loops!</h2>
+                <p style="font-size: 1.2em;">Imagine you need to ask a user for input until they give you the right answer. Or count from 1 to 100. Or keep a game running until someone wins. You need <strong>loops</strong> - code that repeats!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>What You'll Learn Today</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ What are while loops and when to use them</li>
+                        <li>✅ Loop conditions and iteration</li>
+                        <li>✅ Break statement - exit the loop early</li>
+                        <li>✅ Continue statement - skip to next iteration</li>
+                        <li>✅ Avoiding infinite loops</li>
+                        <li>✅ Build a number guessing game</li>
+                    </ul>
+                </div>
 
-        <!-- Section 2: Installing Python -->
-        <div class="section">
-            <h2>💻 Installing Python and VS Code</h2>
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 1: Install Python</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Go to <strong>python.org</strong></li>
-                <li>Click on "Downloads"</li>
-                <li>Download Python (make sure to check "Add Python to PATH")</li>
-                <li>Run the installer and follow the instructions</li>
-            </ol>
-            
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 2: Install VS Code (or IDLE)</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li><strong>VS Code:</strong> Go to <strong>code.visualstudio.com</strong> and download</li>
-                <li><strong>IDLE:</strong> This comes with Python automatically!</li>
-            </ol>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Tip:</strong> VS Code is like a super-powered notebook for writing code. IDLE is simpler and great for beginners!
-            </p>
-        </div>
-
-        <!-- Section 3: First Program -->
-        <div class="section">
-            <h2>🎉 Your First Program: Hello, World!</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                The first program every programmer writes is "Hello, World!" It's a tradition! This program tells the computer to display a message on the screen.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                In Python, we use the <strong>print()</strong> command to display text. Here's how it looks:
-            </p>
-            <div class="code-box">
-                print("Hello, World!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8;">
-                When you run this code, the computer will show: <strong>Hello, World!</strong>
-            </p>
-        </div>
-
-        <!-- Game 2: Interactive Code Simulator -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 2: Try Writing Your Own Code!</h2>
-            <p style="font-size: 18px;">Type your own message in the box below and click "Run Code"!</p>
-            <div style="margin: 20px 0;">
-                <input type="text" id="userCode" placeholder='Type your message here...' 
-                       style="width: 100%; padding: 15px; font-size: 18px; border-radius: 8px; border: none;">
-            </div>
-            <div class="controls">
-                <button onclick="runUserCode()">▶️ Run Code</button>
-                <button onclick="clearOutput()" style="background: #f5576c;">🗑️ Clear</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="output"></div>
-        </div>
-
-        <!-- Section 4: How Computers Read Code -->
-        <div class="section">
-            <h2>📖 How Computers Read Code Line by Line</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Computers are very obedient but not very smart. They read your code <strong>one line at a time</strong>, from top to bottom, just like you read a book!
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                Let's look at an example:
-            </p>
-            <div class="code-box">
-                print("First, I say hello!")<br>
-                print("Then, I say goodbye!")<br>
-                print("And finally, I'm done!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                The computer will:
-            </p>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Read line 1 and print "First, I say hello!"</li>
-                <li>Then read line 2 and print "Then, I say goodbye!"</li>
-                <li>Finally read line 3 and print "And finally, I'm done!"</li>
-            </ol>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Remember:</strong> The order matters! The computer does exactly what you tell it, in the order you tell it.
-            </p>
-        </div>
-
-        <!-- Game 3: Code Order Challenge -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 3: Line by Line Execution</h2>
-            <p style="font-size: 18px;">Watch how the computer reads code one line at a time!</p>
-            <div class="code-box" id="animatedCode">
-                <div id="line1">print("I am line 1")</div>
-                <div id="line2">print("I am line 2")</div>
-                <div id="line3">print("I am line 3")</div>
-            </div>
-            <div class="controls">
-                <button onclick="animateCode()">▶️ Watch Execution</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="animationOutput"></div>
-        </div>
-
-        <!-- Section 5: Compilers vs Interpreters -->
-        <div class="section">
-            <h2>⚙️ What's a Compiler?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates the whole program before running it</li>
-                <li>Shows all errors at the end, together</li>
-                <li>Runs faster once compiled</li>
-                <li>Creates a separate file you can run anytime</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>🔍 What's an Interpreter?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates code one line at a time as it runs</li>
-                <li>Shows errors immediately when it hits that line</li>
-                <li>Slower execution than compiled programs</li>
-                <li>Always needs the original code to run</li>
-            </ul>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
-            </p>
-        </div>
-
-        <!-- Final Quiz -->
-        <div class="quiz-box">
-            <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
-            <div id="score"></div>
-            
-            <div class="question" id="q1">
-                <h3>Question 1: What is programming?</h3>
-                <div class="option" onclick="checkAnswer(1, 'A', false)">A) Playing video games</div>
-                <div class="option" onclick="checkAnswer(1, 'B', true)">B) Giving instructions to a computer</div>
-                <div class="option" onclick="checkAnswer(1, 'C', false)">C) Drawing pictures</div>
-                <div class="option" onclick="checkAnswer(1, 'D', false)">D) Writing stories</div>
+                <div class="info-box">
+                    <h3><span class="emoji">🤔</span>Real-World Uses</h3>
+                    <p style="font-size: 1.1em;">While loops are perfect for:</p>
+                    <ul style="font-size: 1.1em; line-height: 2em; margin-top: 10px;">
+                        <li>🎮 Game loops - keep playing until game over</li>
+                        <li>🔐 Login attempts - try until correct or max attempts</li>
+                        <li>📝 Input validation - ask until valid input</li>
+                        <li>💰 ATM withdrawals - keep processing transactions</li>
+                        <li>🎯 Target search - keep looking until found</li>
+                        <li>⏰ Waiting for conditions - until timeout or success</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q2">
-                <h3>Question 2: What command do we use to display text in Python?</h3>
-                <div class="option" onclick="checkAnswer(2, 'A', false)">A) show()</div>
-                <div class="option" onclick="checkAnswer(2, 'B', false)">B) display()</div>
-                <div class="option" onclick="checkAnswer(2, 'C', true)">C) print()</div>
-                <div class="option" onclick="checkAnswer(2, 'D', false)">D) write()</div>
+            <!-- Section 1: While Loop Basics -->
+            <div class="section">
+                <h2><span class="emoji">🔄</span>While Loop Fundamentals</h2>
+                <p>A <strong>while loop</strong> repeats code as long as a condition is True. When the condition becomes False, the loop stops!</p>
+
+                <div class="code-box">
+<span class="comment"># Basic while loop structure</span>
+<span class="keyword">while</span> condition:
+    <span class="comment"># Code to repeat</span>
+    <span class="comment"># This runs over and over while condition is True</span>
+
+<span class="comment"># Example 1: Count from 1 to 5</span>
+<span class="keyword">count</span> = <span class="number">1</span>
+<span class="keyword">while</span> count <= <span class="number">5</span>:
+    <span class="keyword">print</span>(count)
+    <span class="keyword">count</span> = count + <span class="number">1</span>  <span class="comment"># Important: update the variable!</span>
+
+<span class="comment"># Output: 1, 2, 3, 4, 5</span>
+
+<span class="comment"># Example 2: Ask until correct password</span>
+<span class="keyword">password</span> = <span class="string">""</span>
+<span class="keyword">while</span> password != <span class="string">"python"</span>:
+    <span class="keyword">password</span> = <span class="function">input</span>(<span class="string">"Enter password: "</span>)
+
+<span class="keyword">print</span>(<span class="string">"Access granted!"</span>)
+
+<span class="comment"># Example 3: Sum numbers until 0</span>
+<span class="keyword">total</span> = <span class="number">0</span>
+<span class="keyword">num</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter number (0 to stop): "</span>))
+
+<span class="keyword">while</span> num != <span class="number">0</span>:
+    <span class="keyword">total</span> += num
+    <span class="keyword">num</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter number (0 to stop): "</span>))
+
+<span class="keyword">print</span>(<span class="string">f"Total: {total}"</span>)
+                </div>
+
+                <div class="loop-flow">
+                    <h3 style="color: #e96443; margin-bottom: 20px;">How While Loops Work</h3>
+                    <div class="flow-box">Start</div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-diamond">
+                        <div>Check<br>Condition</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 600px; margin: 20px auto;">
+                        <div>
+                            <div style="color: #28a745; font-weight: bold; margin-bottom: 10px;">✓ True</div>
+                            <div class="flow-box" style="background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);">
+                                Execute Loop Body
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div style="text-align: center; font-size: 1.5em; color: #e96443;">↰ Back to Check</div>
+                        </div>
+                        <div>
+                            <div style="color: #dc3545; font-weight: bold; margin-bottom: 10px;">✗ False</div>
+                            <div class="flow-box" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                                Exit Loop
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-box">Continue Program</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Critical: Avoid Infinite Loops!</h3>
+                    <p style="font-size: 1.1em;">If your condition NEVER becomes False, the loop will run FOREVER!</p>
+                    <div class="code-box" style="margin-top: 15px;">
+<span class="comment"># BAD - Infinite loop! Don't run this!</span>
+<span class="keyword">count</span> = <span class="number">1</span>
+<span class="keyword">while</span> count <= <span class="number">5</span>:
+    <span class="keyword">print</span>(count)
+    <span class="comment"># Forgot to update count! Will print 1 forever!</span>
+
+<span class="comment"># GOOD - Loop will end</span>
+<span class="keyword">count</span> = <span class="number">1</span>
+<span class="keyword">while</span> count <= <span class="number">5</span>:
+    <span class="keyword">print</span>(count)
+    <span class="keyword">count</span> += <span class="number">1</span>  <span class="comment"># Update variable!</span>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Always make sure:</strong></p>
+                    <ul style="line-height: 2em; margin-top: 10px;">
+                        <li>The condition can become False</li>
+                        <li>You update variables in the loop</li>
+                        <li>There's a way to exit</li>
+                    </ul>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try While Loop!</h3>
+                    <p>See a while loop count in real-time:</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px;">Count from 1 to:</label>
+                        <input type="number" id="countTo" value="5" min="1" max="20">
+                    </div>
+
+                    <button class="game-button" onclick="runCountLoop()" id="countBtn">Start Counting</button>
+                    
+                    <div class="loop-visualizer" id="loopVisualizer" style="display: none;"></div>
+                    <div id="loopCode"></div>
+                </div>
             </div>
 
-            <div class="question" id="q3">
-                <h3>Question 3: How does a computer read code?</h3>
-                <div class="option" onclick="checkAnswer(3, 'A', false)">A) All at once</div>
-                <div class="option" onclick="checkAnswer(3, 'B', true)">B) One line at a time, from top to bottom</div>
-                <div class="option" onclick="checkAnswer(3, 'C', false)">C) From bottom to top</div>
-                <div class="option" onclick="checkAnswer(3, 'D', false)">D) In random order</div>
+            <!-- Section 2: Break Statement -->
+            <div class="section">
+                <h2><span class="emoji">🛑</span>Break Statement</h2>
+                <p>The <strong>break</strong> statement lets you exit a loop immediately, even if the condition is still True!</p>
+
+                <div class="code-box">
+<span class="comment"># Break - exit loop immediately</span>
+<span class="keyword">while</span> <span class="boolean">True</span>:  <span class="comment"># Infinite loop on purpose!</span>
+    <span class="keyword">name</span> = <span class="function">input</span>(<span class="string">"Enter name (or 'quit'): "</span>)
+    
+    <span class="keyword">if</span> name == <span class="string">"quit"</span>:
+        <span class="keyword">break</span>  <span class="comment"># Exit the loop!</span>
+    
+    <span class="keyword">print</span>(<span class="string">f"Hello, {name}!"</span>)
+
+<span class="keyword">print</span>(<span class="string">"Goodbye!"</span>)
+
+<span class="comment"># Example 2: Find a number</span>
+<span class="keyword">numbers</span> = [<span class="number">5</span>, <span class="number">12</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">15</span>, <span class="number">7</span>]
+<span class="keyword">target</span> = <span class="number">8</span>
+<span class="keyword">index</span> = <span class="number">0</span>
+
+<span class="keyword">while</span> index < <span class="function">len</span>(numbers):
+    <span class="keyword">if</span> numbers[index] == target:
+        <span class="keyword">print</span>(<span class="string">f"Found {target} at index {index}!"</span>)
+        <span class="keyword">break</span>  <span class="comment"># Stop searching!</span>
+    <span class="keyword">index</span> += <span class="number">1</span>
+
+<span class="comment"># Example 3: Limited attempts</span>
+<span class="keyword">attempts</span> = <span class="number">0</span>
+<span class="keyword">max_attempts</span> = <span class="number">3</span>
+
+<span class="keyword">while</span> <span class="boolean">True</span>:
+    <span class="keyword">password</span> = <span class="function">input</span>(<span class="string">"Enter password: "</span>)
+    <span class="keyword">attempts</span> += <span class="number">1</span>
+    
+    <span class="keyword">if</span> password == <span class="string">"secret"</span>:
+        <span class="keyword">print</span>(<span class="string">"Access granted!"</span>)
+        <span class="keyword">break</span>
+    
+    <span class="keyword">if</span> attempts >= max_attempts:
+        <span class="keyword">print</span>(<span class="string">"Too many attempts!"</span>)
+        <span class="keyword">break</span>
+    
+    <span class="keyword">print</span>(<span class="string">f"Wrong! {max_attempts - attempts} attempts left"</span>)
+                </div>
+
+                <div class="info-box">
+                    <h3><span class="emoji">💡</span>When to Use Break</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>🎯 Found what you're searching for</li>
+                        <li>❌ Error condition encountered</li>
+                        <li>🔢 Reached maximum attempts</li>
+                        <li>✅ Task completed successfully</li>
+                        <li>🚪 User wants to exit/quit</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q4">
-                <h3>Question 4: What is the first program every programmer writes?</h3>
-                <div class="option" onclick="checkAnswer(4, 'A', false)">A) Goodbye, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'B', true)">B) Hello, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'C', false)">C) Welcome, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'D', false)">D) Hi, Computer!</div>
+            <!-- Section 3: Continue Statement -->
+            <div class="section">
+                <h2><span class="emoji">⏭️</span>Continue Statement</h2>
+                <p>The <strong>continue</strong> statement skips the rest of the current iteration and goes to the next one!</p>
+
+                <div class="code-box">
+<span class="comment"># Continue - skip to next iteration</span>
+<span class="keyword">count</span> = <span class="number">0</span>
+
+<span class="keyword">while</span> count < <span class="number">10</span>:
+    <span class="keyword">count</span> += <span class="number">1</span>
+    
+    <span class="keyword">if</span> count % <span class="number">2</span> == <span class="number">0</span>:
+        <span class="keyword">continue</span>  <span class="comment"># Skip even numbers!</span>
+    
+    <span class="keyword">print</span>(count)  <span class="comment"># Only prints odd numbers: 1, 3, 5, 7, 9</span>
+
+<span class="comment"># Example 2: Skip negative numbers</span>
+<span class="keyword">numbers</span> = [<span class="number">5</span>, <span class="number">-2</span>, <span class="number">8</span>, <span class="number">-1</span>, <span class="number">3</span>, <span class="number">-7</span>, <span class="number">12</span>]
+<span class="keyword">index</span> = <span class="number">0</span>
+
+<span class="keyword">while</span> index < <span class="function">len</span>(numbers):
+    <span class="keyword">num</span> = numbers[index]
+    <span class="keyword">index</span> += <span class="number">1</span>
+    
+    <span class="keyword">if</span> num < <span class="number">0</span>:
+        <span class="keyword">continue</span>  <span class="comment"># Skip negative numbers</span>
+    
+    <span class="keyword">print</span>(num)  <span class="comment"># Prints: 5, 8, 3, 12</span>
+
+<span class="comment"># Example 3: Skip invalid input</span>
+<span class="keyword">valid_count</span> = <span class="number">0</span>
+
+<span class="keyword">while</span> valid_count < <span class="number">3</span>:
+    <span class="keyword">age</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter age: "</span>))
+    
+    <span class="keyword">if</span> age < <span class="number">0</span> or age > <span class="number">120</span>:
+        <span class="keyword">print</span>(<span class="string">"Invalid age! Try again."</span>)
+        <span class="keyword">continue</span>  <span class="comment"># Don't count this one</span>
+    
+    <span class="keyword">print</span>(<span class="string">f"Valid age: {age}"</span>)
+    <span class="keyword">valid_count</span> += <span class="number">1</span>
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">📊</span>Break vs Continue</h3>
+                    <table>
+                        <tr>
+                            <th>Statement</th>
+                            <th>What It Does</th>
+                            <th>Use When</th>
+                        </tr>
+                        <tr>
+                            <td><code>break</code></td>
+                            <td>Exits the entire loop</td>
+                            <td>Done with the loop, found answer, error</td>
+                        </tr>
+                        <tr>
+                            <td><code>continue</code></td>
+                            <td>Skips to next iteration</td>
+                            <td>Skip this item, but keep looping</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
-            <div class="question" id="q5">
-                <h3>Question 5: Which of these is a code editor we can use?</h3>
-                <div class="option" onclick="checkAnswer(5, 'A', false)">A) Microsoft Word</div>
-                <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
-                <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
-                <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            <!-- Game 1: Loop Detective -->
+            <div class="section">
+                <h2>Game 1: Loop Detective 🔍</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Predict the output!</h3>
+                    <p>Look at the code and predict what will be printed!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #e96443; margin-bottom: 15px;">Challenge <span id="detectiveNum">1</span>/10</h4>
+                        
+                        <div class="code-box" id="detectiveCode"></div>
+                        
+                        <h4 style="margin: 20px 0;">What will be printed?</h4>
+                        <div id="detectiveOptions"></div>
+                        
+                        <div id="detectiveResult" style="margin-top: 20px;"></div>
+                        <div style="margin-top: 20px; font-size: 1.3em; font-weight: bold; text-align: center; color: #e96443;">
+                            Score: <span id="detectiveScore">0</span>/10
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="question" id="q6">
-                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
-                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
-                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
-                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
-                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
+            <!-- Project: Number Guessing Game -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Project: Number Guessing Game</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Build a complete guessing game with while loops!</h3>
+                    <p>The computer picks a random number, and you try to guess it!</p>
+                    
+                    <div class="guessing-game">
+                        <h3 style="color: #e96443; margin-bottom: 20px; text-align: center;">🎲 Guess the Number! 🎲</h3>
+                        
+                        <div class="info-box">
+                            <h4>🎯 Game Rules:</h4>
+                            <ul style="line-height: 2em;">
+                                <li>Computer picks a number between 1 and 100</li>
+                                <li>You have 10 attempts to guess it</li>
+                                <li>Get hints: "Too high!" or "Too low!"</li>
+                                <li>Try to guess in as few attempts as possible!</li>
+                            </ul>
+                        </div>
+
+                        <div id="gameStatus" style="text-align: center; margin: 20px 0;">
+                            <button class="game-button" onclick="startGame()" style="width: 100%;">Start New Game 🎮</button>
+                        </div>
+
+                        <div id="gamePlay" style="display: none;">
+                            <div style="margin: 20px 0;">
+                                <label style="display: block; margin-bottom: 10px; font-weight: bold;">Your Guess (1-100):</label>
+                                <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100" style="width: 100%; max-width: 100%;">
+                                <button class="game-button" onclick="makeGuess()" style="width: 100%; margin-top: 10px;">Submit Guess 🎯</button>
+                            </div>
+
+                            <div style="margin: 20px 0;">
+                                <h4>Attempts Remaining:</h4>
+                                <div class="attempts-counter" id="attemptsDisplay"></div>
+                            </div>
+
+                            <div id="feedback"></div>
+
+                            <div id="guessHistory" style="margin-top: 20px;"></div>
+                        </div>
+
+                        <div id="gameCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #e96443; margin-bottom: 10px;">📝 Python Code Behind This Game:</h4>
+                            <div class="code-box" id="gameCodeDisplay"></div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h3><span class="emoji">💡</span>How the Game Uses While Loops:</h3>
+                        <ol style="font-size: 1.1em; line-height: 2em;">
+                            <li><strong>Main game loop:</strong> <code>while attempts < max_attempts</code></li>
+                            <li><strong>Get user input:</strong> Inside the loop</li>
+                            <li><strong>Check guess:</strong> Too high, too low, or correct</li>
+                            <li><strong>Break on win:</strong> Exit loop when guessed correctly</li>
+                            <li><strong>Continue on error:</strong> Skip invalid inputs</li>
+                            <li><strong>Update attempts:</strong> Increment counter each time</li>
+                        </ol>
+                    </div>
+                </div>
             </div>
 
-            <div id="finalMessage" class="celebration"></div>
+            <!-- Game 2: Loop Builder -->
+            <div class="section">
+                <h2>Game 2: Loop Builder 🏗️</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Complete the while loop!</h3>
+                    <p>Fill in the missing parts to make the loop work correctly!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #e96443;">Challenge <span id="builderNum">1</span>/8</h4>
+                        
+                        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                            <p id="builderTask" style="font-size: 1.2em; margin-bottom: 15px; font-weight: bold;"></p>
+                            <div class="code-box" id="builderCode"></div>
+                        </div>
+                        
+                        <h4 style="margin: 20px 0;">What should fill the blank?</h4>
+                        <div id="builderOptions"></div>
+                        
+                        <div id="builderResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #e96443; text-align: center;">
+                            Score: <span id="builderScore">0</span>/8
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <h2 style="text-align: center; color: #e96443;"><span class="emoji">📝</span>Final Quiz!</h2>
+                <p style="text-align: center; font-size: 1.2em;">Test your knowledge about while loops!</p>
+
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: When does a while loop stop?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 0, true)">A) When the condition becomes False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 1, false)">B) After 10 iterations</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 2, false)">C) Never</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 3, false)">D) When a variable is 0</div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: What does break do?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 0, true)">A) Exits the loop immediately</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 1, false)">B) Skips to next iteration</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 2, false)">C) Pauses the loop</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 3, false)">D) Restarts the loop</div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: What does continue do?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 0, false)">A) Exits the loop</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 1, true)">B) Skips to next iteration</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 2, false)">C) Stops the program</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 3, false)">D) Does nothing</div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: What causes an infinite loop?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 0, true)">A) Condition that never becomes False</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 1, false)">B) Using break statement</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 2, false)">C) Updating variables</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 3, false)">D) Using continue</div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: What's printed? count=1; while count<=3: print(count); count+=1</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 0, true)">A) 1 2 3</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 1, false)">B) 1 2 3 4</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 2, false)">C) 0 1 2 3</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 3, false)">D) 2 3 4</div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <h3>Question 6: Which is correct to avoid infinite loops?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 0, true)">A) Update the loop variable</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 1, false)">B) Never use while loops</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 2, false)">C) Always use break</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 3, false)">D) Use only True conditions</div>
+                </div>
+
+                <div class="quiz-question" id="q7">
+                    <h3>Question 7: What's the loop condition for counting 1 to 10?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 0, true)">A) while count <= 10</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 1, false)">B) while count < 10</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 2, false)">C) while count == 10</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 3, false)">D) while count > 10</div>
+                </div>
+
+                <div class="quiz-question" id="q8">
+                    <h3>Question 8: After break, what happens?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 0, true)">A) Program continues after the loop</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 1, false)">B) Program stops completely</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 2, false)">C) Loop restarts from beginning</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 3, false)">D) Error occurs</div>
+                </div>
+
+                <button class="game-button" onclick="calculateScore()" style="display: block; margin: 20px auto;">Submit Quiz</button>
+                <div class="score-display" id="quizScore" style="display: none;"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Lecture Summary</h2>
+                <div class="highlight-box">
+                    <h3>What We Learned Today:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ <code>while condition:</code> - Repeat while True</li>
+                        <li>✅ Loop body must be indented</li>
+                        <li>✅ Always update variables to avoid infinite loops</li>
+                        <li>✅ <code>break</code> - Exit loop immediately</li>
+                        <li>✅ <code>continue</code> - Skip to next iteration</li>
+                        <li>✅ Built a number guessing game</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3><span class="emoji">🏠</span>Practice at Home:</h3>
+                    <ol style="font-size: 1.1em; line-height: 2em;">
+                        <li>Create a countdown timer (from 10 to 0)</li>
+                        <li>Build a login system (3 attempts max)</li>
+                        <li>Make a menu system (loop until "quit")</li>
+                        <li>Create a sum calculator (add numbers until 0)</li>
+                        <li>Build a password validator (loop until valid)</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Common Mistakes to Avoid:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>Forgetting to update loop variables (infinite loop!)</li>
+                        <li>Wrong condition (loop never runs or never stops)</li>
+                        <li>Missing colon (:) after while statement</li>
+                        <li>Wrong indentation of loop body</li>
+                        <li>Using = instead of == in condition</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game 1: Robot Navigation
-        let robotPos = 0;
-        const targetPos = 24;
-        
-        function createGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                if (i === targetPos) {
-                    cell.className += ' target';
-                    cell.textContent = '⭐';
+        let quizAnswers = {};
+        let secretNumber = 0;
+        let attempts = 0;
+        let maxAttempts = 10;
+        let guessHistory = [];
+
+        // Count Loop Demo
+        function runCountLoop() {
+            const countTo = parseInt(document.getElementById('countTo').value) || 5;
+            const visualizer = document.getElementById('loopVisualizer');
+            const codeDiv = document.getElementById('loopCode');
+            const btn = document.getElementById('countBtn');
+            
+            btn.disabled = true;
+            visualizer.style.display = 'block';
+            visualizer.innerHTML = '';
+            
+            let count = 1;
+            const interval = setInterval(() => {
+                if (count > countTo) {
+                    clearInterval(interval);
+                    btn.disabled = false;
+                    
+                    codeDiv.innerHTML = `
+                        <div class="code-box" style="margin-top: 20px;">
+<span class="comment"># The loop just completed!</span>
+<span class="keyword">count</span> = <span class="number">1</span>
+<span class="keyword">while</span> count <= <span class="number">${countTo}</span>:
+    <span class="keyword">print</span>(count)
+    <span class="keyword">count</span> += <span class="number">1</span>
+
+<span class="comment"># Loop finished. Final count: ${count}</span>
+                        </div>
+                    `;
+                    return;
                 }
-                if (i === robotPos) {
-                    cell.textContent = '🤖';
-                }
-                grid.appendChild(cell);
+                
+                visualizer.innerHTML += `
+                    <div class="iteration">
+                        <div>
+                            <strong>Iteration ${count}:</strong> count = ${count}, condition = ${count} <= ${countTo} is True
+                        </div>
+                        <div class="iteration-number">${count}</div>
+                    </div>
+                `;
+                
+                count++;
+            }, 800);
+        }
+
+        // Guessing Game
+        function startGame() {
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            guessHistory = [];
+            
+            document.getElementById('gameStatus').style.display = 'none';
+            document.getElementById('gamePlay').style.display = 'block';
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('guessHistory').innerHTML = '';
+            document.getElementById('guessInput').value = '';
+            document.getElementById('gameCode').style.display = 'none';
+            
+            updateAttemptsDisplay();
+        }
+
+        function updateAttemptsDisplay() {
+            const display = document.getElementById('attemptsDisplay');
+            display.innerHTML = '';
+            
+            for (let i = 0; i < maxAttempts; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'attempt-dot' + (i < attempts ? ' used' : '');
+                display.appendChild(dot);
             }
         }
-        
-        function moveRobot(direction) {
-            let newPos = robotPos;
-            switch(direction) {
-                case 'up':
-                    if (robotPos >= 5) newPos -= 5;
-                    break;
-                case 'down':
-                    if (robotPos < 20) newPos += 5;
-                    break;
-                case 'left':
-                    if (robotPos % 5 !== 0) newPos -= 1;
-                    break;
-                case 'right':
-                    if (robotPos % 5 !== 4) newPos += 1;
-                    break;
+
+        function makeGuess() {
+            const input = document.getElementById('guessInput');
+            const guess = parseInt(input.value);
+            const feedback = document.getElementById('feedback');
+            
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                feedback.innerHTML = '<div class="error-message">Please enter a number between 1 and 100!</div>';
+                return;
             }
             
-            robotPos = newPos;
-            createGrid();
+            attempts++;
+            guessHistory.push(guess);
+            updateAttemptsDisplay();
+            updateGuessHistory();
             
-            if (robotPos === targetPos) {
-                document.getElementById('gameMessage').innerHTML = '🎉 Congratulations! You did it!';
+            if (guess === secretNumber) {
+                feedback.innerHTML = `
+                    <div class="guess-feedback feedback-correct">
+                        <h3>🎉 Correct! You won! 🎉</h3>
+                        <p>The number was ${secretNumber}</p>
+                        <p>You guessed it in ${attempts} attempt${attempts > 1 ? 's' : ''}!</p>
+                    </div>
+                `;
+                endGame(true);
+            } else if (attempts >= maxAttempts) {
+                feedback.innerHTML = `
+                    <div class="guess-feedback feedback-too-high">
+                        <h3>💔 Game Over! 💔</h3>
+                        <p>You ran out of attempts!</p>
+                        <p>The number was ${secretNumber}</p>
+                    </div>
+                `;
+                endGame(false);
+            } else if (guess < secretNumber) {
+                feedback.innerHTML = `
+                    <div class="guess-feedback feedback-too-low">
+                        <h3>📈 Too Low!</h3>
+                        <p>Try a higher number!</p>
+                        <p>Attempts left: ${maxAttempts - attempts}</p>
+                    </div>
+                `;
+            } else {
+                feedback.innerHTML = `
+                    <div class="guess-feedback feedback-too-high">
+                        <h3>📉 Too High!</h3>
+                        <p>Try a lower number!</p>
+                        <p>Attempts left: ${maxAttempts - attempts}</p>
+                    </div>
+                `;
             }
+            
+            input.value = '';
+            input.focus();
         }
-        
-        function resetGame() {
-            robotPos = 0;
-            createGrid();
-            document.getElementById('gameMessage').innerHTML = '';
+
+        function updateGuessHistory() {
+            const historyDiv = document.getElementById('guessHistory');
+            historyDiv.innerHTML = `
+                <h4>Your Guesses:</h4>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                    ${guessHistory.map(g => `
+                        <div style="background: ${g === secretNumber ? '#28a745' : g < secretNumber ? '#0d6efd' : '#dc3545'}; 
+                                    color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold;">
+                            ${g}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
         }
-        
-        // Game 2: Code Simulator
-        function runUserCode() {
-            const code = document.getElementById('userCode').value;
-            const output = document.getElementById('output');
-            if (code) {
-                output.innerHTML += code + '<br>';
+
+        function endGame(won) {
+            document.getElementById('gamePlay').querySelector('button').disabled = true;
+            document.getElementById('guessInput').disabled = true;
+            
+            const statusDiv = document.getElementById('gameStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '<button class="game-button" onclick="startGame()" style="width: 100%;">Play Again 🎮</button>';
+            
+            showGameCode();
+        }
+
+        function showGameCode() {
+            const codeDiv = document.getElementById('gameCode');
+            const codeDisplay = document.getElementById('gameCodeDisplay');
+            
+            codeDiv.style.display = 'block';
+            codeDisplay.innerHTML = `
+<span class="comment"># Number Guessing Game with While Loop</span>
+<span class="keyword">import</span> random
+
+<span class="comment"># Game setup</span>
+<span class="keyword">secret_number</span> = random.<span class="function">randint</span>(<span class="number">1</span>, <span class="number">100</span>)  <span class="comment"># ${secretNumber}</span>
+<span class="keyword">max_attempts</span> = <span class="number">10</span>
+<span class="keyword">attempts</span> = <span class="number">0</span>
+
+<span class="comment"># Main game loop</span>
+<span class="keyword">while</span> attempts < max_attempts:
+    <span class="keyword">guess</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter guess (1-100): "</span>))
+    <span class="keyword">attempts</span> += <span class="number">1</span>
+    
+    <span class="keyword">if</span> guess == secret_number:
+        <span class="keyword">print</span>(<span class="string">f"🎉 Correct! Won in {attempts} attempts!"</span>)
+        <span class="keyword">break</span>  <span class="comment"># Exit loop - game won!</span>
+    <span class="keyword">elif</span> guess < secret_number:
+        <span class="keyword">print</span>(<span class="string">"📈 Too low!"</span>)
+    <span class="keyword">else</span>:
+        <span class="keyword">print</span>(<span class="string">"📉 Too high!"</span>)
+
+<span class="keyword">if</span> attempts == max_attempts <span class="keyword">and</span> guess != secret_number:
+    <span class="keyword">print</span>(<span class="string">f"💔 Game over! Number was {secret_number}"</span>)
+
+<span class="comment"># Your game: ${attempts} attempts, ${guessHistory.length > 0 && guessHistory[guessHistory.length-1] === secretNumber ? 'Won!' : 'Lost'}</span>
+            `;
+        }
+
+        // Detective Game
+        let detectiveLevel = 0;
+        let detectiveScore = 0;
+        const detectiveChallenges = [
+            {
+                code: "count = 1\nwhile count <= 3:\n    print(count)\n    count += 1",
+                options: ["1 2 3", "0 1 2 3", "1 2 3 4", "0 1 2"],
+                answer: 0
+            },
+            {
+                code: "x = 5\nwhile x > 0:\n    print(x)\n    x -= 1\nprint('Done')",
+                options: ["5 4 3 2 1 Done", "5 4 3 2 1", "Done 5 4 3 2 1", "4 3 2 1 0 Done"],
+                answer: 0
+            },
+            {
+                code: "count = 0\nwhile count < 5:\n    count += 1\n    if count == 3:\n        break\n    print(count)",
+                options: ["1 2", "1 2 3", "0 1 2", "1 2 3 4 5"],
+                answer: 0
+            },
+            {
+                code: "x = 0\nwhile x < 5:\n    x += 1\n    if x % 2 == 0:\n        continue\n    print(x)",
+                options: ["1 3 5", "2 4", "1 2 3 4 5", "0 2 4"],
+                answer: 0
+            },
+            {
+                code: "count = 10\nwhile count > 0:\n    count -= 1\nprint(count)",
+                options: ["0", "1", "10", "9"],
+                answer: 0
+            },
+            {
+                code: "i = 0\nwhile i < 3:\n    print('Hi')\n    i += 1",
+                options: ["Hi Hi Hi", "Hi Hi", "Hi", "Hi Hi Hi Hi"],
+                answer: 0
+            },
+            {
+                code: "x = 5\nwhile x > 0:\n    if x == 3:\n        break\n    x -= 1\nprint(x)",
+                options: ["3", "2", "0", "5"],
+                answer: 0
+            },
+            {
+                code: "count = 1\nwhile count <= 4:\n    if count == 2:\n        count += 1\n        continue\n    print(count)\n    count += 1",
+                options: ["1 3 4", "1 2 3 4", "1 4", "2 3 4"],
+                answer: 0
+            },
+            {
+                code: "x = 0\nwhile True:\n    x += 1\n    if x > 2:\n        break\nprint(x)",
+                options: ["3", "2", "1", "Infinite"],
+                answer: 0
+            },
+            {
+                code: "nums = [1,2,3]\ni = 0\nwhile i < len(nums):\n    print(nums[i])\n    i += 1",
+                options: ["1 2 3", "0 1 2", "1 2", "0 1 2 3"],
+                answer: 0
             }
+        ];
+
+        function loadDetective() {
+            if (detectiveLevel >= detectiveChallenges.length) {
+                showDetectiveEnd();
+                return;
+            }
+
+            const challenge = detectiveChallenges[detectiveLevel];
+            document.getElementById('detectiveNum').textContent = detectiveLevel + 1;
+            document.getElementById('detectiveCode').textContent = challenge.code;
+
+            const optionsDiv = document.getElementById('detectiveOptions');
+            optionsDiv.innerHTML = '';
+
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkDetective(i);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('detectiveResult').innerHTML = '';
         }
-        
-        function clearOutput() {
-            document.getElementById('output').innerHTML = '';
+
+        function checkDetective(choice) {
+            const challenge = detectiveChallenges[detectiveLevel];
+            const buttons = document.querySelectorAll('#detectiveOptions .detective-option');
+            const result = document.getElementById('detectiveResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.answer) {
+                detectiveScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                buttons[choice].classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.options[challenge.answer] + '</div>';
+                buttons[choice].classList.add('incorrect');
+                buttons[challenge.answer].classList.add('correct');
+            }
+
+            document.getElementById('detectiveScore').textContent = detectiveScore;
+            detectiveLevel++;
+
+            setTimeout(loadDetective, 2500);
         }
-        
-        // Game 3: Animation
-        function animateCode() {
-            const output = document.getElementById('animationOutput');
-            output.innerHTML = '';
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 1<br>';
-            }, 500);
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '';
-                document.getElementById('line2').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 2<br>';
-            }, 1500);
-            
-            setTimeout(() => {
-                document.getElementById('line2').style.background = '';
-                document.getElementById('line3').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 3<br>';
-            }, 2500);
-            
-            setTimeout(() => {
-                document.getElementById('line3').style.background = '';
-            }, 3500);
+
+        function showDetectiveEnd() {
+            const container = document.querySelector('#detectiveNum').closest('.game-container');
+            const percentage = (detectiveScore / detectiveChallenges.length * 100).toFixed(0);
+
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎉 Detective Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${detectiveScore}/${detectiveChallenges.length} (${percentage}%)</p>
+                    <button class="game-button" onclick="resetDetective()">Play Again</button>
+                </div>
+            `;
         }
-        
-        // Quiz
-        let correctAnswers = 0;
-        let answeredQuestions = new Set();
-        
-        function checkAnswer(questionNum, option, isCorrect) {
-            if (answeredQuestions.has(questionNum)) return;
-            
-            answeredQuestions.add(questionNum);
-            const question = document.getElementById('q' + questionNum);
-            const options = question.querySelectorAll('.option');
-            
+
+        function resetDetective() {
+            detectiveLevel = 0;
+            detectiveScore = 0;
+            document.getElementById('detectiveScore').textContent = '0';
+            loadDetective();
+        }
+
+        // Builder Game
+        let builderLevel = 0;
+        let builderScore = 0;
+        const builderChallenges = [
+            {
+                task: "Count from 1 to 10",
+                code: "count = 1\nwhile ___:\n    print(count)\n    count += 1",
+                options: ["count <= 10", "count < 10", "count == 10", "count > 10"],
+                answer: 0
+            },
+            {
+                task: "Exit the loop when x equals 5",
+                code: "while True:\n    x = int(input('Number: '))\n    if x == 5:\n        ___\n    print(x)",
+                options: ["break", "continue", "pass", "stop"],
+                answer: 0
+            },
+            {
+                task: "Skip even numbers, print odd",
+                code: "x = 0\nwhile x < 10:\n    x += 1\n    if x % 2 == 0:\n        ___\n    print(x)",
+                options: ["continue", "break", "pass", "stop"],
+                answer: 0
+            },
+            {
+                task: "Count down from 5 to 1",
+                code: "count = 5\nwhile count ___ 0:\n    print(count)\n    count -= 1",
+                options: ["> ", "< ", "==", "!="],
+                answer: 0
+            },
+            {
+                task: "Loop until user enters 'quit'",
+                code: "while True:\n    text = input('Enter text: ')\n    if text == 'quit':\n        ___",
+                options: ["break", "continue", "exit", "stop"],
+                answer: 0
+            },
+            {
+                task: "Update counter in the loop",
+                code: "count = 0\nwhile count < 5:\n    print(count)\n    count ___ 1",
+                options: ["+=", "=", "-=", "*="],
+                answer: 0
+            },
+            {
+                task: "Loop while password is wrong",
+                code: "password = ''\nwhile password ___ 'secret':\n    password = input('Password: ')",
+                options: ["!=", "==", ">", "<"],
+                answer: 0
+            },
+            {
+                task: "Skip negative numbers",
+                code: "nums = [5,-2,8,-1,3]\ni = 0\nwhile i < len(nums):\n    if nums[i] < 0:\n        i += 1\n        ___\n    print(nums[i])\n    i += 1",
+                options: ["continue", "break", "pass", "skip"],
+                answer: 0
+            }
+        ];
+
+        function loadBuilder() {
+            if (builderLevel >= builderChallenges.length) {
+                showBuilderEnd();
+                return;
+            }
+
+            const challenge = builderChallenges[builderLevel];
+            document.getElementById('builderNum').textContent = builderLevel + 1;
+            document.getElementById('builderTask').textContent = challenge.task;
+            document.getElementById('builderCode').textContent = challenge.code;
+
+            const optionsDiv = document.getElementById('builderOptions');
+            optionsDiv.innerHTML = '';
+
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkBuilder(option);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('builderResult').innerHTML = '';
+        }
+
+        function checkBuilder(choice) {
+            const challenge = builderChallenges[builderLevel];
+            const buttons = document.querySelectorAll('#builderOptions .detective-option');
+            const result = document.getElementById('builderResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.options[challenge.answer]) {
+                builderScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                event.target.classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.options[challenge.answer] + '</div>';
+                event.target.classList.add('incorrect');
+            }
+
+            document.getElementById('builderScore').textContent = builderScore;
+            builderLevel++;
+
+            setTimeout(loadBuilder, 2500);
+        }
+
+        function showBuilderEnd() {
+            const container = document.querySelector('#builderNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🏗️ Builder Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${builderScore}/${builderChallenges.length}</p>
+                    <button class="game-button" onclick="resetBuilder()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetBuilder() {
+            builderLevel = 0;
+            builderScore = 0;
+            document.getElementById('builderScore').textContent = '0';
+            loadBuilder();
+        }
+
+        // Quiz Functions
+        function selectAnswer(questionId, optionIndex, isCorrect) {
+            const question = document.getElementById(questionId);
+            const options = question.querySelectorAll('.quiz-option');
+
             options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.startsWith(option)) {
-                    opt.className = isCorrect ? 'option correct' : 'option wrong';
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            options[optionIndex].classList.add('selected');
+            quizAnswers[questionId] = isCorrect;
+        }
+
+        function calculateScore() {
+            const totalQuestions = 8;
+            let correctAnswers = 0;
+
+            Object.keys(quizAnswers).forEach(qId => {
+                const question = document.getElementById(qId);
+                const selected = question.querySelector('.selected');
+                if (selected) {
+                    if (quizAnswers[qId]) {
+                        selected.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        const options = question.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.onclick.toString().includes('true')) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
                 }
             });
-            
-            if (isCorrect) {
-                correctAnswers++;
-            }
-            
-            updateScore();
-            
-            if (answeredQuestions.size === 6) {
-                showFinalMessage();
-            }
-        }
-        
-        function updateScore() {
-            document.getElementById('score').innerHTML = 
-                `Score: ${correctAnswers} / ${answeredQuestions.size}`;
-        }
-        
-        function showFinalMessage() {
-            const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 6) {
-                finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 4) {
-                finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
+
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const scoreDisplay = document.getElementById('quizScore');
+
+            let message = '';
+            let emoji = '';
+
+            if (percentage === 100) {
+                message = 'Perfect Score!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Great Job!';
+                emoji = '🌟';
+            } else if (percentage >= 60) {
+                message = 'Good Effort!';
+                emoji = '👍';
             } else {
-                finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
+                message = 'Keep Learning!';
+                emoji = '📚';
             }
+
+            scoreDisplay.innerHTML = `
+                ${emoji} ${message}<br>
+                You scored ${correctAnswers} out of ${totalQuestions} (${percentage.toFixed(0)}%)
+            `;
+            scoreDisplay.style.display = 'block';
         }
-        
+
         // Initialize
-        createGrid();
+        window.onload = function() {
+            loadDetective();
+            loadBuilder();
+        };
     </script>
 </body>
 </html>
