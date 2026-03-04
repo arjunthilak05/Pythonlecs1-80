@@ -3,561 +3,1359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 1: Welcome to Programming</title>
+    <title>Lecture 14: For Loops</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
-        h1 {
-            color: #667eea;
+
+        header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 30px;
+        }
+
+        header h1 {
             font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        
-        h2 {
-            color: #764ba2;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
-        
+
+        .content {
+            padding: 40px;
+        }
+
         .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #f8f9ff;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #43e97b;
         }
-        
-        .game-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+        .section h2 {
+            color: #43e97b;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "Python";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #43e97b;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .boolean {
+            color: #61afef;
+            font-weight: bold;
+        }
+
+        .interactive-demo {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
-            color: white;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .robot {
-            font-size: 60px;
-            text-align: center;
+
+        .game-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 60px);
-            gap: 5px;
-            margin: 20px auto;
-            width: fit-content;
-        }
-        
-        .cell {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border: 2px solid #764ba2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            border-radius: 8px;
-        }
-        
-        .cell.target {
-            background: #ffeb3b;
-        }
-        
-        button {
-            background: #667eea;
+
+        .game-button {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 5px;
+            margin: 10px 5px;
             transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        button:hover {
-            background: #764ba2;
-            transform: scale(1.05);
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
-        
-        .code-box {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            font-size: 16px;
+
+        .game-button:active {
+            transform: translateY(0);
         }
-        
-        .output-box {
-            background: #000;
-            color: #0f0;
+
+        input[type="text"], input[type="number"], select {
             padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #43e97b;
             border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            min-height: 50px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
         }
-        
-        .quiz-box {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+        .multiplication-table {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 800px;
+            margin: 20px auto;
         }
-        
-        .question {
-            background: white;
-            padding: 20px;
+
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .table-item {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 15px;
             border-radius: 10px;
-            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
-        
-        .option {
-            display: block;
+
+        .iteration-box {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #43e97b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .iteration-number {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50%;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th {
+            background: #43e97b;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
             padding: 12px;
-            margin: 8px 0;
-            background: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 2px solid transparent;
         }
-        
-        .option:hover {
-            background: #e0e0e0;
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #43e97b;
         }
-        
-        .option.correct {
-            background: #4caf50;
-            color: white;
+
+        .quiz-option.selected {
+            background: #d4f1f4;
+            border-color: #43e97b;
         }
-        
-        .option.wrong {
-            background: #f44336;
-            color: white;
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
         }
-        
-        .controls {
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .score-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            margin: 20px 0;
-        }
-        
-        .line-highlight {
-            background: #ffeb3b;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        
-        #score {
-            text-align: center;
-            font-size: 24px;
+            font-size: 1.5em;
             font-weight: bold;
-            color: #667eea;
-            margin: 20px 0;
+            color: #43e97b;
+            margin-top: 20px;
         }
-        
-        .celebration {
-            text-align: center;
-            font-size: 50px;
+
+        .detective-option {
+            background: white;
+            border: 3px solid #43e97b;
+            padding: 20px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .detective-option:hover {
+            background: #e0f7fa;
+            transform: translateX(5px);
+        }
+
+        .detective-option.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .detective-option.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .range-visual {
+            display: flex;
+            gap: 10px;
             margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .range-item {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 60px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .table-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Lecture 1: Welcome to Programming!</h1>
-        
-        <!-- Section 1: What is Programming -->
-        <div class="section">
-            <h2>🤖 What is Programming?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Programming is like giving instructions to a robot! Imagine you have a robot friend who is very smart but only understands specific commands. You need to tell them exactly what to do, step by step.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                For example, if you want the robot to make a sandwich, you can't just say "make a sandwich." You need to say:
-            </p>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px; margin-top: 10px;">
-                <li>Pick up the bread</li>
-                <li>Open the jar of peanut butter</li>
-                <li>Spread peanut butter on the bread</li>
-                <li>Put two slices together</li>
-            </ul>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                That's exactly what programming is! We write instructions (called <strong>code</strong>) that tell the computer exactly what to do!
-            </p>
-        </div>
+        <header>
+            <h1 class="floating">🎓 Lecture 14: For Loops ➰</h1>
+            <p>Iterate through sequences with ease!</p>
+        </header>
 
-        <!-- Game 1: Robot Navigation -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 1: Help the Robot Find the Star!</h2>
-            <p style="font-size: 18px;">Give the robot instructions to reach the ⭐ star!</p>
-            <div class="robot" id="robotDisplay">🤖</div>
-            <div class="grid" id="gameGrid"></div>
-            <div class="controls">
-                <button onclick="moveRobot('up')">⬆️ Up</button>
-                <button onclick="moveRobot('down')">⬇️ Down</button>
-                <button onclick="moveRobot('left')">⬅️ Left</button>
-                <button onclick="moveRobot('right')">➡️ Right</button>
-                <button onclick="resetGame()" style="background: #f5576c;">🔄 Reset</button>
-            </div>
-            <div id="gameMessage" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
-        </div>
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2><span class="emoji">🌟</span>Welcome to For Loops!</h2>
+                <p style="font-size: 1.2em;">While loops are great when you don't know how many times to repeat. But what if you want to do something for EACH item in a list? Or repeat exactly 10 times? That's where <strong>for loops</strong> shine!</p>
+                
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>What You'll Learn Today</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ For loops - iterate through sequences</li>
+                        <li>✅ Looping through lists, strings, and more</li>
+                        <li>✅ The range() function - generate number sequences</li>
+                        <li>✅ The enumerate() function - get index and value</li>
+                        <li>✅ Build a multiplication table generator</li>
+                    </ul>
+                </div>
 
-        <!-- Section 2: Installing Python -->
-        <div class="section">
-            <h2>💻 Installing Python and VS Code</h2>
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 1: Install Python</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Go to <strong>python.org</strong></li>
-                <li>Click on "Downloads"</li>
-                <li>Download Python (make sure to check "Add Python to PATH")</li>
-                <li>Run the installer and follow the instructions</li>
-            </ol>
-            
-            <h3 style="color: #764ba2; margin-top: 20px;">Step 2: Install VS Code (or IDLE)</h3>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li><strong>VS Code:</strong> Go to <strong>code.visualstudio.com</strong> and download</li>
-                <li><strong>IDLE:</strong> This comes with Python automatically!</li>
-            </ol>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Tip:</strong> VS Code is like a super-powered notebook for writing code. IDLE is simpler and great for beginners!
-            </p>
-        </div>
-
-        <!-- Section 3: First Program -->
-        <div class="section">
-            <h2>🎉 Your First Program: Hello, World!</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                The first program every programmer writes is "Hello, World!" It's a tradition! This program tells the computer to display a message on the screen.
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                In Python, we use the <strong>print()</strong> command to display text. Here's how it looks:
-            </p>
-            <div class="code-box">
-                print("Hello, World!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8;">
-                When you run this code, the computer will show: <strong>Hello, World!</strong>
-            </p>
-        </div>
-
-        <!-- Game 2: Interactive Code Simulator -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 2: Try Writing Your Own Code!</h2>
-            <p style="font-size: 18px;">Type your own message in the box below and click "Run Code"!</p>
-            <div style="margin: 20px 0;">
-                <input type="text" id="userCode" placeholder='Type your message here...' 
-                       style="width: 100%; padding: 15px; font-size: 18px; border-radius: 8px; border: none;">
-            </div>
-            <div class="controls">
-                <button onclick="runUserCode()">▶️ Run Code</button>
-                <button onclick="clearOutput()" style="background: #f5576c;">🗑️ Clear</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="output"></div>
-        </div>
-
-        <!-- Section 4: How Computers Read Code -->
-        <div class="section">
-            <h2>📖 How Computers Read Code Line by Line</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                Computers are very obedient but not very smart. They read your code <strong>one line at a time</strong>, from top to bottom, just like you read a book!
-            </p>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                Let's look at an example:
-            </p>
-            <div class="code-box">
-                print("First, I say hello!")<br>
-                print("Then, I say goodbye!")<br>
-                print("And finally, I'm done!")
-            </div>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px;">
-                The computer will:
-            </p>
-            <ol style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Read line 1 and print "First, I say hello!"</li>
-                <li>Then read line 2 and print "Then, I say goodbye!"</li>
-                <li>Finally read line 3 and print "And finally, I'm done!"</li>
-            </ol>
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 15px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 Remember:</strong> The order matters! The computer does exactly what you tell it, in the order you tell it.
-            </p>
-        </div>
-
-        <!-- Game 3: Code Order Challenge -->
-        <div class="game-box">
-            <h2 style="color: white;">🎮 Game 3: Line by Line Execution</h2>
-            <p style="font-size: 18px;">Watch how the computer reads code one line at a time!</p>
-            <div class="code-box" id="animatedCode">
-                <div id="line1">print("I am line 1")</div>
-                <div id="line2">print("I am line 2")</div>
-                <div id="line3">print("I am line 3")</div>
-            </div>
-            <div class="controls">
-                <button onclick="animateCode()">▶️ Watch Execution</button>
-            </div>
-            <p style="font-size: 16px; margin-top: 15px;">Output:</p>
-            <div class="output-box" id="animationOutput"></div>
-        </div>
-
-        <!-- Section 5: Compilers vs Interpreters -->
-        <div class="section">
-            <h2>⚙️ What's a Compiler?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                A compiler takes your entire program at once and translates it into machine code (0s and 1s that computers understand). It's like translating a whole book before anyone reads it. The compiler creates a separate executable file that can run independently without needing the original code. Languages like C, C++, and Java use compilers.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates the whole program before running it</li>
-                <li>Shows all errors at the end, together</li>
-                <li>Runs faster once compiled</li>
-                <li>Creates a separate file you can run anytime</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>🔍 What's an Interpreter?</h2>
-            <p style="font-size: 18px; line-height: 1.8;">
-                An interpreter translates your code line-by-line while the program is running. It's like having a live translator reading and translating sentences one at a time. Python, JavaScript, and Ruby use interpreters.
-            </p>
-            
-            <h3 style="color: #764ba2; margin-top: 25px;">Key features:</h3>
-            <ul style="font-size: 18px; line-height: 1.8; margin-left: 40px;">
-                <li>Translates code one line at a time as it runs</li>
-                <li>Shows errors immediately when it hits that line</li>
-                <li>Slower execution than compiled programs</li>
-                <li>Always needs the original code to run</li>
-            </ul>
-            
-            <p style="font-size: 18px; line-height: 1.8; margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
-                <strong>💡 For Python specifically:</strong> Python is an interpreted language, which is why you need Python installed on your computer to run Python programs. When you run a Python file, the interpreter reads and executes it line by line.
-            </p>
-        </div>
-
-        <!-- Final Quiz -->
-        <div class="quiz-box">
-            <h2 style="color: #333;">🎯 Final Quiz: Test Your Knowledge!</h2>
-            <div id="score"></div>
-            
-            <div class="question" id="q1">
-                <h3>Question 1: What is programming?</h3>
-                <div class="option" onclick="checkAnswer(1, 'A', false)">A) Playing video games</div>
-                <div class="option" onclick="checkAnswer(1, 'B', true)">B) Giving instructions to a computer</div>
-                <div class="option" onclick="checkAnswer(1, 'C', false)">C) Drawing pictures</div>
-                <div class="option" onclick="checkAnswer(1, 'D', false)">D) Writing stories</div>
+                <div class="info-box">
+                    <h3><span class="emoji">🤔</span>Real-World Uses</h3>
+                    <p style="font-size: 1.1em;">For loops are perfect for:</p>
+                    <ul style="font-size: 1.1em; line-height: 2em; margin-top: 10px;">
+                        <li>📋 Processing each item in a shopping list</li>
+                        <li>📧 Sending emails to all contacts</li>
+                        <li>📊 Analyzing each student's grade</li>
+                        <li>🎮 Moving through game levels</li>
+                        <li>🔢 Generating times tables</li>
+                        <li>📁 Processing files in a folder</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q2">
-                <h3>Question 2: What command do we use to display text in Python?</h3>
-                <div class="option" onclick="checkAnswer(2, 'A', false)">A) show()</div>
-                <div class="option" onclick="checkAnswer(2, 'B', false)">B) display()</div>
-                <div class="option" onclick="checkAnswer(2, 'C', true)">C) print()</div>
-                <div class="option" onclick="checkAnswer(2, 'D', false)">D) write()</div>
+            <!-- Section 1: Basic For Loops -->
+            <div class="section">
+                <h2><span class="emoji">➰</span>For Loop Fundamentals</h2>
+                <p>A <strong>for loop</strong> iterates through each item in a sequence (list, string, etc.) automatically!</p>
+
+                <div class="code-box">
+<span class="comment"># Basic for loop structure</span>
+<span class="keyword">for</span> variable <span class="keyword">in</span> sequence:
+    <span class="comment"># Code to repeat for each item</span>
+
+<span class="comment"># Example 1: Loop through a list</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]
+
+<span class="keyword">for</span> fruit <span class="keyword">in</span> fruits:
+    <span class="keyword">print</span>(fruit)
+
+<span class="comment"># Output:</span>
+<span class="comment"># apple</span>
+<span class="comment"># banana</span>
+<span class="comment"># cherry</span>
+
+<span class="comment"># Example 2: Loop through a string</span>
+<span class="keyword">word</span> = <span class="string">"Python"</span>
+
+<span class="keyword">for</span> letter <span class="keyword">in</span> word:
+    <span class="keyword">print</span>(letter)
+
+<span class="comment"># Output: P, y, t, h, o, n (each on new line)</span>
+
+<span class="comment"># Example 3: Calculate sum</span>
+<span class="keyword">numbers</span> = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>]
+<span class="keyword">total</span> = <span class="number">0</span>
+
+<span class="keyword">for</span> num <span class="keyword">in</span> numbers:
+    <span class="keyword">total</span> += num
+
+<span class="keyword">print</span>(<span class="string">f"Total: {total}"</span>)  <span class="comment"># Total: 150</span>
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>How For Loops Work</h3>
+                    <p style="font-size: 1.1em;">Python automatically:</p>
+                    <ol style="line-height: 2em; margin-top: 10px;">
+                        <li>Takes the first item from the sequence</li>
+                        <li>Assigns it to the variable</li>
+                        <li>Runs the code block</li>
+                        <li>Goes to the next item</li>
+                        <li>Repeats until all items are done</li>
+                    </ol>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try For Loop!</h3>
+                    <p>Enter items separated by commas and see the loop in action:</p>
+                    
+                    <input type="text" id="loopItems" placeholder="e.g., apple, banana, cherry" style="max-width: 100%;">
+                    <button class="game-button" onclick="runForLoop()">Run For Loop</button>
+                    
+                    <div id="forLoopResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q3">
-                <h3>Question 3: How does a computer read code?</h3>
-                <div class="option" onclick="checkAnswer(3, 'A', false)">A) All at once</div>
-                <div class="option" onclick="checkAnswer(3, 'B', true)">B) One line at a time, from top to bottom</div>
-                <div class="option" onclick="checkAnswer(3, 'C', false)">C) From bottom to top</div>
-                <div class="option" onclick="checkAnswer(3, 'D', false)">D) In random order</div>
+            <!-- Section 2: Range Function -->
+            <div class="section">
+                <h2><span class="emoji">🔢</span>The range() Function</h2>
+                <p>The <strong>range()</strong> function generates a sequence of numbers - perfect for counting!</p>
+
+                <div class="code-box">
+<span class="comment"># range() has three forms:</span>
+
+<span class="comment"># 1. range(stop) - from 0 to stop-1</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>):
+    <span class="keyword">print</span>(i)  <span class="comment"># Prints: 0, 1, 2, 3, 4</span>
+
+<span class="comment"># 2. range(start, stop) - from start to stop-1</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">6</span>):
+    <span class="keyword">print</span>(i)  <span class="comment"># Prints: 1, 2, 3, 4, 5</span>
+
+<span class="comment"># 3. range(start, stop, step) - with custom step</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>):
+    <span class="keyword">print</span>(i)  <span class="comment"># Prints: 0, 2, 4, 6, 8</span>
+
+<span class="comment"># Count backwards with negative step</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>, <span class="number">0</span>, <span class="number">-1</span>):
+    <span class="keyword">print</span>(i)  <span class="comment"># Prints: 5, 4, 3, 2, 1</span>
+
+<span class="comment"># Example: Print squares</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">6</span>):
+    <span class="keyword">print</span>(<span class="string">f"{i} squared is {i**2}"</span>)
+
+<span class="comment"># Example: Access list by index</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]
+
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="function">len</span>(fruits)):
+    <span class="keyword">print</span>(<span class="string">f"Index {i}: {fruits[i]}"</span>)
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Important: Stop is Exclusive!</h3>
+                    <p style="font-size: 1.1em;"><code>range(5)</code> gives you 0, 1, 2, 3, 4 - NOT including 5!</p>
+                    <p style="margin-top: 10px;">Think: "I want 5 numbers starting from 0" or "Count from 1 to 10? Use range(1, 11)"</p>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3><span class="emoji">🎯</span>Try range() Function!</h3>
+                    <p>Customize range parameters and see the result:</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px;">Start:</label>
+                        <input type="number" id="rangeStart" value="0">
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px;">Stop:</label>
+                        <input type="number" id="rangeStop" value="10">
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px;">Step:</label>
+                        <input type="number" id="rangeStep" value="1">
+                    </div>
+
+                    <button class="game-button" onclick="testRange()">Generate Range</button>
+                    
+                    <div id="rangeResult"></div>
+                </div>
             </div>
 
-            <div class="question" id="q4">
-                <h3>Question 4: What is the first program every programmer writes?</h3>
-                <div class="option" onclick="checkAnswer(4, 'A', false)">A) Goodbye, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'B', true)">B) Hello, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'C', false)">C) Welcome, World!</div>
-                <div class="option" onclick="checkAnswer(4, 'D', false)">D) Hi, Computer!</div>
+            <!-- Section 3: Enumerate Function -->
+            <div class="section">
+                <h2><span class="emoji">📊</span>The enumerate() Function</h2>
+                <p>The <strong>enumerate()</strong> function gives you both the index AND the value - best of both worlds!</p>
+
+                <div class="code-box">
+<span class="comment"># Without enumerate - manual indexing</span>
+<span class="keyword">fruits</span> = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>]
+
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="function">len</span>(fruits)):
+    <span class="keyword">print</span>(<span class="string">f"{i}: {fruits[i]}"</span>)
+
+<span class="comment"># With enumerate - much cleaner!</span>
+<span class="keyword">for</span> index, fruit <span class="keyword">in</span> <span class="function">enumerate</span>(fruits):
+    <span class="keyword">print</span>(<span class="string">f"{index}: {fruit}"</span>)
+
+<span class="comment"># Output:</span>
+<span class="comment"># 0: apple</span>
+<span class="comment"># 1: banana</span>
+<span class="comment"># 2: cherry</span>
+
+<span class="comment"># Start counting from 1 instead of 0</span>
+<span class="keyword">for</span> position, fruit <span class="keyword">in</span> <span class="function">enumerate</span>(fruits, start=<span class="number">1</span>):
+    <span class="keyword">print</span>(<span class="string">f"{position}. {fruit}"</span>)
+
+<span class="comment"># Output:</span>
+<span class="comment"># 1. apple</span>
+<span class="comment"># 2. banana</span>
+<span class="comment"># 3. cherry</span>
+
+<span class="comment"># Example: Find item position</span>
+<span class="keyword">students</span> = [<span class="string">"Alice"</span>, <span class="string">"Bob"</span>, <span class="string">"Charlie"</span>, <span class="string">"Diana"</span>]
+
+<span class="keyword">for</span> rank, student <span class="keyword">in</span> <span class="function">enumerate</span>(students, start=<span class="number">1</span>):
+    <span class="keyword">print</span>(<span class="string">f"Rank {rank}: {student}"</span>)
+
+<span class="comment"># Example: Modify list with index</span>
+<span class="keyword">scores</span> = [<span class="number">85</span>, <span class="number">90</span>, <span class="number">78</span>, <span class="number">92</span>]
+
+<span class="keyword">for</span> i, score <span class="keyword">in</span> <span class="function">enumerate</span>(scores):
+    <span class="keyword">if</span> score > <span class="number">80</span>:
+        <span class="keyword">print</span>(<span class="string">f"Student {i+1} passed with {score}"</span>)
+                </div>
+
+                <div class="highlight-box">
+                    <h3><span class="emoji">💡</span>Why Use enumerate()?</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ Get both index and value in one line</li>
+                        <li>✅ Cleaner code than range(len())</li>
+                        <li>✅ Can customize starting number</li>
+                        <li>✅ More Pythonic and readable</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="question" id="q5">
-                <h3>Question 5: Which of these is a code editor we can use?</h3>
-                <div class="option" onclick="checkAnswer(5, 'A', false)">A) Microsoft Word</div>
-                <div class="option" onclick="checkAnswer(5, 'B', true)">B) VS Code</div>
-                <div class="option" onclick="checkAnswer(5, 'C', false)">C) Paint</div>
-                <div class="option" onclick="checkAnswer(5, 'D', false)">D) Calculator</div>
+            <!-- Section 4: For vs While -->
+            <div class="section">
+                <h2><span class="emoji">⚖️</span>For Loops vs While Loops</h2>
+                <p>Both repeat code, but when should you use each?</p>
+
+                <div class="comparison-table">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Feature</th>
+                            <th>For Loop</th>
+                            <th>While Loop</th>
+                        </tr>
+                        <tr>
+                            <td>Best For</td>
+                            <td>Known iterations, sequences</td>
+                            <td>Unknown iterations, conditions</td>
+                        </tr>
+                        <tr>
+                            <td>Use When</td>
+                            <td>Process each item in list/string</td>
+                            <td>Loop until condition changes</td>
+                        </tr>
+                        <tr>
+                            <td>Example</td>
+                            <td>Print all names in a list</td>
+                            <td>Ask until correct password</td>
+                        </tr>
+                        <tr>
+                            <td>Counter</td>
+                            <td>Automatic (built-in)</td>
+                            <td>Manual (you manage it)</td>
+                        </tr>
+                        <tr>
+                            <td>Infinite Risk</td>
+                            <td>Very low (auto-stops)</td>
+                            <td>Higher (forget to update)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="code-box">
+<span class="comment"># Same task with both loops</span>
+
+<span class="comment"># FOR LOOP - cleaner for known sequences</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">6</span>):
+    <span class="keyword">print</span>(i)
+
+<span class="comment"># WHILE LOOP - more setup needed</span>
+<span class="keyword">i</span> = <span class="number">1</span>
+<span class="keyword">while</span> i <= <span class="number">5</span>:
+    <span class="keyword">print</span>(i)
+    <span class="keyword">i</span> += <span class="number">1</span>
+
+<span class="comment"># FOR is better when you know the count!</span>
+<span class="comment"># WHILE is better when you don't!</span>
+                </div>
             </div>
 
-            <div class="question" id="q6">
-                <h3>Question 6: Python is an interpreted language. What does this mean?</h3>
-                <div class="option" onclick="checkAnswer(6, 'A', false)">A) It translates the whole program before running</div>
-                <div class="option" onclick="checkAnswer(6, 'B', true)">B) It translates code line-by-line as it runs</div>
-                <div class="option" onclick="checkAnswer(6, 'C', false)">C) It doesn't need to be translated</div>
-                <div class="option" onclick="checkAnswer(6, 'D', false)">D) It only works on certain computers</div>
+            <!-- Game 1: Loop Detective -->
+            <div class="section">
+                <h2>Game 1: For Loop Detective 🔍</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Predict the output!</h3>
+                    <p>Look at the for loop code and predict what will be printed!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #43e97b; margin-bottom: 15px;">Challenge <span id="detectiveNum">1</span>/10</h4>
+                        
+                        <div class="code-box" id="detectiveCode"></div>
+                        
+                        <h4 style="margin: 20px 0;">What will be printed?</h4>
+                        <div id="detectiveOptions"></div>
+                        
+                        <div id="detectiveResult" style="margin-top: 20px;"></div>
+                        <div style="margin-top: 20px; font-size: 1.3em; font-weight: bold; text-align: center; color: #43e97b;">
+                            Score: <span id="detectiveScore">0</span>/10
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="finalMessage" class="celebration"></div>
+            <!-- Project: Multiplication Table Generator -->
+            <div class="section">
+                <h2><span class="emoji">✖️</span>Project: Multiplication Table Generator</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Generate multiplication tables using for loops!</h3>
+                    <p>Choose a number and range to create beautiful times tables!</p>
+                    
+                    <div class="multiplication-table">
+                        <h3 style="color: #43e97b; margin-bottom: 20px; text-align: center;">🔢 Multiplication Table Generator 🔢</h3>
+                        
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">Select Number:</label>
+                            <input type="number" id="tableNumber" placeholder="e.g., 7" min="1" max="20" value="7" style="width: 100%; max-width: 100%;">
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">Range (1 to):</label>
+                            <input type="number" id="tableRange" placeholder="e.g., 10" min="1" max="20" value="10" style="width: 100%; max-width: 100%;">
+                        </div>
+
+                        <div style="margin: 20px 0;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">Display Style:</label>
+                            <select id="tableStyle" style="width: 100%; max-width: 100%;">
+                                <option value="grid">Grid Layout</option>
+                                <option value="list">List Format</option>
+                                <option value="classic">Classic Table</option>
+                            </select>
+                        </div>
+
+                        <button class="game-button" onclick="generateTable()" style="width: 100%;">Generate Table ✖️</button>
+
+                        <div id="tableDisplay"></div>
+
+                        <div id="tableCode" style="margin-top: 20px; display: none;">
+                            <h4 style="color: #43e97b; margin-bottom: 10px;">📝 Python Code:</h4>
+                            <div class="code-box" id="tableCodeDisplay"></div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h3><span class="emoji">💡</span>How It Works:</h3>
+                        <ol style="font-size: 1.1em; line-height: 2em;">
+                            <li><strong>Get user input:</strong> Which number's table?</li>
+                            <li><strong>Use range():</strong> Generate sequence of multipliers</li>
+                            <li><strong>For loop:</strong> Iterate through each multiplier</li>
+                            <li><strong>Calculate:</strong> number × multiplier</li>
+                            <li><strong>Display:</strong> Show formatted result</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 2: Loop Builder -->
+            <div class="section">
+                <h2>Game 2: Loop Builder 🏗️</h2>
+                <div class="game-container">
+                    <h3><span class="emoji">🎮</span>Complete the for loop!</h3>
+                    <p>Fill in the missing parts to make the loop work correctly!</p>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #43e97b;">Challenge <span id="builderNum">1</span>/8</h4>
+                        
+                        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+                            <p id="builderTask" style="font-size: 1.2em; margin-bottom: 15px; font-weight: bold;"></p>
+                            <div class="code-box" id="builderCode"></div>
+                        </div>
+                        
+                        <h4 style="margin: 20px 0;">What should fill the blank?</h4>
+                        <div id="builderOptions"></div>
+                        
+                        <div id="builderResult"></div>
+                        <div style="margin-top: 15px; font-size: 1.2em; font-weight: bold; color: #43e97b; text-align: center;">
+                            Score: <span id="builderScore">0</span>/8
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <h2 style="text-align: center; color: #43e97b;"><span class="emoji">📝</span>Final Quiz!</h2>
+                <p style="text-align: center; font-size: 1.2em;">Test your knowledge about for loops!</p>
+
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: What does range(5) generate?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 0, true)">A) 0, 1, 2, 3, 4</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 1, false)">B) 1, 2, 3, 4, 5</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 2, false)">C) 0, 1, 2, 3, 4, 5</div>
+                    <div class="quiz-option" onclick="selectAnswer('q1', 3, false)">D) 1, 2, 3, 4</div>
+                </div>
+
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: What's the correct syntax for a for loop?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 0, true)">A) for item in list:</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 1, false)">B) for item of list:</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 2, false)">C) for (item in list):</div>
+                    <div class="quiz-option" onclick="selectAnswer('q2', 3, false)">D) foreach item in list:</div>
+                </div>
+
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: What does enumerate() provide?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 0, true)">A) Index and value</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 1, false)">B) Only index</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 2, false)">C) Only value</div>
+                    <div class="quiz-option" onclick="selectAnswer('q3', 3, false)">D) Length of list</div>
+                </div>
+
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: How to count from 1 to 10 with range?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 0, true)">A) range(1, 11)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 1, false)">B) range(1, 10)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 2, false)">C) range(10)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q4', 3, false)">D) range(0, 10)</div>
+                </div>
+
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: What's printed? for i in range(2,5): print(i)</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 0, true)">A) 2 3 4</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 1, false)">B) 2 3 4 5</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 2, false)">C) 1 2 3 4</div>
+                    <div class="quiz-option" onclick="selectAnswer('q5', 3, false)">D) 3 4 5</div>
+                </div>
+
+                <div class="quiz-question" id="q6">
+                    <h3>Question 6: Which loop is better for iterating lists?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 0, true)">A) For loop</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 1, false)">B) While loop</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 2, false)">C) Both equal</div>
+                    <div class="quiz-option" onclick="selectAnswer('q6', 3, false)">D) Neither</div>
+                </div>
+
+                <div class="quiz-question" id="q7">
+                    <h3>Question 7: What does range(0, 10, 2) generate?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 0, true)">A) 0, 2, 4, 6, 8</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 1, false)">B) 0, 1, 2, ..., 10</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 2, false)">C) 2, 4, 6, 8, 10</div>
+                    <div class="quiz-option" onclick="selectAnswer('q7', 3, false)">D) 0, 2, 4, ..., 10</div>
+                </div>
+
+                <div class="quiz-question" id="q8">
+                    <h3>Question 8: How to loop backwards from 5 to 1?</h3>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 0, true)">A) range(5, 0, -1)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 1, false)">B) range(5, 1, -1)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 2, false)">C) range(1, 5, -1)</div>
+                    <div class="quiz-option" onclick="selectAnswer('q8', 3, false)">D) range(5, 1)</div>
+                </div>
+
+                <button class="game-button" onclick="calculateScore()" style="display: block; margin: 20px auto;">Submit Quiz</button>
+                <div class="score-display" id="quizScore" style="display: none;"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Lecture Summary</h2>
+                <div class="highlight-box">
+                    <h3>What We Learned Today:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>✅ <code>for item in sequence:</code> - Iterate through items</li>
+                        <li>✅ <code>range(start, stop, step)</code> - Generate number sequences</li>
+                        <li>✅ <code>enumerate(list)</code> - Get index and value</li>
+                        <li>✅ For loops are better for known iterations</li>
+                        <li>✅ While loops are better for unknown iterations</li>
+                        <li>✅ Built a multiplication table generator</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3><span class="emoji">🏠</span>Practice at Home:</h3>
+                    <ol style="font-size: 1.1em; line-height: 2em;">
+                        <li>Create a countdown timer using range</li>
+                        <li>Build a grade analyzer (loop through scores)</li>
+                        <li>Make a pattern printer (stars, numbers)</li>
+                        <li>Create a name list formatter with enumerate</li>
+                        <li>Build a factorial calculator using for loop</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h3><span class="emoji">⚠️</span>Common Mistakes to Avoid:</h3>
+                    <ul style="font-size: 1.1em; line-height: 2em;">
+                        <li>Forgetting that range(5) stops at 4, not 5</li>
+                        <li>Using wrong loop (for when while needed, or vice versa)</li>
+                        <li>Missing colon (:) after for statement</li>
+                        <li>Wrong indentation of loop body</li>
+                        <li>Trying to modify list while looping through it</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game 1: Robot Navigation
-        let robotPos = 0;
-        const targetPos = 24;
-        
-        function createGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                if (i === targetPos) {
-                    cell.className += ' target';
-                    cell.textContent = '⭐';
-                }
-                if (i === robotPos) {
-                    cell.textContent = '🤖';
-                }
-                grid.appendChild(cell);
-            }
-        }
-        
-        function moveRobot(direction) {
-            let newPos = robotPos;
-            switch(direction) {
-                case 'up':
-                    if (robotPos >= 5) newPos -= 5;
-                    break;
-                case 'down':
-                    if (robotPos < 20) newPos += 5;
-                    break;
-                case 'left':
-                    if (robotPos % 5 !== 0) newPos -= 1;
-                    break;
-                case 'right':
-                    if (robotPos % 5 !== 4) newPos += 1;
-                    break;
+        let quizAnswers = {};
+
+        // For Loop Demo
+        function runForLoop() {
+            const input = document.getElementById('loopItems').value;
+            const result = document.getElementById('forLoopResult');
+            
+            if (!input.trim()) {
+                result.innerHTML = '<div class="error-message">Please enter some items!</div>';
+                return;
             }
             
-            robotPos = newPos;
-            createGrid();
+            const items = input.split(',').map(item => item.trim());
             
-            if (robotPos === targetPos) {
-                document.getElementById('gameMessage').innerHTML = '🎉 Congratulations! You did it!';
-            }
-        }
-        
-        function resetGame() {
-            robotPos = 0;
-            createGrid();
-            document.getElementById('gameMessage').innerHTML = '';
-        }
-        
-        // Game 2: Code Simulator
-        function runUserCode() {
-            const code = document.getElementById('userCode').value;
-            const output = document.getElementById('output');
-            if (code) {
-                output.innerHTML += code + '<br>';
-            }
-        }
-        
-        function clearOutput() {
-            document.getElementById('output').innerHTML = '';
-        }
-        
-        // Game 3: Animation
-        function animateCode() {
-            const output = document.getElementById('animationOutput');
-            output.innerHTML = '';
+            let output = '<div style="margin-top: 20px; background: white; padding: 20px; border-radius: 10px; border: 3px solid #43e97b;">';
+            output += '<h4 style="color: #43e97b;">Loop Iterations:</h4>';
             
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 1<br>';
-            }, 500);
-            
-            setTimeout(() => {
-                document.getElementById('line1').style.background = '';
-                document.getElementById('line2').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 2<br>';
-            }, 1500);
-            
-            setTimeout(() => {
-                document.getElementById('line2').style.background = '';
-                document.getElementById('line3').style.background = '#ffeb3b';
-                output.innerHTML += 'I am line 3<br>';
-            }, 2500);
-            
-            setTimeout(() => {
-                document.getElementById('line3').style.background = '';
-            }, 3500);
-        }
-        
-        // Quiz
-        let correctAnswers = 0;
-        let answeredQuestions = new Set();
-        
-        function checkAnswer(questionNum, option, isCorrect) {
-            if (answeredQuestions.has(questionNum)) return;
-            
-            answeredQuestions.add(questionNum);
-            const question = document.getElementById('q' + questionNum);
-            const options = question.querySelectorAll('.option');
-            
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.startsWith(option)) {
-                    opt.className = isCorrect ? 'option correct' : 'option wrong';
-                }
+            items.forEach((item, index) => {
+                output += `
+                    <div class="iteration-box">
+                        <div><strong>Iteration ${index + 1}:</strong> item = "${item}"</div>
+                        <div class="iteration-number">${index}</div>
+                    </div>
+                `;
             });
             
-            if (isCorrect) {
-                correctAnswers++;
+            output += '<div class="code-box" style="margin-top: 20px;">';
+            output += `<span class="keyword">items</span> = ${JSON.stringify(items)}\n\n`;
+            output += '<span class="keyword">for</span> item <span class="keyword">in</span> items:\n';
+            output += '    <span class="keyword">print</span>(item)\n\n';
+            output += '<span class="comment"># Output:\n';
+            items.forEach(item => {
+                output += `# ${item}\n`;
+            });
+            output += '</span>';
+            output += '</div></div>';
+            
+            result.innerHTML = output;
+        }
+
+        // Range Test
+        function testRange() {
+            const start = parseInt(document.getElementById('rangeStart').value) || 0;
+            const stop = parseInt(document.getElementById('rangeStop').value) || 10;
+            const step = parseInt(document.getElementById('rangeStep').value) || 1;
+            const result = document.getElementById('rangeResult');
+            
+            if (step === 0) {
+                result.innerHTML = '<div class="error-message">Step cannot be 0!</div>';
+                return;
             }
             
-            updateScore();
-            
-            if (answeredQuestions.size === 6) {
-                showFinalMessage();
-            }
-        }
-        
-        function updateScore() {
-            document.getElementById('score').innerHTML = 
-                `Score: ${correctAnswers} / ${answeredQuestions.size}`;
-        }
-        
-        function showFinalMessage() {
-            const finalMessage = document.getElementById('finalMessage');
-            if (correctAnswers === 6) {
-                finalMessage.innerHTML = '🎉🎉🎉 PERFECT SCORE! You\'re a programming superstar! 🌟';
-            } else if (correctAnswers >= 4) {
-                finalMessage.innerHTML = '👏 Great job! You\'re learning fast! Keep it up! 🚀';
+            const numbers = [];
+            if (step > 0) {
+                for (let i = start; i < stop; i += step) {
+                    numbers.push(i);
+                }
             } else {
-                finalMessage.innerHTML = '👍 Good try! Review the material and you\'ll ace it next time! 💪';
+                for (let i = start; i > stop; i += step) {
+                    numbers.push(i);
+                }
             }
+            
+            if (numbers.length === 0) {
+                result.innerHTML = '<div class="error-message">Empty range! Check your parameters.</div>';
+                return;
+            }
+            
+            result.innerHTML = `
+                <div style="margin-top: 20px; background: white; padding: 20px; border-radius: 10px; border: 3px solid #43e97b;">
+                    <h4 style="color: #43e97b;">Generated Numbers:</h4>
+                    <div class="range-visual">
+                        ${numbers.map(num => `<div class="range-item">${num}</div>`).join('')}
+                    </div>
+                    <div class="code-box" style="margin-top: 20px;">
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">${start}</span>, <span class="number">${stop}</span>${step !== 1 ? ', ' + step : ''}):
+    <span class="keyword">print</span>(i)
+
+<span class="comment"># Output: ${numbers.join(', ')}</span>
+                    </div>
+                </div>
+            `;
         }
-        
+
+        // Multiplication Table Generator
+        function generateTable() {
+            const number = parseInt(document.getElementById('tableNumber').value);
+            const range = parseInt(document.getElementById('tableRange').value);
+            const style = document.getElementById('tableStyle').value;
+            const display = document.getElementById('tableDisplay');
+            const codeDiv = document.getElementById('tableCode');
+            const codeDisplay = document.getElementById('tableCodeDisplay');
+            
+            if (!number || !range || number < 1 || range < 1) {
+                display.innerHTML = '<div class="error-message">Please enter valid numbers!</div>';
+                return;
+            }
+            
+            let output = '<div style="margin-top: 30px;">';
+            output += `<h4 style="color: #43e97b; text-align: center; margin-bottom: 20px;">Multiplication Table of ${number}</h4>`;
+            
+            if (style === 'grid') {
+                output += '<div class="table-grid">';
+                for (let i = 1; i <= range; i++) {
+                    output += `<div class="table-item">${number} × ${i} = ${number * i}</div>`;
+                }
+                output += '</div>';
+            } else if (style === 'list') {
+                output += '<div style="background: white; padding: 20px; border-radius: 10px;">';
+                for (let i = 1; i <= range; i++) {
+                    output += `
+                        <div style="padding: 10px; margin: 5px 0; border-left: 4px solid #43e97b; background: #f8f9fa; border-radius: 5px;">
+                            ${number} × ${i} = <strong>${number * i}</strong>
+                        </div>
+                    `;
+                }
+                output += '</div>';
+            } else {
+                output += '<div style="background: white; padding: 20px; border-radius: 10px; overflow-x: auto;">';
+                output += '<table style="width: 100%; border-collapse: collapse;">';
+                output += '<tr style="background: #43e97b; color: white;"><th style="padding: 10px;">Multiplier</th><th style="padding: 10px;">Calculation</th><th style="padding: 10px;">Result</th></tr>';
+                for (let i = 1; i <= range; i++) {
+                    output += `
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 10px; text-align: center;">${i}</td>
+                            <td style="padding: 10px; text-align: center;">${number} × ${i}</td>
+                            <td style="padding: 10px; text-align: center; font-weight: bold; color: #43e97b;">${number * i}</td>
+                        </tr>
+                    `;
+                }
+                output += '</table></div>';
+            }
+            
+            output += '</div>';
+            display.innerHTML = output;
+            
+            // Show code
+            codeDiv.style.display = 'block';
+            codeDisplay.innerHTML = `
+<span class="comment"># Multiplication Table Generator</span>
+<span class="keyword">number</span> = <span class="number">${number}</span>
+
+<span class="comment"># Using for loop with range</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">${range + 1}</span>):
+    <span class="keyword">result</span> = number * i
+    <span class="keyword">print</span>(<span class="string">f"{number} × {i} = {result}"</span>)
+
+<span class="comment"># Alternative: Using enumerate</span>
+<span class="keyword">multipliers</span> = <span class="function">list</span>(<span class="function">range</span>(<span class="number">1</span>, <span class="number">${range + 1}</span>))
+<span class="keyword">for</span> index, mult <span class="keyword">in</span> <span class="function">enumerate</span>(multipliers, start=<span class="number">1</span>):
+    <span class="keyword">print</span>(<span class="string">f"Line {index}: {number} × {mult} = {number * mult}"</span>)
+            `;
+        }
+
+        // Detective Game
+        let detectiveLevel = 0;
+        let detectiveScore = 0;
+        const detectiveChallenges = [
+            {
+                code: "for i in range(3):\n    print(i)",
+                options: ["0 1 2", "1 2 3", "0 1 2 3", "1 2"],
+                answer: 0
+            },
+            {
+                code: "fruits = ['apple', 'banana']\nfor fruit in fruits:\n    print(fruit)",
+                options: ["apple banana", "['apple', 'banana']", "0 1", "apple\\nbanana"],
+                answer: 0
+            },
+            {
+                code: "for i in range(1, 4):\n    print(i)",
+                options: ["1 2 3", "0 1 2 3", "1 2 3 4", "0 1 2"],
+                answer: 0
+            },
+            {
+                code: "word = 'Hi'\nfor letter in word:\n    print(letter)",
+                options: ["H i", "Hi", "H\\ni", "letter letter"],
+                answer: 2
+            },
+            {
+                code: "for i in range(2, 6, 2):\n    print(i)",
+                options: ["2 4", "2 3 4 5", "2 4 6", "0 2 4"],
+                answer: 0
+            },
+            {
+                code: "nums = [10, 20]\ntotal = 0\nfor n in nums:\n    total += n\nprint(total)",
+                options: ["30", "10 20", "0", "1020"],
+                answer: 0
+            },
+            {
+                code: "for i, item in enumerate(['a','b']):\n    print(i)",
+                options: ["0 1", "a b", "1 2", "0 1 2"],
+                answer: 0
+            },
+            {
+                code: "for i in range(5, 2, -1):\n    print(i)",
+                options: ["5 4 3", "5 4 3 2", "3 4 5", "2 3 4 5"],
+                answer: 0
+            },
+            {
+                code: "for i in range(3):\n    print(i * 2)",
+                options: ["0 2 4", "2 4 6", "0 1 2", "1 2 3"],
+                answer: 0
+            },
+            {
+                code: "items = ['x', 'y']\nfor i in range(len(items)):\n    print(items[i])",
+                options: ["x y", "0 1", "['x', 'y']", "x\\ny"],
+                answer: 0
+            }
+        ];
+
+        function loadDetective() {
+            if (detectiveLevel >= detectiveChallenges.length) {
+                showDetectiveEnd();
+                return;
+            }
+
+            const challenge = detectiveChallenges[detectiveLevel];
+            document.getElementById('detectiveNum').textContent = detectiveLevel + 1;
+            document.getElementById('detectiveCode').textContent = challenge.code;
+
+            const optionsDiv = document.getElementById('detectiveOptions');
+            optionsDiv.innerHTML = '';
+
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkDetective(i);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('detectiveResult').innerHTML = '';
+        }
+
+        function checkDetective(choice) {
+            const challenge = detectiveChallenges[detectiveLevel];
+            const buttons = document.querySelectorAll('#detectiveOptions .detective-option');
+            const result = document.getElementById('detectiveResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.answer) {
+                detectiveScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                buttons[choice].classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.options[challenge.answer] + '</div>';
+                buttons[choice].classList.add('incorrect');
+                buttons[challenge.answer].classList.add('correct');
+            }
+
+            document.getElementById('detectiveScore').textContent = detectiveScore;
+            detectiveLevel++;
+
+            setTimeout(loadDetective, 2500);
+        }
+
+        function showDetectiveEnd() {
+            const container = document.querySelector('#detectiveNum').closest('.game-container');
+            const percentage = (detectiveScore / detectiveChallenges.length * 100).toFixed(0);
+
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🎉 Detective Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${detectiveScore}/${detectiveChallenges.length} (${percentage}%)</p>
+                    <button class="game-button" onclick="resetDetective()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetDetective() {
+            detectiveLevel = 0;
+            detectiveScore = 0;
+            document.getElementById('detectiveScore').textContent = '0';
+            loadDetective();
+        }
+
+        // Builder Game
+        let builderLevel = 0;
+        let builderScore = 0;
+        const builderChallenges = [
+            {
+                task: "Loop through a list of fruits",
+                code: "fruits = ['apple', 'banana']\nfor ___ in fruits:\n    print(fruit)",
+                options: ["fruit", "i", "item", "x"],
+                answer: 0
+            },
+            {
+                task: "Count from 1 to 5",
+                code: "for i in ___:\n    print(i)",
+                options: ["range(1, 6)", "range(5)", "range(1, 5)", "[1,2,3,4,5]"],
+                answer: 0
+            },
+            {
+                task: "Get index and value from list",
+                code: "items = ['a', 'b']\nfor i, val in ___(items):\n    print(i, val)",
+                options: ["enumerate", "range", "len", "zip"],
+                answer: 0
+            },
+            {
+                task: "Print every 2nd number from 0 to 10",
+                code: "for i in range(0, 10, ___):\n    print(i)",
+                options: ["2", "1", "10", "0"],
+                answer: 0
+            },
+            {
+                task: "Countdown from 5 to 1",
+                code: "for i in range(5, 0, ___):\n    print(i)",
+                options: ["-1", "1", "0", "5"],
+                answer: 0
+            },
+            {
+                task: "Loop through string characters",
+                code: "word = 'Hi'\nfor ___ in word:\n    print(char)",
+                options: ["char", "i", "letter", "c"],
+                answer: 0
+            },
+            {
+                task: "Calculate sum of numbers",
+                code: "nums = [1,2,3]\ntotal = 0\nfor n in nums:\n    total ___ n\nprint(total)",
+                options: ["+=", "=", "-=", "*="],
+                answer: 0
+            },
+            {
+                task: "Access list by index using range",
+                code: "items = ['a','b','c']\nfor i in range(___(items)):\n    print(items[i])",
+                options: ["len", "max", "min", "sum"],
+                answer: 0
+            }
+        ];
+
+        function loadBuilder() {
+            if (builderLevel >= builderChallenges.length) {
+                showBuilderEnd();
+                return;
+            }
+
+            const challenge = builderChallenges[builderLevel];
+            document.getElementById('builderNum').textContent = builderLevel + 1;
+            document.getElementById('builderTask').textContent = challenge.task;
+            document.getElementById('builderCode').textContent = challenge.code;
+
+            const optionsDiv = document.getElementById('builderOptions');
+            optionsDiv.innerHTML = '';
+
+            challenge.options.forEach((option, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'detective-option';
+                btn.textContent = option;
+                btn.onclick = () => checkBuilder(option);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('builderResult').innerHTML = '';
+        }
+
+        function checkBuilder(choice) {
+            const challenge = builderChallenges[builderLevel];
+            const buttons = document.querySelectorAll('#builderOptions .detective-option');
+            const result = document.getElementById('builderResult');
+
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (choice === challenge.options[challenge.answer]) {
+                builderScore++;
+                result.innerHTML = '<div class="success-message">✅ Correct!</div>';
+                event.target.classList.add('correct');
+            } else {
+                result.innerHTML = '<div class="error-message">❌ The answer is: ' + challenge.options[challenge.answer] + '</div>';
+                event.target.classList.add('incorrect');
+            }
+
+            document.getElementById('builderScore').textContent = builderScore;
+            builderLevel++;
+
+            setTimeout(loadBuilder, 2500);
+        }
+
+        function showBuilderEnd() {
+            const container = document.querySelector('#builderNum').closest('.game-container');
+            container.querySelector('div[style*="background: white"]').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #28a745; font-size: 2.5em;">🏗️ Builder Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${builderScore}/${builderChallenges.length}</p>
+                    <button class="game-button" onclick="resetBuilder()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetBuilder() {
+            builderLevel = 0;
+            builderScore = 0;
+            document.getElementById('builderScore').textContent = '0';
+            loadBuilder();
+        }
+
+        // Quiz Functions
+        function selectAnswer(questionId, optionIndex, isCorrect) {
+            const question = document.getElementById(questionId);
+            const options = question.querySelectorAll('.quiz-option');
+
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            options[optionIndex].classList.add('selected');
+            quizAnswers[questionId] = isCorrect;
+        }
+
+        function calculateScore() {
+            const totalQuestions = 8;
+            let correctAnswers = 0;
+
+            Object.keys(quizAnswers).forEach(qId => {
+                const question = document.getElementById(qId);
+                const selected = question.querySelector('.selected');
+                if (selected) {
+                    if (quizAnswers[qId]) {
+                        selected.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selected.classList.add('incorrect');
+                        const options = question.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.onclick.toString().includes('true')) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                }
+            });
+
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const scoreDisplay = document.getElementById('quizScore');
+
+            let message = '';
+            let emoji = '';
+
+            if (percentage === 100) {
+                message = 'Perfect Score!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                message = 'Great Job!';
+                emoji = '🌟';
+            } else if (percentage >= 60) {
+                message = 'Good Effort!';
+                emoji = '👍';
+            } else {
+                message = 'Keep Learning!';
+                emoji = '📚';
+            }
+
+            scoreDisplay.innerHTML = `
+                ${emoji} ${message}<br>
+                You scored ${correctAnswers} out of ${totalQuestions} (${percentage.toFixed(0)}%)
+            `;
+            scoreDisplay.style.display = 'block';
+        }
+
         // Initialize
-        createGrid();
+        window.onload = function() {
+            loadDetective();
+            loadBuilder();
+        };
     </script>
 </body>
 </html>
